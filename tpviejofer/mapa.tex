@@ -1,0 +1,273 @@
+\section{Mapa}
+
+\begin{Interfaz}
+  
+  %\textbf{parámetros formales}\hangindent=2\parindent\\
+  %\parbox{1.7cm}{\textbf{géneros}} \\
+  %\parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
+    %\InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{$\alpha$}
+    %{$res \igobs a$}
+    %[$\Theta(copy(a))$]
+    %[función de copia de $\alpha$'s]
+  %}
+
+  \textbf{se explica con}: \tadNombre{Mapa, Iterador Unidireccional($\alpha$)}.
+
+  \textbf{géneros}: \TipoVariable{mapa, itConj(Estacion)}.
+
+  \Titulo{Operaciones básicas de Mapa}
+
+  %\InterfazFuncion{NOMBRE}{INPUTS}{TIPO RES}%
+  %[ACA VA EL PRE (SI LO HAY)]
+  %{ACA VA EL POST}%
+  %[$\Theta(COMPLEJIDAD)$]
+  %[DESCRIPCION]
+
+  \InterfazFuncion{Estaciones}{\In{m}{mapa}}{itConj(Estacion)}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs$ crearIt(estaciones($m$))}
+  [$\Complejidad{1}$]
+  [Devuelve las estaciones del mapa.]
+	
+  \InterfazFuncion{Conectadas?}{\In{e_1}{estación}, \In{e_2}{estación}, \In{m}{mapa}}{bool}
+  [\{$e_1,e_2$\} $\subseteq$ estaciones($m$)]
+  {$res \igobs$ conectadas?($e_1, e_2, m$)}
+  [$\Complejidad{|e_1| + |e_2|}$]
+  [Devuelve el valor de verdad indicado por la conexión o desconexión de dos estaciones.]
+
+  \InterfazFuncion{Restricción}{\In{e_1}{estación}, \In{e_2}{estación}, \In{m}{mapa}}{restricción}
+  [\{$e_1, e_2$\} $\subseteq$ estaciones($m$) $\yluego$ conectadas?($e_1, e_2, m$)]
+  {$res \igobs$ restricción($e_1, e_2, m$)}
+  [$\Complejidad{|e_1| + |e_2|}$]
+  [Devuelve la restricción entre dos estaciones.]
+
+  \InterfazFuncion{Vacio}{}{mapa}
+  %[ACA VA EL PRE (SI LO HAY)]
+  {$res \igobs$ vacio()}
+  [$\Complejidad{1}$]
+  [Crea un mapa sin estaciones.]
+	
+  \InterfazFuncion{Agregar}{\In{e}{estación}, \Inout{m}{mapa}}{}
+  [$m_0 \igobs m$ $\wedge$ $\neg$($e$ $\in$ estaciones($m$))]
+  {$m$ $\igobs$ agregar($e, m_0$)}
+  [$\Complejidad{|e|}$]
+  [Agrega una estación al mapa.]
+
+  \InterfazFuncion{Conectar}{\In{e_1}{estación}, \In{e_2}{estación}, \In{r}{restricción}, \Inout{m}{mapa}}{}
+  [$m_0 \igobs m$ $\wedge$ \{$e_1,e_2$\} $\subseteq$ estaciones($m$) $\yluego$ $\neg$conectadas?($e_1, e_2, m$)]
+  {$m$ $\igobs$ conectar($e_1, e_2, r$, conectar($e_2, e_1, r, m_0$))}
+  [$\Complejidad{|e_1| + |e_2|}$]
+  [Conecta dos estaciones y les añade la restricción correspondiente.]
+	
+  \InterfazFuncion{NroConexion}{\In{e_1}{estación}, \In{e_2}{estación}, \In{m}{mapa}}{nat}
+  [\{$e_1,e_2$\} $\subset$ estaciones($m$) $\yluego$ conectadas?($e_1, e_2, m$)]
+  {$res \igobs$ nroConexion($e_1$, $e_2$, $m$)}
+  [$\Complejidad{|e_1| + |e_2|}$]
+  [Obtiene el Nro. de Senda entre dos estaciones.]
+	
+  \InterfazFuncion{EvaluarSendas}{\In{c}{conj(tag)}, \In{m}{mapa}}{arreglo\_dimesionable de bool}
+  %[\{e1,e2\} $\in$ estaciones(m) $\yluego$ $res \igobs$ conectadas?(e1, e2, m)]
+  {$(\forall i$: Nat) (0 $\leq i <$ long(restricciones($m$)) $\impluego$ res[$i$] $\igobs$ verifica?($c$, elemDeSecu(restricciones($m$), $i$)))}
+  [$\Complejidad{S \cdot R}$]
+  [Devuelve un arreglo con todas las sendas evaluadas con respecto al conjunto $c$.
+	NOTA: La $R$ es el costo de evaluar la restriccion mas grande.]
+	
+	\InterfazFuncion{Restricciones}{\In{m}{mapa}}{arreglo\_dimesionable de restriccion}
+  %[\{e1,e2\} $\in$ estaciones(m) $\yluego$ $res \igobs$ conectadas?(e1, e2, m)]
+  {$(\forall i$: Nat) (0 $\leq i <$ long(restricciones($m$)) $\impluego$ res[$i$] $\igobs$ elemDeSecu(restricciones($m$), $i$)}
+  [$\Complejidad{S}$]
+  [Devuelve un arreglo con todas las restricciones]
+	
+\end{Interfaz}
+
+\subsection{Representacion}
+
+\begin{Representacion}
+
+%ACA VA LA DESCRIPCION DE LA CACONA DEL MAPA
+
+\bigskip
+\begin{Estructura}{mapa}[e\_mapa]
+	\begin{Tupla}[e\_mapa]
+		\tupTupItem{uniones}{\TipoVariable{diccString}$($\ignorespaces
+			% NOTA:tupTupItem es un engendro que agregue para este caso, NO USAR EN OTRO LADO, USAR tupItem EN SU LUGAR.
+			\emph{estacion}: \TipoVariable{string},
+			\TipoVariable{diccString}$($\ignorespaces
+				\emph{estacion}: \TipoVariable{string}, \ignorespaces
+				\emph{senda}: \TipoVariable{nat}\ignorespaces
+			$))$}
+		\tupItem{\\estaciones}{conj$($estacion$)$}
+		\tupItem{sendas}{vector de restriccion}
+		\tupItem{\#sendas}{nat}
+	\end{Tupla}
+	
+\end{Estructura}
+
+%\begin{Estructura}{mapa}[e\_mapa]
+	%\begin{Tupla}[e\_mapa]
+		%\tupTupItem{unionesDe}{DiccString(\TipoVariable{conj}$($\ignorespaces
+			%% NOTA:tupTupItem es un engendro que agregue para este caso, NO USAR EN OTRO LADO, USAR tupItem EN SU LUGAR.
+			%\TipoVariable{tupla}$($\ignorespaces
+				%\emph{con}: \TipoVariable{estacion},
+				%\emph{res}: \TipoVariable{restricción}\ignorespaces
+			%$)))$}
+		%\tupItem{\\estaciones}{conj$($estacion$)$}
+	%\end{Tupla}
+	%
+%\end{Estructura}
+
+\subsection{InvRep y Abs}
+
+\begin{enumerate}
+	\item{El conjunto de claves de ''uniones'' es igual al conjunto de estaciones ''estaciones''.}
+	\item{''\#sendas'' es igual a la mitad de las horas de ''uniones''.}
+	\item{Todo valor que se obtiene de buscar el significado del significado de cada clave de ''uniones'', es igual el valor hallado tras buscar en ''uniones'' con el sinificado de la clave como clave y la clave como significado de esta nueva clave, y no hay otras hojas ademas de estas dos, con el mismo valor.}
+	\item{Todas las hojas de ''uniones'' son mayores o iguales a cero y menores a ''\#sendas''.}
+	\item{La longitud de ''sendas'' es mayor o igual a ''\#sendas''.}
+\end{enumerate}
+
+\Rep[e\_mapa][m]{
+	\\m.estaciones = claves(m.uniones) $\wedge$ \hfill 1.
+	\\m.\#sendas = \#sendasPorDos(m.estaciones, m.uniones) / 2 $\wedge$ m.\#sendas $\leq$ long(m.sendas) $\yluego$ \hfill 2. 5.
+	\\($\forall$ e1, e2: string)(e1 $\in$ claves(m.uniones) $\yluego$ e2 
+	$\in$ claves(obtener(e1, m.uniones)) $\impluego$\\ 
+	e2 $\in$ claves(m.uniones) $\yluego$ e1 $\in$ claves(obtener(e2, m.uniones)) $\yluego$ 
+	\\ obtener(e2, obtener(e1, m.uniones)) = obtener(e1, obtener(e2, m.uniones)) $\wedge$ \hfill 3. 4.	
+	\\ obtener(e2, obtener(e1, m.uniones)) $<$ m.\#sendas) $\wedge$
+	\\($\forall$ e1, e2, e3, e4: string)((e1 $\in$ claves(m.uniones) $\yluego$
+	e2 $\in$ claves(obtener(e1, m.uniones)) $\wedge$\\ 
+	e3 $\in$ claves(m.uniones) $\yluego$ e4 $\in$ claves(obtener(e3, m.uniones))) $\impluego$
+	\\ (obtener(e2, obtener(e1, m.uniones)) $=$ obtener(e4, obtener(e3, m.uniones)) $\ssi$
+	\\ (e1 = e3 $\wedge$ e2 = e4) $\vee$ (e1 = e4 $\wedge$ e2 = e3)))) \hfill 3.
+}
+
+\vspace{2em}
+	
+\tadOperacion{\#sendasPorDos}{conj($\alpha$)\ c, dicc($\alpha$, dicc($\alpha$, $\beta$))\ d}
+														{nat}{c $\subset$ claves(d)}
+
+\vspace{1em}
+
+\tadAxioma{\#sendasPorDos(c, d)}{\IF $\emptyset$?(c) THEN 0
+												ELSE \#claves(obtener(dameUno(c),d)) $+$ \#sendasPorDos(sinUno(c), d)
+												FI}
+
+\vspace{2em}
+
+\Abs[e\_mapa]{mapa}[m]{p}{
+	\\ m.estaciones = estaciones(p) $\yluego$
+	\\ ($\forall$ e1, e2: string)((e1 $\in$ estaciones(p) $\wedge$ e2 $\in$ estaciones(p)) $\impluego$
+	\\ (conectadas?(e1, e2, p) $\ssi$
+	\\   e1 $\in$ claves(m.uniones) $\wedge$ e2 $\in$ claves(obtener(e2, m.uniones)))) $\yluego$
+	\\ ($\forall$ e1, e2: string)((e1 $\in$ estaciones(p) $\wedge$ e2 $\in$ estaciones(p)) $\yluego$
+	\\ conectadas?(e1, e2, p) $\impluego$ 
+	\\ (restriccion(e1, e2, p) = m.sendas[obtener(e2, obtener(e1, m.uniones))] $\wedge$
+	   nroConexion(e1, e2, m) = obtener(e2, obtener(e1, m.uniones))) $\wedge$
+	   long(restricciones(p)) = m.\#sendas $\yluego$
+		 ($\forall$ n:nat) (n < m.\#sendas $\impluego$ m.sendas[n] = ElemDeSecu(restricciones(p), n)))
+}
+
+\end{Representacion}
+
+\subsection{Algoritmos}
+
+\begin{Algoritmos}
+	
+	%Algoritmos / Inputs / TSalida / Codigo / Complejidad Final / Justificacion
+	\begin{Algoritmo}{iEstaciones}{\In{mapa}{mapa}}{itConj(estacion)}
+	{
+		\State $res$ $\gets$ CrearIt($m.estaciones$) \ComplejidadDer{1}
+	} 
+	{$\Complejidad{1}$}{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iConectadas?}{\In{e_1}{estación}, \In{e_2}{estación}, \In{m}{mapa}}{bool}
+	{
+		\State $res$ $\gets$ Definido?(Significado($m.uniones$, $e_1$), $e_2$) \ComplejidadDer{|e_1| + |e_2|}
+	}
+	{$\Complejidad{|e_1| + |e_2|}$}{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iRestricción}{\In{e_1}{estación}, \In{e_2}{estación}, \In{m}{mapa}}{restricción}
+	{
+		\State $res$ $\gets$ $m.sendas[$Significado(Significado($m.uniones$, $e_1$), $e_2$)$]$ \ComplejidadDer{|e_1| + |e_2| + 1}
+	}
+	{$\Complejidad{|e_1| + |e_2|}$}
+	{$\Complejidad{|e_1| + |e_2| + 1} = \Complejidad{|e_1| + |e_2|}$}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iVacio}{}{mapa}
+	{
+		\State $res$ $\gets$ tupla($uniones$: Vacío(), $estaciones$: Vacío(), $sendas$: Vacía(), $\#sendas$: 0) \ComplejidadDer{1 + 1 + 1 + 1 + 1}
+	}
+	{$\Complejidad{1}$}
+	{$\sum_{i = 1}^{5} \Complejidad{1} = \newline
+	  5 * \Complejidad{1} = \Complejidad{1}$}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iAgregar}{\In{e}{estación}, \Inout{m}{mapa}}{}
+	{
+		\State Agregar($m.estaciones$, $e$) \ComplejidadDer{1}
+		\State Definir($m.uniones$, $e$, Vacío()) \ComplejidadDer{|e|}
+	}
+	{$\Complejidad{|e|}$}
+	{$\Complejidad{1} + \Complejidad{|e|} = \Complejidad{|e|}$}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iConectar}{\In{e_1}{estación}, \In{e_2}{estación}, \In{r}{restricción}, \Inout{m}{mapa}}{}
+	{
+		\State Definir(Significado($m.uniones$, $e1$), $e2$, $m.\#senda$) \ComplejidadDer{|e_1| + |e_2|}
+		\State Definir(Significado($m.uniones$, $e2$), $e1$, $m.\#senda$) \ComplejidadDer{|e_2| + |e_1|}
+		\State Agregar($m.sendas$, $m.\#sendas$, $r$) \ComplejidadDer{1}
+		\State $m.\#sendas++$ \ComplejidadDer{1}
+	}
+	{$\Complejidad{|e_1| + |e_2|}$}
+	{$\Complejidad{|e_1| + |e_2|} + \Complejidad{|e_1| + |e_2|} + \Complejidad{1} + \Complejidad{1} = \newline
+	  2 * \Complejidad{1} + 2 * \Complejidad{|e_1| + |e_2|} = \newline
+		2 * \Complejidad{|e_1| + |e_2|} = \Complejidad{|e_1| + |e_2|}$}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iNroConexion}{\In{e1}{estación}, \In{e2}{estación}, \In{m}{mapa}}{nat}
+	{
+		\State $res$ $\gets$ Significado(Significado($m.uniones$, $e1$), $e2$) \ComplejidadDer{|e_1| + |e_2|}
+	}
+	{$\Complejidad{|e_1| + |e_2|}$}{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iEvaluarSendas}{\In{c}{conj(tag)}, \In{m}{mapa}}{arreglo\_dimesionable de bool}
+	{
+		\State $res$ $\gets$ arreglo[$m.\#sendas$] de bool \ComplejidadDer{1}
+		\State var $i$: nat $\gets$ 0 \ComplejidadDer{1}
+		\While{$i < m.\#sendas$} \ComplejidadDer{1}
+			\State $res[i]$ $\gets$ Verifica?($c$, $m.sendas[i]$) \ComplejidadDer{R}
+			\State $i++$ \ComplejidadDer{1}
+		\EndWhile
+	}
+	{$\Complejidad{S * R}$}
+	{$\Complejidad{1} + \Complejidad{1} + \sum_{i = 1}^{S} (\Complejidad{R} + \Complejidad{1}) = \newline
+		2 * \Complejidad{1} + S * (\Complejidad{R} + \Complejidad{1}) = \newline
+		2 * \Complejidad{1} + S * \Complejidad{1} + S * \Complejidad{R} = \newline
+		\Complejidad{S} + S * \Complejidad{R} = \newline
+		\Complejidad{S + S * R} = \Complejidad{S * R}
+	$\newline
+	$S$ es |m.sendas| y $R$ es la longitud de la restriccion mas grande}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iRestricciones}{\In{m}{mapa}}{arreglo\_dimesionable de restriccion}
+	{
+		\State $res$ $\gets$ arreglo\_dimensionable[$m.\#sendas$] \ComplejidadDer{1}
+		\State var $i$: nat $\gets$ 0 \ComplejidadDer{1}
+		\While{$i < m.\#sendas$} \ComplejidadDer{1}
+			\State $res[i]$ $\gets$ $m.sendas[i]$ \ComplejidadDer{1}
+			\State $i++$ \ComplejidadDer{1}
+		\EndWhile
+	}
+	{$\Complejidad{S}$}
+	{$\Complejidad{1} + \Complejidad{1} + \sum_{i = 1}^{S} (\Complejidad{1} + \Complejidad{1}) = \newline
+	  2 * \Complejidad{1} + S * 2 *\Complejidad{1} = \newline
+		2 * \Complejidad{1} + 2 * \Complejidad{S} = \newline
+		2 * \Complejidad{S} = \Complejidad{S}
+	 $}
+	\end{Algoritmo}
+	
+\end{Algoritmos}

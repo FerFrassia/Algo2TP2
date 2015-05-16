@@ -1,0 +1,253 @@
+\section{Ciudad Robótica}
+
+\begin{Interfaz}
+  
+  \textbf{parámetros formales}\hangindent=2\parindent\\
+  \parbox{1.7cm}{\textbf{géneros}} \\
+  \parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
+    %\InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{$\alpha$}
+    %{$res \igobs a$}
+    %[$\Theta(copy(a))$]
+    %[función de copia de $\alpha$'s]
+  }
+
+  \textbf{se explica con}: \tadNombre{Ciudad Robótica, Iterador Unidireccional($\alpha$)}.
+
+  \textbf{géneros}: \TipoVariable{ciudad, itRURs}.
+
+  \Titulo{Operaciones básicas de Ciudad Robótica}
+
+  \InterfazFuncion{PróximoRUR}{\In {c}{ciudad}}{rur}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs$ próximoRUR(c)}
+  [\Complejidad{1}]
+  [Devuelve el PróximoRUR de una ciudad, esto es, de añadirse un robot se le asignaría este RUR.]
+  
+  \InterfazFuncion{Mapa}{\In {c}{ciudad}}{mapa}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs$ mapa(c)}
+  [\Complejidad{1}]
+  [Devuelve el mapa de la ciudad.]
+  
+  \InterfazFuncion{Robots}{\In {c}{ciudad}}{itRURs}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs$ crearIt(robots(c))}
+  [\Complejidad{1}]
+  [Devuelve un iterador de los robots de la ciudad.]
+  
+  \InterfazFuncion{Estación}{\In {u}{rur}, \In {c}{ciudad}}{estacion}
+  [u $\in$ robots(c)]
+  {$res \igobs$ estación(u,c)}
+  [\Complejidad{1}]
+  [Devuelve la estación en la cual está el robot.]
+  
+  \InterfazFuncion{Tags}{\In {u}{rur}, \In {c}{ciudad}}{conj(tags)}
+  [u $\in$ robots(c)]
+  {$res \igobs$ tags(u,c)}
+  [\Complejidad{1}]
+  [Devuelve los tags del robot.]
+  
+  \InterfazFuncion{$\#$Infracciones}{\In {u}{rur}, \In {c}{ciudad}}{nat}
+  [u $\in$ robots(c)]
+  {$res \igobs$ $\#$infracciones(u,c)}
+  [\Complejidad{1}]
+  [Devuelve la cantidad de infracciones cometidas por el robot.]
+
+  \InterfazFuncion{Crear}{\In {m}{mapa}}{ciudad}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs$ crear(m)}
+  [\Complejidad{Cardinal(Estaciones(m)) * |e_m|}]
+  [Crea una ciudad con un mapa y sin robots.]
+  
+  \InterfazFuncion{Entrar}{\In {ts}{conj(tags)}, \In {e}{estación}, \Inout {c}{ciudad}}{}
+  [$c_0 \equiv c$ $\wedge$ e $\in$ estaciones($c_0$)]
+  {próximoRUR($c_0$) $\in$ robots(c) $\impluego$ 
+  próximoRUR(c) $\igobs$ próximoRUR($c_0$) + 1 $\wedge$ 
+  estación(próximoRUR($c_0$), c) $\igobs$ e $\wedge$ tags(próximoRUR($c_0$), c) $\igobs$ ts $\wedge$ $\#$infracciones(próximoRUR($c_0$), c) $\igobs$ 0}
+  [\Complejidad{log_2N + |e| + S * R}]
+  [Añade un robot a la ciudad, le asigna el próximoRUR y sus infracciones son nulas.]
+  
+  \InterfazFuncion{Mover}{\In {u}{rur}, \In {e}{estación}, \Inout {c}{ciudad}}{}
+  [($c_0 \equiv c$ $\wedge$ u $\in$ robots($c_0$) $\wedge$ e $\in$ estaciones($c_0$)) $\yluego$ conectadas?(estación(u, $c_0$), mapa($c_0$))]
+  {estación(u,c) $\igobs$ e $\wedge$ 
+  ($\neg$verifica?(tags(u, $c_0$), restricción(estación(u, $c_0$), e, mapa($c_0$))) $\impluego$ $\#$infracciones(u, c) $\igobs$ $\#$infracciones(u, $c_0$) + 1)}
+  [\Complejidad{|e| + log_2 N_e}]
+  [Mueve un robot desde donde está a la estación indicada.]
+  
+  \InterfazFuncion{Inspección}{\In {e}{estación}, \Inout{c}{ciudad}}{}
+  [$c_0 \equiv c$ $\wedge$ e $\in$ estaciones($c_0$)]
+  {($\exists$ u $\in$ robots($c_0$)) (estación(u, $c_0$) $\igobs$ e) $\impluego$ 
+  elMásInfractor(robotsEn(e,$c_0$), $c_0$) $\notin$ robots(c)}
+  [\Complejidad{log_2N}]
+  [Realiza la inspección de la estación indicada, remueve el robot con mayor cantidad de infracciones.]
+  
+\end{Interfaz}
+
+\begin{Representacion}
+
+DESCRIPCION
+
+\bigskip
+\begin{Estructura}{ciudad}[e\_cr]
+	\begin{Tupla}[e\_cr]
+		\tupItem{mapa}{mapa}
+		\tupTupItem{RUREnEst}{\TipoVariable{diccString}$($\ignorespaces
+			\emph{estacion}: \TipoVariable{string}, 
+			\emph{robs}: \TipoVariable{colaP}$($\ignorespaces
+			\emph{id}: \TipoVariable{nat}, 
+			\emph{inf}: \TipoVariable{nat}$))$}
+		\tupTupItem{\\RURs}{\TipoVariable{vector de tupla}$($\ignorespaces
+			\emph{id}: \TipoVariable{nat}, 
+			\emph{esta?}: \TipoVariable{bool}, 
+			\emph{e}: \TipoVariable{string}, 
+			\emph{inf}: \TipoVariable{nat}, 
+			\emph{carac}: \TipoVariable{conj(string)}, 
+			\emph{\\sendEv}: \TipoVariable{arreglo\_dimensionable de bool}\ignorespaces
+		$)$}
+	\end{Tupla}
+\end{Estructura}
+
+\subsection{InvRep y Abs}
+
+\Rep[e\_cr][c]{
+	claves(c.RURenEst) $=$ estaciones(c.mapa) $\yluego$
+	\\($\forall$ i: nat, t:$\langle$id: nat, esta?: bool, e: string, 
+																	inf: nat, carac: conj(tag)$\rangle$)
+	\\(i $<$ long(c.RURs) $\yluego$ c.RURs[i] = t $\impluego$
+	(t.e $\in$ estaciones(c.mapa) $\wedge$ t.id = i
+}
+
+\end{Representacion}
+
+%tupla<mapa:mapa, robEnEst: dicctrie(estacion, conj(puntero(RUR))), robots: conj(RUR)>
+
+\subsection{Algoritmos}
+
+\begin{Algoritmos}
+
+	\begin{Algoritmo}{iPróximoRUR}{\In {c}{ciudad}}{rur}
+	{
+		\State $res$ $\gets$ Longitud($c.RURs$) \ComplejidadDer{1}
+	}
+	{\Complejidad{1}}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iMapa}{\In {c}{ciudad}}{mapa}
+	{
+		\State $res$ $\gets$ $c.mapa$ \ComplejidadDer{1}
+	}
+	{\Complejidad{1}}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iRobots}{\In {c}{ciudad}}{itRobots}
+	{
+		\State $res$ $\gets$ CrearIt($c.RURs$) \ComplejidadDer{1}
+	}
+	{\Complejidad{1}}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iEstación}{\In {u}{rur}, \In {c}{ciudad}}{estación}
+	{
+		\State $res$ $\gets$ ($c.RURs[u]).estacion$ \ComplejidadDer{1}
+	}
+	{\Complejidad{1}}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iTags}{\In {u}{rur}, \In {c}{ciudad}}{conj(tags)}
+	{
+		\State $res$ $\gets$ ($c.RURs[u]).carac$ \ComplejidadDer{1}
+	}
+	{\Complejidad{1}}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{i$\#$Infracciones}{\In {u}{rur}, \In {c}{ciudad}}{nat}
+	{
+		\State $res$ $\gets$ ($c.RURs[u]).inf$ \ComplejidadDer{1}
+	}
+	{\Complejidad{1}}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iCrear}{\In {m}{mapa}}{ciudad}
+	{
+		\State $res$ $\gets$ tupla($mapa$: $m$, $RUREnEst$: Vacío(), $RURs$: Vacía()) \ComplejidadDer{1}
+		\State var $it$:itConj(Estacion) $\gets$ Estaciones($m$) \ComplejidadDer{1}
+		\While{HaySiguiente($it$)} \ComplejidadDer{1}
+		\State Definir($res.RUREnEst$, Siguiente($it$), Vacío()) \ComplejidadDer{|e_m|}
+		\State Avanzar($it$) \ComplejidadDer{1}
+		\EndWhile
+	}
+	{Cardinal(Estaciones($m$)) * |$e_m$|}
+	{$\Complejidad{1} + \Complejidad{1} + \sum_{i=1}^{Cardinal(Estaciones(m))} (\Complejidad{|e_m|} + \Complejidad{1}) = \newline
+		 2 * \Complejidad{1} + Cardinal(Estaciones(m)) * (\Complejidad{|e_m|} + \Complejidad{1}) = \newline 
+		 Cardinal(Estaciones(m)) * (\Complejidad{|e_m|})
+	$}
+	%{\Complejidad{1} + \Complejidad{Cardinal(Estaciones(m))} * \Complejidad{|e_m|} = \Complejidad{Cardinal(Estaciones(m)) * |e_m|}}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iEntrar}{\In {ts}{conj(tags)}, \In {e}{string}, \Inout {c}{ciudad}}{}
+	{
+		\State Agregar(Significado($c.RUREnEst$, $e$), 0, Longitud($c.RURs$)) \ComplejidadDer{log_2 n + |e|}
+		\State AgregarAtras($c.RURs$, tupla($id$: Longitud($c.RURs$), $esta?$: $true$, $estacion$: $e$, $inf$: 0, $carac$: $ts$, $sendEv$: EvaluarSendas($ts$, $c.mapa$)) \ComplejidadDer{1 + S * R}
+	}
+	{$log_2 n + |e| + S * R$}
+	{\Complejidad{log_2 n + |e|} + \Complejidad{1 + S * R} = \Complejidad{log_2 n + |e| + S * R}}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iMover}{\In {u}{rur}, \In {e}{estación}, \Inout {c}{ciudad}}{}
+	{
+		\State Eliminar(Significado($c.RUREnEst$, $c.RURs[u].estacion$), $c.RURs[u].inf$, $u$) \ComplejidadDer{|e| + log_2 N_e}
+		\State Agregar(Significado($c.RUREnEst$, $e$), $c.RURs[u].inf$, $u$) \ComplejidadDer{|e| + log_2 N_e}
+		\If{$\negc.RURs[u].sendEv$[NroConexion($c.RURs[u].estacion$, $e$, $c.mapa$)]} \ComplejidadDer{log_2 N_e + log_2 N_e}
+		\State $c.RURs[u].inf$++ \ComplejidadDer{1}
+		\EndIf
+		\State $c.RURs[u].estacion$ $\gets$ $e$ \ComplejidadDer{1}
+	}
+	{$|e| + log_2 N_e$}
+	{}
+			
+	\end{Algoritmo}
+	
+	%tupla($id$: nat, $esta?$: bool, $estacion$: string, $inf$: nat, $carac$: conj(string), $sendEv$: arreglo\_dimensionable de bool)
+	\begin{Algoritmo}{iInspección}{\In {e}{estación}, \Inout{c}{ciudad}}{}
+	{
+		\State var $rur$: nat $\gets$ Desencolar(Significado($c.RUREnEst$, $c.RURs[u].estacion$)) \ComplejidadDer{log_2 N}
+		\State $c.RURs[rur].esta?$ $\gets$ $false$
+	}
+	{$log_2 N$}{}
+	\end{Algoritmo}
+
+	%\Algoritmo{IENTRAR}{\In {ts}{conj(tags)}, \In {e}{estación}, \Inout {c}{ciudad}}{}{
+		%\State e\_ciudad.cRUR $\gets$ e\_ciudad.cRUR + 1 \ComplejidadDer{1}
+		%\State var sendas $\gets$ EVALUARSENDAS(ts, e\_ciudad.m) \ComplejidadDer{S \cdot R}
+		%\State var nRUR $\gets$ tupla(e\_ciudad.RURs, e, 0, ts, sendas) \ComplejidadDer{1}
+		%\State AGREGARATRAS(e\_ciudad.RURs, nRUR) \ComplejidadDer{1}
+		%\State obtEst = \&(SIGNIFICADO(e.RUREnEst, e)) \ComplejidadDer{|e|}
+		%\State ENCOLAR(obtEst, tupla(e\_ciudad.cRUR, 0)) \ComplejidadDer{log\ N}
+	%}{\Complejidad{|e| + S \cdot R + log\ N}}{
+	%Justificacion.
+	%}
+	%
+	%\newpage
+	%
+	%\Algoritmo{IMOVER}{\In {u}{nat}, \In {e2}{estación}, \Inout {c}{ciudad}}{}{
+		%\State var est $\gets$ OBTENERCOLAEST(c.RUREnEst, c.RURs[u].e) \ComplejidadDer{|e1|}
+		%\State SACARRUR(est, u) \ComplejidadDer{log\ N_{e1}}
+		%\State INFRACCIONO?(u, NROCONEXION(c.RURs[u].e, e2) \ComplejidadDer{|e1| + |e2|}
+		%\State MODIFICARRUR(u) \ComplejidadDer{1}
+		%\State est $\gets$ OBTENERCOLAEST(c.RUREnEst, e2) \ComplejidadDer{|e2|}
+		%\State METERRUR(est, u) \ComplejidadDer{log\ N_{e2}}
+	%}{\Complejidad{|e1| + |e2| + log\ N_{e1} + log\ N_{e2}}}{
+		%$\Complejidad{|e1|} + \Complejidad{|e2|} + \Complejidad{log\ N_{e1}} + 
+		%\Complejidad{log\ N_{e2}} + \Complejidad{|e1| + |e2|} + \Complejidad{1} =$\\
+		%$2 * \Complejidad{|e1| + |e2|} + \Complejidad{log\ N_{e2} + log\ N_{e1}} =$\\
+		%$\Complejidad{|e1| + |e2|} + \Complejidad{log\ N_{e2} + log\ N_{e1}} =$\\
+		%$\Complejidad{|e1| + |e2| + log\ N_{e2} + log\ N_{e1}}$
+	%}
+
+\end{Algoritmos}
