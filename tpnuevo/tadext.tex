@@ -1,0 +1,36 @@
+\section{Tad Extendidos}	
+
+\subsection{Secu($\alpha$)}
+
+\vspace{2em}
+
+\tadOtrasOperaciones
+\tadOperacion{elemDeSecu}{Secu($\alpha$)/s,Nat/n}{RUR}{n $<$ long($s$)}
+
+\vspace{1em}
+
+\tadAxiomas
+\tadAxioma{elemDeSecu(s, n)}{\IF $n =$ 0 THEN prim($s$) ELSE elemDeSecu(fin(s), n-1) FI}
+
+\vspace{2em}
+
+\subsection{Mapa}
+
+\vspace{2em}
+
+\tadObservadores
+\tadOperacion{restricciones}{Mapa/m}{secu(restriccion)}{}
+\tadOperacion{nroConexion}{estacion/e_1, estacion/e_2, Mapa/m}{nat}{{$e_1, e_2$} $\subset$ estaciones(m) $\yluego$ conectadas?($e_1, e_2, m$)}
+
+\vspace{1em}
+
+\tadAxiomas
+\tadAxioma{restricciones(vacio)}{$\langle$~$\rangle$}
+\tadAxioma{restricciones(agregar($e, m$))}{restricciones($m$)}
+\tadAxioma{restricciones(conectar($e_1, e_2, r, m$))}{restricciones($m$) $\circ$ $r$}
+\tadAxioma{nroConexion($e_1, e_2, $conectar($e_3, e_4, m$))}{
+	\IF ($(e_1 = e_3 \wedge e_2 = e_4) \vee (e_1 = e_4 \wedge e_2 = e_3)$) THEN long(restricciones($m$)) - 1 ELSE nroConexion($e_1, e_2, m$) - 1 FI
+}
+\tadAxioma{nroConexion($e_1, e_2, $agregar($e, m$))}{nroConexion($e_1, e_2, m$)}
+
+\vspace{2em}

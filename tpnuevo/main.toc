@@ -1,0 +1,25 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Tad Extendidos}{3}
+\contentsline {subsection}{\numberline {1.1}Secu($\alpha $)}{3}
+\contentsline {subsection}{\numberline {1.2}Mapa}{3}
+\contentsline {section}{\numberline {2}Restricci\'on}{4}
+\contentsline {subsection}{\numberline {2.1}Representacion}{4}
+\contentsline {subsection}{\numberline {2.2}InvRep y Abs}{4}
+\contentsline {subsection}{\numberline {2.3}Algoritmos}{5}
+\contentsline {section}{\numberline {3}Mapa}{8}
+\contentsline {subsection}{\numberline {3.1}Representacion}{9}
+\contentsline {subsection}{\numberline {3.2}InvRep y Abs}{9}
+\contentsline {subsection}{\numberline {3.3}Algoritmos}{10}
+\contentsline {section}{\numberline {4}Ciudad Rob\'otica}{12}
+\contentsline {subsection}{\numberline {4.1}Representacion}{13}
+\contentsline {subsection}{\numberline {4.2}InvRep y Abs}{13}
+\contentsline {subsection}{\numberline {4.3}Algoritmos}{15}
+\contentsline {section}{\numberline {5}Diccionario String($\alpha $)}{18}
+\contentsline {subsection}{\numberline {5.1}Representacion}{18}
+\contentsline {subsection}{\numberline {5.2}InvRep y Abs}{19}
+\contentsline {subsection}{\numberline {5.3}Algoritmos}{19}
+\contentsline {section}{\numberline {6}Cola Prioritaria}{21}
+\contentsline {subsection}{\numberline {6.1}TAD \textsc {ColaPrioritaria}}{21}
+\contentsline {subsection}{\numberline {6.2}Representacion}{22}
+\contentsline {subsection}{\numberline {6.3}InvRep y Abs}{22}
+\contentsline {subsection}{\numberline {6.4}Algoritmos}{23}

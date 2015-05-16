@@ -1,0 +1,227 @@
+\section{Restricción}
+
+\begin{Interfaz}
+  
+  %\textbf{parámetros formales}\hangindent=2\parindent\\
+	%\parbox{1.7cm}{\textbf{géneros}} \\
+  %\parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
+    %\InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{$\alpha$}
+    %{$res \igobs a$}
+    %[$\Theta(copy(a))$]
+    %[función de copia de $\alpha$'s]
+  %}
+
+  \textbf{se explica con}: \tadNombre{Restricción}.
+
+  \textbf{géneros}: \TipoVariable{rest}.
+
+  \Titulo{Operaciones básicas de Restricción}
+
+  \InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{bool}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs$ verifica?($c, r$)}
+  [$\Complejidad{|r|}$]
+  [Verifica que los tags $c$ verifican $r$.]
+
+  \InterfazFuncion{$\langle$~$\rangle$}{\In{t}{tag}}{rest}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs \langle t \rangle$}
+  [$\Complejidad{1}$]
+  [Creo una restricción con $t$.]
+%  [el elemento $a$ agrega por copia. El iterador se invalida si y sólo si se elimina el %elemento siguiente del iterador sin utilizar la función \NombreFuncion{EliminarSiguiente}.]
+
+  \InterfazFuncion{AND}{\In{r_1}{rest}, \In{r_2}{rest}}{rest}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs r_1$ AND $r_2$}
+  [$\Complejidad{1}$]
+  [Creo una restricción AND de $r_1$  y $r_2$.]
+	
+  \InterfazFuncion{OR}{\In{r_1}{rest}, \In{r_2}{rest}}{rest}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs r_1$ OR $r_2$}
+  [$\Complejidad{1}$]
+  [Creo una restricción OR de $r_1$  y $r_2$.]
+	
+  \InterfazFuncion{NOT}{\In{r}{rest}}{rest}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs \neg r$}
+  [$\Complejidad{1}$]
+  [Creo una restricción $\neg r$.]
+	
+\end{Interfaz}
+
+\subsection{Representacion}
+
+\begin{Representacion}
+
+\begin{Estructura}{rest}[e\_rest]
+	\begin{Tupla}[e\_rest]
+		\tupItem{A}{tag}
+		\tupTupItem{P1}{\TipoVariable{puntero}(\TipoVariable{e\_rest})}
+		\tupTupItem{P2}{\TipoVariable{puntero}(\TipoVariable{e\_rest})}
+		\tupItem{T}{tipoRest}
+	\end{Tupla}
+	
+	\begin{Enum}[tipoRest]
+		\enumItem{<>}
+		\enumItem{NOT}
+		\enumItem{AND}
+		\enumItem{OR}
+	\end{Enum}
+\end{Estructura}
+
+\subsection{InvRep y Abs}
+
+\begin{enumerate}
+ \item{Para todo nodo del árbol, si ambos punteros apuntan a 'null', entonces el tipo de restricción es '<>' o 'not'. Si los dos punteros no apuntan a 'null' el tipo de restricción es 'and' o 'or'. No debe ocurrir que uno de los punteros apunte a 'null' y el otro no.}
+\end{enumerate}
+
+\RepFc[e\_rest][e]{cumple?(e)} \hfill1
+
+\vspace{3em}
+
+\tadOperacion{cumple?}{tupla(tag, puntero(rest), puntero(rest), tipoRest)}{bool}{}
+
+\tadAxioma{cumple?(e)}{
+	\IF $\pi_2(e) = NULL \wedge \pi_3(e) = NULL$
+	THEN $\pi_4(e) = <> \vee\ \pi_4(e) = NOT$
+	ELSE
+		{\IF ($\pi_2(e) \neq NULL \wedge \pi_3(e) \neq NULL$) $\wedge$ 
+		($\pi_4(e) = AND \vee \pi_4(e) = OR$)
+		THEN cumple?($*(\pi_2(e))$) $\wedge$ cumple?($*(\pi_3(e))$)
+		ELSE false 
+		FI} 
+	FI}
+
+\vspace{2em}
+
+\Abs[e\_rest]{rest}[e]{r}{
+	  \\ ($\forall$ c:Conj(tag))(vale?(c,e) $\ssi$ verifica?(c,r)}
+	  
+\vspace{2em}
+
+\tadOperacion{vale?}{Conj(tag), tuplaRes}{Bool}{}
+
+\vspace{1em}
+
+tuplaRes es <tag, puntero(tuplaRes), puntero(tuplaRes), tipoRest>
+
+\vspace{1em}
+
+\tadAxioma{vale?(c,e)}{
+      \IF $*(\pi_4(e))$ = <>
+      THEN $*(\pi_1(e))$ $\in$ c
+      ELSE
+	  {\IF $*(\pi_4(e))$ = AND
+	  THEN vale?(c, *$*(\pi_2(e))$) $\wedge$ vale?(c, *$*(\pi_3(e))$)
+	  ELSE vale?(c, *$*(\pi_2(e))$) $\vee$ vale?(c, *$*(\pi_3(e))$)
+	  FI}
+      FI
+}
+	
+	
+\end{Representacion}
+
+\subsection{Algoritmos}
+
+\begin{Algoritmos}
+
+	\begin{Algoritmo}{iVerifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{bool}
+	{
+		\If{$r.T$ $\igobs$ $\langle$$\rangle$} \ComplejidadDer{1}
+			\State $res$ $\gets$ Pertenece?($c$, $r.A$) \ComplejidadDer{$|r|$}
+		\Else
+			\If{$r.T$ $\igobs$ NOT} \ComplejidadDer{1}
+				\State $res$ $\gets$ $\neg$Pertenece?($c$, $r.A$) \ComplejidadDer{$|r|$}
+			\Else
+				\If{$r.T$ $\igobs$ AND} \ComplejidadDer{1}
+					\State $res$ $\gets$ (Verifica?($c, r.P_1$) $\wedge$ Verifica?($c$, $r.P_2$)) \ComplejidadDer{$|r|$}
+				\Else
+					\State $res$ $\gets$ (Verifica?($c$, $r.P_1$) $\vee$ Verifica?($c$, $r.P_2$)) \ComplejidadDer{$|r|$}
+				\EndIf
+			\EndIf
+		\EndIf
+	}
+	{$\Complejidad{|r|}$}
+	{$\Complejidad{1} + max(\Complejidad{|r|}, \Complejidad{1} + max(\Complejidad{|r|}, \Complejidad{1} + max(\Complejidad{|r|}, \Complejidad{|c|})))) = \newline
+	 \Complejidad{1} + max(\Complejidad{|r|}, \Complejidad{1} + max(\Complejidad{|r|}, \Complejidad{1} + \Complejidad{|r|})) = \newline
+	 \Complejidad{1}
+	+ max(\Complejidad{|r|}, \Complejidad{1} + \Complejidad{1} + \Complejidad{|r|}) = \newline
+	 \Complejidad{1} + \Complejidad{1} + \Complejidad{1} + \Complejidad{|r|} = \newline
+	 3 * \Complejidad{1} + \Complejidad{|r|} = \Complejidad{|r|}$}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{i$\langle$~$\rangle$}{\In{t}{tag}}{rest}
+	{
+		\State $res$ $\gets$ tupla($A$: string, $P_1$: puntero(e\_rest)), $P_2$: puntero(e\_rest), $T$: TipoRest) \ComplejidadDer{1}
+		\State $res.P_1$ $\gets$ NULL \ComplejidadDer{1}
+		\State $res.P_2$ $\gets$ NULL \ComplejidadDer{1}
+		\State $res.A$ $\gets$ $t$ \ComplejidadDer{1}
+		\State $res.T$ $\gets$ $\langle$~$\rangle$ \ComplejidadDer{1}
+	}
+	{\Complejidad{1}}
+	{$\sum_{i = 1}^{5} \Complejidad{1} = \newline
+	5 * \Complejidad{1} = \Complejidad{1}$}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iAND}{\In{r_1}{rest}, \In{r_2}{rest}}{rest}
+	{
+		\State $res$ $\gets$ tupla($A$: string, $P_1$: puntero(e\_rest)), $P_2$: puntero(e\_rest), $T$: TipoRest) \ComplejidadDer{1}
+		\State $res.P_1$ $\gets$ $r_1$ \ComplejidadDer{1}
+		\State $res.P_2$ $\gets$ $r_2$ \ComplejidadDer{1}
+		\State $res.A$ $\gets$ Vacía() \ComplejidadDer{1}
+		\State $res.T$ $\gets$ AND \ComplejidadDer{1}
+	}
+	{$\Complejidad{1}$}
+	{$\sum_{i = 1}^{5} \Complejidad{1} = \newline
+			 5 * \Complejidad{1} = \Complejidad{1}$}
+	\end{Algoritmo}
+
+	\begin{Algoritmo}{iOR}{\In{r_1}{rest}, \In{r_2}{rest}}{rest}
+	{
+		\State $res$ $\gets$ tupla($A$: string, $P_1$: puntero(e\_rest)), $P_2$: puntero(e\_rest), $T$: TipoRest) \ComplejidadDer{1}
+		\State $res.P_1$ $\gets$ $r_1$ \ComplejidadDer{1}
+		\State $res.P_2$ $\gets$ $r_2$ \ComplejidadDer{1}
+		\State $res.A$ $\gets$ Vacía() \ComplejidadDer{1}
+		\State $res.T$ $\gets$ OR \ComplejidadDer{1}
+	}
+	{$\Complejidad{1}$}
+	{$\sum_{i = 1}^{5} \Complejidad{1} = \newline
+			 5 * \Complejidad{1} = \Complejidad{1}$}
+	\end{Algoritmo}
+
+	\begin{Algoritmo}{iNOT}{\In{r}{rest}}{rest}
+	{
+		\State $res$ $\gets$ tupla($A$: string, $P_1$: puntero(e\_rest)), $P_2$: puntero(e\_rest), $T$: TipoRest) \ComplejidadDer{1}
+		\If{$r.T$ $\igobs$ $\langle~$$\rangle$} \ComplejidadDer{1}
+			\State $res.P_1$ $\gets$ NULL \ComplejidadDer{1}
+			\State $res.P_2$ $\gets$ NULL \ComplejidadDer{1}
+			\State $res.A$ $\gets$ $r.A$ \ComplejidadDer{1}
+			\State $res.T$ $\gets$ NOT \ComplejidadDer{1}
+		\Else
+			\If{$r.T$ $\igobs$ NOT} \ComplejidadDer{1}
+				\State $res.P_1$ $\gets$ NULL \ComplejidadDer{1}
+				\State $res.P_2$ $\gets$ NULL \ComplejidadDer{1}
+				\State $res.A$ $\gets$ $r.A$ \ComplejidadDer{1}
+				\State $res.T$ $\gets$ $\langle~$$\rangle$ \ComplejidadDer{1}
+			\Else
+				\If{$r.T$ $\igobs$ OR} \ComplejidadDer{1}
+					\State $res$ $\gets$ AND(NOT($*r.P_1$), NOT($*r.P_2$)) \ComplejidadDer{R}
+				\Else
+					\State $res$ $\gets$ OR(NOT($*r.P_1$), NOT($*r.P_2$)) \ComplejidadDer{R}
+				\EndIf
+			\EndIf
+		\EndIf
+	}
+	{$\Complejidad{1}$}
+	{$\Complejidad{1} + \Complejidad{1} + max(\sum_{i = 1}^{4} \Complejidad{1}, \Complejidad{1} + max(\sum_{i = 1}^{4} \Complejidad{1}, \Complejidad{1} + max(\Complejidad{R}, \Complejidad{R})))) = \newline
+	     2 * \Complejidad{1} + max(4 * \Complejidad{1}, \Complejidad{1} + max(4 * \Complejidad{1}, \Complejidad{1} + \Complejidad{R})) = \newline
+			 2 * \Complejidad{1} + max(4 * \Complejidad{1}, \Complejidad{1} + max(4 * \Complejidad{1}, \Complejidad{R})) = \newline
+			 2 * \Complejidad{1} + max(4 * \Complejidad{1}, \Complejidad{1} + \Complejidad{R}) = \newline
+			 2 * \Complejidad{1} + max(4 * \Complejidad{1}, \Complejidad{R}) = \newline
+			 2 * \Complejidad{1} + \Complejidad{R} = \newline
+			 max(2 * \Complejidad{1}, \Complejidad{R}) = \Complejidad{R}
+	$}
+	\end{Algoritmo}
+	
+\end{Algoritmos}
