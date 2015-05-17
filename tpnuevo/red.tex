@@ -1,0 +1,282 @@
+\section{Mapa}
+
+\begin{Interfaz}
+  
+  %\textbf{parámetros formales}\hangindent=2\parindent\\
+  %\parbox{1.7cm}{\textbf{géneros}} \\
+  %\parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
+    %\InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{$\alpha$}
+    %{$res \igobs a$}
+    %[$\Theta(copy(a))$]
+    %[función de copia de $\alpha$'s]
+  %}
+
+  \textbf{se explica con}: \tadNombre{Red, Iterador Unidireccional($\alpha$)}.
+
+  \textbf{géneros}: \TipoVariable{red, itConj(Compu)}.
+
+  \Titulo{Operaciones básicas de Red}
+
+  %\InterfazFuncion{NOMBRE}{INPUTS}{TIPO RES}%
+  %[ACA VA EL PRE (SI LO HAY)]
+  %{ACA VA EL POST}%
+  %[$\Theta(COMPLEJIDAD)$]
+  %[DESCRIPCION]
+
+  \InterfazFuncion{Computadoras}{\In{r}{red}}{itConj(Compu)}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs$ crearIt(computadoras($r$))}
+  [$\Complejidad{1}$]
+  [Devuelve las computadoras de red.]
+	
+  \InterfazFuncion{Conectadas?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
+  [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
+  {$res \igobs$ conectadas?($r, c_1, c_2$)}
+  [$\Complejidad{|c_1| + |c_2|}$]
+  [Devuelve el valor de verdad indicado por la conexión o desconexión de dos computadoras.]
+
+  \InterfazFuncion{InterfazUsada}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{interfaz}
+  [\{$c_1, c_2$\} $\subseteq$ computadoras($r$) $\yluego$ conectadas?($r, c_1, c_2$)]
+  {$res \igobs$ interfazUsada($r, c_1, c_2$)}
+  [$\Complejidad{|c_1| + |c_2|}$]
+  [Devuelve la interfaz que $c_1$ usa para conectarse con $c_2$]
+
+  \InterfazFuncion{IniciarRed}{}{red}
+  %[ACA VA EL PRE (SI LO HAY)]
+  {$res \igobs$ iniciarRed()}
+  [$\Complejidad{1}$]
+  [Crea una red sin computadoras.]
+	
+  \InterfazFuncion{AgregarComputadora}{\Inout{r}{red}, \In{c}{compu}}{}
+  [$r_0 \igobs r$ $\wedge$ $\neg$($c$ $\in$computadoras($r$))]
+  {$r$ $\igobs$ agregarComputadora($r_0, c$)}
+  [$\Complejidad{|c|}$]
+  [Agrega una computadora a la red.]
+
+  \InterfazFuncion{Conectar}{\Inout{r}{red}, \In{c_1}{compu}, \In{i_1}{interfaz}, \In{c_2}{compu}, \In{i_2}{interfaz}}{}
+  [$r_0$ $\igobs$ r $\wedge$ \{$c_1,c_2$\} $\subseteq$ computadoras($r$) $\wedge$ ip($c_1$) $\neq$ ip($c_2$) $\yluego$ $\neg$ conectadas?($r, c_1, c_2$) $\wedge$ $\neg$ usaInterfaz?($r, c_1, i_1$) $\wedge$ $\neg$ usaInterfaz?($r, c_2, i_2$)]
+  {$r$ $\igobs$ conectar($r, c_1, i_1, c_2, i_2$)}
+  [$\Complejidad{|c_1| + |c_2|}$]
+  [Conecta dos computadoras y les añade la interfaz correspondiente.]
+%
+ % \InterfazFuncion{NroConexion}{\In{e_1}{estación}, \In{e_2}{estación}, \In{m}{mapa}}{nat}
+  %[\{$e_1,e_2$\} $\subset$ estaciones($m$) $\yluego$ conectadas?($e_1, e_2, m$)]
+  %{$res \igobs$ nroConexion($e_1$, $e_2$, $m$)}
+  %[$\Complejidad{|e_1| + |e_2|}$]
+  %[Obtiene el Nro. de Senda entre dos estaciones.]
+	
+  %\InterfazFuncion{EvaluarSendas}{\In{c}{conj(tag)}, \In{m}{mapa}}{arreglo\_dimesionable de bool}
+  %[\{e1,e2\} $\in$ estaciones(m) $\yluego$ $res \igobs$ conectadas?(e1, e2, m)]
+  %{$(\forall i$: Nat) (0 $\leq i <$ long(restricciones($m$)) $\impluego$ res[$i$] $\igobs$ verifica?($c$, elemDeSecu(restricciones($m$), $i$)))}
+  %[$\Complejidad{S \cdot R}$]
+  %[Devuelve un arreglo con todas las sendas evaluadas con respecto al conjunto $c$.
+	%NOTA: La $R$ es el costo de evaluar la restriccion mas grande.]
+	
+%	\InterfazFuncion{Restricciones}{\In{m}{mapa}}{arreglo\_dimesionable de restriccion}
+  %[\{e1,e2\} $\in$ estaciones(m) $\yluego$ $res \igobs$ conectadas?(e1, e2, m)]
+ % {$(\forall i$: Nat) (0 $\leq i <$ long(restricciones($m$)) $\impluego$ res[$i$] $\igobs$ elemDeSecu(restricciones($m$), $i$)}
+  %[$\Complejidad{S}$]
+  %[Devuelve un arreglo con todas las restricciones]
+  
+\end{Interfaz}
+
+\subsection{Representaciorepresentacionn}
+
+\begin{Representacion}
+
+%ACA VA LA DESCRIPCION DE LA CACONA DEL MAPA
+
+\bigskip
+\begin{Estructura}{red}[e\_red]
+	\begin{Tupla}[e\_red]
+		\tupTupItem{vecinosEInterfaces}{\TipoVariable{diccString}$($\ignorespaces
+			% NOTA:tupTupItem es un engendro que agregue para este caso, NO USAR EN OTRO LADO, USAR tupItem EN SU LUGAR.
+			\emph{compu}: \TipoVariable{string},
+			\TipoVariable{diccString}$($\ignorespaces
+				\emph{compu}: \TipoVariable{string}, \ignorespaces
+				\emph{interfaz}: \TipoVariable{nat}\ignorespaces
+			$))$} \\
+			\tupTupItem{deOrigenADestino}{\TipoVariable{diccString}$($\ignorespaces
+			\emph{compu}: \TipoVariable{string},
+			\TipoVariable{diccString}$($\ignorespaces
+				\emph{compu}: \TipoVariable{string}, \ignorespaces
+				\emph{secu(compu)}: \TipoVariable{secu(string)}\ignorespaces
+			$))$} \\
+			\tupItem{computadoras}{\TipoVariable{conj(compu)}}
+	\end{Tupla}
+	
+\end{Estructura}
+
+%\begin{Estructura}{mapa}[e\_mapa]
+	%\begin{Tupla}[e\_mapa]
+		%\tupTupItem{unionesDe}{DiccString(\TipoVariable{conj}$($\ignorespaces
+			%% NOTA:tupTupItem es un engendro que agregue para este caso, NO USAR EN OTRO LADO, USAR tupItem EN SU LUGAR.
+			%\TipoVariable{tupla}$($\ignorespaces
+				%\emph{con}: \TipoVariable{estacion},
+				%\emph{res}: \TipoVariable{restricción}\ignorespaces
+			%$)))$}
+		%\tupItem{\\estaciones}{conj$($estacion$)$}
+	%\end{Tupla}
+	%
+%\end{Estructura}
+
+\subsection{InvRep y Abs}
+
+\begin{enumerate}
+	\item{El conjunto de claves de ''uniones'' es igual al conjunto de estaciones ''estaciones''.}
+	\item{''\#sendas'' es igual a la mitad de las horas de ''uniones''.}
+	\item{Todo valor que se obtiene de buscar el significado del significado de cada clave de ''uniones'', es igual el valor hallado tras buscar en ''uniones'' con el sinificado de la clave como clave y la clave como significado de esta nueva clave, y no hay otras hojas ademas de estas dos, con el mismo valor.}
+	\item{Todas las hojas de ''uniones'' son mayores o iguales a cero y menores a ''\#sendas''.}
+	\item{La longitud de ''sendas'' es mayor o igual a ''\#sendas''.}
+\end{enumerate}
+
+\Rep[e\_mapa][m]{
+	\\m.estaciones = claves(m.uniones) $\wedge$ \hfill 1.
+	\\m.\#sendas = \#sendasPorDos(m.estaciones, m.uniones) / 2 $\wedge$ m.\#sendas $\leq$ long(m.sendas) $\yluego$ \hfill 2. 5.
+	\\($\forall$ e1, e2: string)(e1 $\in$ claves(m.uniones) $\yluego$ e2 
+	$\in$ claves(obtener(e1, m.uniones)) $\impluego$\\ 
+	e2 $\in$ claves(m.uniones) $\yluego$ e1 $\in$ claves(obtener(e2, m.uniones)) $\yluego$ 
+	\\ obtener(e2, obtener(e1, m.uniones)) = obtener(e1, obtener(e2, m.uniones)) $\wedge$ \hfill 3. 4.	
+	\\ obtener(e2, obtener(e1, m.uniones)) $<$ m.\#sendas) $\wedge$
+	\\($\forall$ e1, e2, e3, e4: string)((e1 $\in$ claves(m.uniones) $\yluego$
+	e2 $\in$ claves(obtener(e1, m.uniones)) $\wedge$\\ 
+	e3 $\in$ claves(m.uniones) $\yluego$ e4 $\in$ claves(obtener(e3, m.uniones))) $\impluego$
+	\\ (obtener(e2, obtener(e1, m.uniones)) $=$ obtener(e4, obtener(e3, m.uniones)) $\ssi$
+	\\ (e1 = e3 $\wedge$ e2 = e4) $\vee$ (e1 = e4 $\wedge$ e2 = e3)))) \hfill 3.
+}
+
+\vspace{2em}
+	
+\tadOperacion{\#sendasPorDos}{conj($\alpha$)\ c, dicc($\alpha$, dicc($\alpha$, $\beta$))\ d}
+														{nat}{c $\subset$ claves(d)}
+
+\vspace{1em}
+
+\tadAxioma{\#sendasPorDos(c, d)}{\IF $\emptyset$?(c) THEN 0
+												ELSE \#claves(obtener(dameUno(c),d)) $+$ \#sendasPorDos(sinUno(c), d)
+												FI}
+
+\vspace{2em}
+
+\Abs[e\_mapa]{mapa}[m]{p}{
+	\\ m.estaciones = estaciones(p) $\yluego$
+	\\ ($\forall$ e1, e2: string)((e1 $\in$ estaciones(p) $\wedge$ e2 $\in$ estaciones(p)) $\impluego$
+	\\ (conectadas?(e1, e2, p) $\ssi$
+	\\   e1 $\in$ claves(m.uniones) $\wedge$ e2 $\in$ claves(obtener(e2, m.uniones)))) $\yluego$
+	\\ ($\forall$ e1, e2: string)((e1 $\in$ estaciones(p) $\wedge$ e2 $\in$ estaciones(p)) $\yluego$
+	\\ conectadas?(e1, e2, p) $\impluego$ 
+	\\ (restriccion(e1, e2, p) = m.sendas[obtener(e2, obtener(e1, m.uniones))] $\wedge$
+	   nroConexion(e1, e2, m) = obtener(e2, obtener(e1, m.uniones))) $\wedge$
+	   long(restricciones(p)) = m.\#sendas $\yluego$
+		 ($\forall$ n:nat) (n < m.\#sendas $\impluego$ m.sendas[n] = ElemDeSecu(restricciones(p), n)))
+}
+
+\end{Representacion}
+
+\subsection{Algoritmos}
+
+\begin{Algoritmos}
+	
+	%Algoritmos / Inputs / TSalida / Codigo / Complejidad Final / Justificacion
+	\begin{Algoritmo}{iComputadoras}{\In{r}{red}}{itConj(Compu)}
+	{
+		\State $res$ $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
+	} 
+	{$\Complejidad{1}$}{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iConectadas?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
+	{
+		\State $res$ $\gets$ Definido?(Significado($r.vecinosEInterfaces$, $c_1$), $c_2$) \ComplejidadDer{|c_1| + |c_2|}
+	}
+	{$\Complejidad{|c_1| + |c_2|}$}{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iInterfazUsada}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{interfaz}
+	{
+		\State $res$ $\gets$ Significado(Significado($r.vecinosEInterfaces$, $c_1$), $c_2$)\ComplejidadDer{|c_1| + |c_2|}
+	}
+	{$\Complejidad{|c_1| + |c_2|}$}{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iIniciarRed}{}{red}
+	{
+		\State $res$ $\gets$ tupla($vecinosEInterfaces$: Vacío(), $deOrigenADestino$: Vacío(), $computadoras$: Vacío()) \ComplejidadDer{1 + 1 + 1}
+	}
+	{$\Complejidad{1}$}
+	{$\Complejidad{1}  + \Complejidad{1} + \Complejidad{1} = \newline
+	  3 * \Complejidad{1} = \Complejidad{1}$}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iAgregarComputadora}{\Inout{r}{red}, \In{c}{compu}}{}
+	{
+		\State Agregar($r.computadoras$, $c$) \ComplejidadDer{1}
+		\State Definir($r.vecinosEInterfaces$, $c$, Vacío()) \ComplejidadDer{|c|}
+		\State Definir($r.deOrigenADestino$, $c$, Vacío()) \ComplejidadDer{|c|}
+	}
+	{$\Complejidad{|c|}$}
+	{$\Complejidad{1} + \Complejidad{|c|} + \Complejidad{|c|} = \newline
+	2 * \Complejidad{|c|} = \Complejidad{|c|}$}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iConectar}{\Inout{r}{red}, \In{c_1}{compu}, \In{i_1}{interfaz}, \In{c_2}{compu}, \In{i_2}{interfaz}}{}
+	{
+		%\State Definir(Significado($m.uniones$, $e1$), $e2$, $m.\#senda$) \ComplejidadDer{|e_1| + |e_2|}
+		%\State Definir(Significado($m.uniones$, $e2$), $e1$, $m.\#senda$) \ComplejidadDer{|e_2| + |e_1|}
+		%\State Agregar($m.sendas$, $m.\#sendas$, $r$) \ComplejidadDer{1}
+		%\State $m.\#sendas++$ \ComplejidadDer{1}
+	
+		\State Definir(Significado($r.vecinosEInterfaces$, $c_1$), $c_2$, $i_1$) \ComplejidadDer{|c_1| + |c_2| + 1}
+		\State Definir(Significado($r.vecinosEInterfaces$, $c_2$), $c_1$, $i_2$) \ComplejidadDer{|c_2| + |c_1| + 1} 
+		\State 
+	}
+	{$\Complejidad{|e_1| + |e_2|}$}
+	{$\Complejidad{|e_1| + |e_2|} + \Complejidad{|e_1| + |e_2|} + \Complejidad{1} + \Complejidad{1} = \newline
+	  2 * \Complejidad{1} + 2 * \Complejidad{|e_1| + |e_2|} = \newline
+		2 * \Complejidad{|e_1| + |e_2|} = \Complejidad{|e_1| + |e_2|}$}
+	\end{Algoritmo}
+	
+	%\begin{Algoritmo}{iNroConexion}{\In{e1}{estación}, \In{e2}{estación}, \In{m}{mapa}}{nat}
+	%{
+	%	\State $res$ $\gets$ Significado(Significado($m.uniones$, $e1$), $e2$) \ComplejidadDer{|e_1| + |e_2|}
+	%}
+	%{$\Complejidad{|e_1| + |e_2|}$}{}
+	%\end{Algoritmo}
+	%
+	%\begin{Algoritmo}{iEvaluarSendas}{\In{c}{conj(tag)}, \In{m}{mapa}}{arreglo\_dimesionable de bool}
+	%{
+	%	\State $res$ $\gets$ arreglo[$m.\#sendas$] de bool \ComplejidadDer{1}
+	%	\State var $i$: nat $\gets$ 0 \ComplejidadDer{1}
+	%	\While{$i < m.\#sendas$} \ComplejidadDer{1}
+	%		\State $res[i]$ $\gets$ Verifica?($c$, $m.sendas[i]$) \ComplejidadDer{R}
+	%		\State $i++$ \ComplejidadDer{1}
+	%	\EndWhile
+	%}
+	%{$\Complejidad{S * R}$}
+	%{$\Complejidad{1} + \Complejidad{1} + \sum_{i = 1}^{S} (\Complejidad{R} + \Complejidad{1}) = \newline
+	%	2 * \Complejidad{1} + S * (\Complejidad{R} + \Complejidad{1}) = \newline
+	%	2 * \Complejidad{1} + S * \Complejidad{1} + S * \Complejidad{R} = \newline
+	%	\Complejidad{S} + S * \Complejidad{R} = \newline
+	%	\Complejidad{S + S * R} = \Complejidad{S * R}
+	%$\newline
+	%$S$ es |m.sendas| y $R$ es la longitud de la restriccion mas grande}
+	%\end{Algoritmo}
+	
+	%\begin{Algoritmo}{iRestricciones}{\In{m}{mapa}}{arreglo\_dimesionable de restriccion}
+	%{
+	%	\State $res$ $\gets$ arreglo\_dimensionable[$m.\#sendas$] \ComplejidadDer{1}
+	%	\State var $i$: nat $\gets$ 0 \ComplejidadDer{1}
+	%	\While{$i < m.\#sendas$} \ComplejidadDer{1}
+	%		\State $res[i]$ $\gets$ $m.sendas[i]$ \ComplejidadDer{1}
+	%		\State $i++$ \ComplejidadDer{1}
+	%	\EndWhile
+	%}
+	%{$\Complejidad{S}$}
+	%{$\Complejidad{1} + \Complejidad{1} + \sum_{i = 1}^{S} (\Complejidad{1} + \Complejidad{1}) = \newline
+	%	2 * \Complejidad{1} + S * 2 *\Complejidad{1} = \newline
+	%	2 * \Complejidad{1} + 2 * \Complejidad{S} = \newline
+	%	2 * \Complejidad{S} = \Complejidad{S}
+	% $}
+	%\end{Algoritmo}
+	%
+\end{Algoritmos}
