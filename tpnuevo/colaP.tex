@@ -9,11 +9,11 @@
 \tadGeneros{colaP(Paquete)}
 
 \tadExporta{colaP(Paquete), generadores, observadores}
-\tadUsa{\tadNombre{Bool}, \tadNombre{Nat}, \tadNombre{Paquete}, \tadNombre{Secu($\alpha$)}}
+\tadUsa{\tadNombre{Bool}, \tadNombre{Nat}, \tadNombre{Paquete}, \tadNombre{Secu($\alpha$)}, \tadNombre{Compu}}
 
 \tadObservadores
 \tadAlinearFunciones{desencolar}{Paquete/p, colaP(Paquete)/cp}
-\tadOperacion{vacía?}{colaP(Paquete)}{bool}{}
+\tadOperacion{vacía?}{colaP(Paquete)}{Bool}{}
 \tadOperacion{próximo}{colaP(Paquete)/cp}{Paquete}{$\neg$vacía?(cp)}
 \tadOperacion{desencolar}{colaP(Paquete)/cp}{colaP(Paquete)}{$\neg$vacía?(cp)}
 \tadOperacion{suCamino}{Paquete/p, colaP(Paquete)/cp}{Secu(Compu)}{está?(p, cp)}
