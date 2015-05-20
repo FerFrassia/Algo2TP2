@@ -3,53 +3,45 @@
 \subsection{TAD \tadNombre{ColaPrioritaria}}
 
 \begin{tad}{\tadNombre{ColaPrioritaria}}
-\tadIgualdadObservacional{c1}{c2}{colaPr}{%$vacia?(c1) $\igobs$ vacia?(c2) $\yluego$\\
-																					($\forall$a, b: nat)(esta?(a, b, c1) $\ssi$ 
-																					esta?(a, b, c2))% $\yluego$\\
-																					%($\forall$a, b: nat)(esta?(a, b, c1) $\impluego$\\ 
-																					%borrar(a, b, c1) $\igobs$ borrar(a, b, c2)) $\wedge$\\
-																					%($\neg$vacia?(c1) $\impluego$ 
-																					%(proximo(c1) $\igobs$ proximo(c2)))
-																					}
+\tadIgualdadObservacional{c1}{c2}{colaP(Paquete)}{vacía?($c_1$) $\igobs$ vacía?($c_2$) $\yluego$ \\
+($\neg$vacía($c_1$) $\impluego$ \\ (próximo($c_1$) $\igobs$ próximo($c_2$) $\wedge$ \\ suCamino(próximo($c_1$)) $\igobs$ suCamino(próximo($c_2$)) $\wedge$ \\ desencolar($c_1$) $\igobs$ desencolar($c_2$)))}
 
-\tadGeneros{coláPr}
+\tadGeneros{colaP(Paquete)}
 
-\tadExporta{coláPr, generadores, observadores}
-\tadUsa{\tadNombre{Bool}, \tadNombre{Nat}}
+\tadExporta{colaP(Paquete), generadores, observadores}
+\tadUsa{\tadNombre{Bool}, \tadNombre{Nat}, \tadNombre{Paquete}, \tadNombre{Secu($\alpha$)}}
 
 \tadObservadores
-\tadAlinearFunciones{proximo}{nat/a, nat/b, colaPr/c}
-\tadOperacion{vacia?}{colaPr/c}{bool}{}
-\tadOperacion{esta?}{nat/a, nat/b, colaPr/c}{bool}{}
-\tadOperacion{borrar}{nat/a, nat/b, colaPr/c}{colaPr}{esta?(a, b, c)}
-\tadOperacion{proximo}{colaPr/c}{tupla(nat, nat)}{$\neg$vacia?(c)}
+\tadAlinearFunciones{desencolar}{Paquete/p, colaP(Paquete)/cp}
+\tadOperacion{vacía?}{colaP(Paquete)}{bool}{}
+\tadOperacion{próximo}{colaP(Paquete)/cp}{Paquete}{$\neg$vacía?(cp)}
+\tadOperacion{desencolar}{colaP(Paquete)/cp}{colaP(Paquete)}{$\neg$vacía?(cp)}
+\tadOperacion{suCamino}{Paquete/p, colaP(Paquete)/cp}{Secu(Compu)}{está?(p, cp)}
+
 
 \tadGeneradores
-\tadAlinearFunciones{encolar}{nat/a, nat/b, colaPr/c}
-\tadOperacion{vacia}{}{colaPr}{}
-\tadOperacion{encolar}{nat/a, nat/b, colaPr/c}{colaPr}{$\neg$esta?(a, b, c)}
+\tadAlinearFunciones{encolar}{Paquete/p, Compu/c, colaP(Paquete)/cp}
+\tadOperacion{vacía}{}{colaP(Paquete)}{}
+\tadOperacion{encolar}{Paquete/p, colaP(Paquete)/cp}{colaP(Paquete)}{$\neg$está?(p, cp)}
+\tadOperacion{agCompu}{Paquete/p, Compu/c, colaP(Paquete)/cp}{colaP(Paquete)}{está?(p, cp)}
 
 \tadOtrasOperaciones
-\tadAlinearFunciones{desencolar}{colaPr/c}
-\tadOperacion{desencolar}{colaPr/c}{colaPr}{$\neg$vacia?(c)}
+\tadOperacion{está?}{Paquete/p, colaP(Paquete)/cp}{Bool}{}
 
-\tadAxiomas[\paratodo{colaPr}{c} \paratodo{nat}{a, b, a1, b1}]
-\tadAlinearAxiomas{borrar(a1, b1, encolar(a, b, c))}
+\tadAxiomas[\paratodo{Paquete}{p, p1, p2}, \paratodo{Compu}{c}, \paratodo{colaP(Paquete)}{cp}]
+\tadAlinearAxiomas{suCamino(p1, agCompu(p2, c, cp))}
 
-\tadAxioma{vacia?(vacia)}{true}
-\tadAxioma{vacia?(encolar(a, b , c))}{false}
-\tadAxioma{esta?(a1, b1, vacia)}{false}
-\tadAxioma{esta?(a1, b1, encolar(a, b, c))}{\IF a = a1 $\wedge$ b = b1 THEN
-																						true ELSE esta?(a1, b1, c) FI}
-\tadAxioma{borrar(a1, b1, encolar(a, b, c))}{\IF a = a1 $\wedge$ b = b1 THEN
-																						 c ELSE encolar(a, b, borrar(a1, b1, c)) FI}
-\tadAxioma{proximo(encolar(a, b, c))}{\IF vacia?(c) $\oluego$ $\pi_1$(proximo(c)) $\leq$ a
-																			THEN {\IF $\pi_1$(proximo(c)) $=$ a THEN
-																						{\IF $\pi_1$(proximo(c)) $<$ b THEN
-																						$\langle$a, b$\rangle$ ELSE proximo(C) FI}
-																						ELSE $\langle$a, b$\rangle$ FI}
-																						ELSE proximo(C) FI}
-\tadAxioma{desencolar(c)}{borrar(proximo(c))}
+\tadAxioma{vacía?(vacía)}{true}
+\tadAxioma{vacía?(encolar(p, cp))}{false}
+\tadAxioma{vacía?(agCompu(p, c, cp))}{false}
+\tadAxioma{próximo(encolar(p, cp))}{\IF vacía?(cp) THEN p ELSE {\IF prioridad(p) $\textless$ prioridad(próximo(cp)) THEN p ELSE próximo(cp) FI} FI}
+\tadAxioma{próximo(agCompu(p, c, cp))}{próximo(cp)}
+\tadAxioma{desencolar(encolar(p, cp))}{\IF vacía?(cp) THEN cp ELSE {\IF prioridad(p) $\textless$ prioridad(próximo(cp)) THEN cp ELSE encolar(p, desencolar(cp)) FI} FI}
+\tadAxioma{desencolar(agCompu(p, c, cp))}{desencolar(cp)}
+\tadAxioma{suCamino($p_1$, encolar($p_2$, cp))}{\IF $p_1$ = $p_2$ THEN $\textless$$\textgreater$ ELSE suCamino(p, cp) FI}
+\tadAxioma{suCamino($p_1$, agCompu($p_2$, c, cp))}{\IF $p_1$ = $p_2$ THEN suCamino(p, cp) $\circ$ c ELSE suCamino(p, cp) FI}
+\tadAxioma{está(p, cp)}{\IF vacía?(cp) THEN false ELSE {\IF p = próximo(cp) THEN true ELSE está?(p, desencolar(cp)) FI} FI}
+
 
 \end{tad}
 
@@ -57,41 +49,41 @@
   
   \textbf{se explica con}: \tadNombre{ColaPrioritaria}.
 
-  \textbf{géneros}: \TipoVariable{colaP}.
+  \textbf{géneros}: \TipoVariable{colaP(Paquete)}.
 
   \Titulo{Operaciones básicas de Restricción}
 
-  \InterfazFuncion{Vacío}{}{colaP}
+  \InterfazFuncion{Vacío}{}{colaP(Paquete)}
   %[ACA VA EL PRE (SI LO HUBIERA)]
   {$res \igobs$ vacio()}
   [$\Complejidad{1}$]
   [Crea una nueva cola.]
 	
-  \InterfazFuncion{Agregar}{\Inout{c}{colaP}, \In{a}{nat}, \In{b}{nat}}{}
+  \InterfazFuncion{Agregar}{\Inout{c}{colaP(Paquete)}, \In{a}{nat}, \In{b}{nat}}{}
   [$c_t \igobs c$]
   {$c \igobs$ encolar(a, b, c\_t)}
   [$\Complejidad{log_2\ N}$ con $N$ siendo la cantidad total de elementos en la cola.]
   [Agrega dos nuevos numeros a la cola.]
 	
-	\InterfazFuncion{Vacia?}{\In{c}{colaP}}{bool}
+	\InterfazFuncion{Vacia?}{\In{c}{colaP(Paquete)}}{bool}
   %[ACA VA EL PRE (SI LO HUBIERA)]
   {$res \igobs$ vacia?()}
   [$\Complejidad{1}$]
   [Revisa si la cola contiene por lo menos algun elemento.]
 	
-	\InterfazFuncion{Desencolar}{\Inout{c}{colaP}}{tupla(a: nat, b: nat)}
+	\InterfazFuncion{Desencolar}{\Inout{c}{colaP(Paquete)}}{tupla(a: nat, b: nat)}
   [$c \igobs c_t \wedge \neg$(vacia?(c))]
   {$res \igobs$ proximo(c\_t) $\wedge\ c \igobs$ desencolar(c\_t)}
   [$\Complejidad{log_2\ N}$ con $N$ siendo la cantidad total de elementos en la cola.]
   [Devuelve la tupla de numeros mas grande y la quita de la cola.]
 	
-	\InterfazFuncion{Tamaño}{\Inout{c}{colaP}}{nat}
+	\InterfazFuncion{Tamaño}{\Inout{c}{colaP(Paquete)}}{nat}
   %[$c \igobs c_t \wedge \neg$(vacia?(c))]
   {$res \igobs$ tamaño(c)}
   [$\Complejidad{1}$]
   [Devuelve la cantidad total de elementos.]
 	
-	\InterfazFuncion{Eliminar}{\Inout{c}{colaP}, \In{a}{nat}, \In{b}{nat}}{}
+	\InterfazFuncion{Eliminar}{\Inout{c}{colaP(Paquete)}, \In{a}{nat}, \In{b}{nat}}{}
   [c = c0]
   {$c \igobs$ borrar(c0, k)}
   [$\Complejidad{log_2\ N}$ con $N$ siendo la cantidad total de elementos en la cola.]
@@ -105,7 +97,7 @@
 
 Para representar la cola elegimos hacerla sobre un arbol AVL.
 
-\begin{Estructura}{colaP}[e\_cola]
+\begin{Estructura}{colaP(Paquete)}[e\_cola]
 	\begin{Tupla}[e\_cola]
 		\tupTupItem{raiz}{\TipoVariable{puntero}(nodo)}
 		\tupItem{tam}{nat}
@@ -153,7 +145,7 @@ Para representar la cola elegimos hacerla sobre un arbol AVL.
 
 \vspace{1em}
 
-\Abs[colaP]{colaPr}[c]{p}{mismosProximos(c, p)}
+\Abs[colaP(Paquete)]{colaP(Paquete)}[c]{p}{mismosProximos(c, p)}
 
 \vspace{1em}
 
@@ -180,11 +172,11 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 
 \begin{Algoritmos}
 
-\Algoritmo{IVacio}{}{colaP}{
-	\State var res: colaP $\gets$ tupla(NULL, 0) \ComplejidadDer{1}
+\Algoritmo{IVacio}{}{colaP(Paquete)}{
+	\State var res: colaP(Paquete) $\gets$ tupla(NULL, 0) \ComplejidadDer{1}
 	}{\Complejidad{1}}{}
 
-\Algoritmo{IAgregar}{\Inout{c}{colaP}, \In{a}{nat}, \In{b}{nat}}{}{
+\Algoritmo{IAgregar}{\Inout{c}{colaP(Paquete)}, \In{a}{nat}, \In{b}{nat}}{}{
 	\If{c.raiz $==$ NULL}
 		\State c.raiz $\gets$ \&(tupla(a, b, NULL, NULL, NULL, 1)) \ComplejidadDer{1}
 		\State c.tam $\gets$ 1 \ComplejidadDer{1}
@@ -273,7 +265,7 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 	\Complejidad{\lfloor log_2\ N\rfloor} = \Complejidad{log_2\ N}$
 	}
 	
-\Algoritmo{IEliminar}{\Inout{c}{colaP}, \In{a}{nat}, \In{b}{nat}}{}{
+\Algoritmo{IEliminar}{\Inout{c}{colaP(Paquete)}, \In{a}{nat}, \In{b}{nat}}{}{
 	\State var pNodo: puntero(nodo) $\gets$ c.raiz \ComplejidadDer{1}
 	\State ver seguir: bool $\gets$ true \ComplejidadDer{1}
 	\While{pNodo $!=$ NULL $\wedge$ seguir $==$ true} \ComplejidadDer{\lfloor log_2\ N\rfloor + 1}
@@ -422,7 +414,7 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 	
 	}
 
-\Algoritmo{IRotar}{\Inout{c}{colaP}, \In{p1}{puntero(nodo)}, \In{p2}{puntero(nodo)}, \In{p3}{puntero(nodo)}}{puntero(nodo)}{
+\Algoritmo{IRotar}{\Inout{c}{colaP(Paquete)}, \In{p1}{puntero(nodo)}, \In{p2}{puntero(nodo)}, \In{p3}{puntero(nodo)}}{puntero(nodo)}{
 	\State var t1: puntero(nodo) $\gets$ NULL \ComplejidadDer{1}
 	\State var t2: puntero(nodo) $\gets$ NULL \ComplejidadDer{1}
 	\State var t2: puntero(nodo) $\gets$ NULL v
@@ -474,7 +466,7 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 	Como todas las ejecuciones del codigo se efectuan en tiempo constante, podemos ver de manera trivial que la complejidad es $\Complejidad{1}$.
 	}
 	
-%\Algoritmo{IEliminar}{\Inout{c}{colaP}, \In{a}{nat}, \In{b}{nat}}{}{
+%\Algoritmo{IEliminar}{\Inout{c}{colaP(Paquete)}, \In{a}{nat}, \In{b}{nat}}{}{
 	%\State var pNodo: puntero(nodo) $\gets$ c.raiz
 	%\State ver seguir: bool $\gets$ true
 	%\While{pNodo $!=$ NULL $\wedge$ seguir $==$ true}
@@ -692,12 +684,12 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 	2 * \Complejidad{1} = \Complejidad{1}$
 	}
 	
-\Algoritmo{IVacia?}{\In{c}{colaP}}{bool}{
+\Algoritmo{IVacia?}{\In{c}{colaP(Paquete)}}{bool}{
 	\State res $\gets$ c.raiz $!=$ NULL \ComplejidadDer{1}
 	}{\Complejidad{1}}{
 	}
 
-\Algoritmo{IDesencolar}{\Inout{c}{colaP}}{tupla(a: nat, b: nat)}{
+\Algoritmo{IDesencolar}{\Inout{c}{colaP(Paquete)}}{tupla(a: nat, b: nat)}{
 	\State var pNodo: puntero(nodo) $\gets$ c.raiz \ComplejidadDer{1}
 	\While{pNodo.der != NULL} \ComplejidadDer{log_2\ N}
 		\State pNodo $\gets$ pNodo.der \ComplejidadDer{1}
@@ -708,7 +700,7 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 	$2 * \Complejidad{log_2\ N} = \Complejidad{log_2\ N}$
 	}
 
-\Algoritmo{ITamaño}{\Inout{c}{colaP}}{nat}{
+\Algoritmo{ITamaño}{\Inout{c}{colaP(Paquete)}}{nat}{
 	\State res $\gets$ c.tam \ComplejidadDer{1}
 	}{\Complejidad{1}}{
 	}
