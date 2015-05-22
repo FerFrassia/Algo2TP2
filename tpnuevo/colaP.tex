@@ -38,8 +38,8 @@
 \tadAxioma{próximo(agCompu(p, c, cp))}{próximo(cp)}
 \tadAxioma{desencolar(encolar(p, cp))}{\IF vacía?(cp) THEN cp ELSE {\IF prioridad(p) $\textless$ prioridad(próximo(cp)) THEN cp ELSE encolar(p, desencolar(cp)) FI} FI}
 \tadAxioma{desencolar(agCompu(p, c, cp))}{desencolar(cp)}
-\tadAxioma{suCamino($p_1$, encolar($p_2$, cp))}{\IF $p_1$ = $p_2$ THEN $\textless$$\textgreater$ ELSE suCamino(p, cp) FI}
-\tadAxioma{suCamino($p_1$, agCompu($p_2$, c, cp))}{\IF $p_1$ = $p_2$ THEN suCamino(p, cp) $\circ$ c ELSE suCamino(p, cp) FI}
+\tadAxioma{suCamino($p_1$, encolar($p_2$, cp))}{\IF $p_1$ = $p_2$ THEN $\textless$$\textgreater$ ELSE suCamino(p1, cp) FI}
+\tadAxioma{suCamino($p_1$, agCompu($p_2$, c, cp))}{\IF $p_1$ = $p_2$ THEN suCamino(p1, cp) $\circ$ c ELSE suCamino(p1, cp) FI}
 \tadAxioma{está(p, cp)}{\IF vacía?(cp) THEN false ELSE {\IF p = próximo(cp) THEN true ELSE está?(p, desencolar(cp)) FI} FI}
 
 
@@ -51,43 +51,31 @@
 
   \textbf{géneros}: \TipoVariable{colaP(Paquete)}.
 
-  \Titulo{Operaciones básicas de Restricción}
+  \Titulo{Operaciones básicas de COLA PRIORITARIA}
 
-  \InterfazFuncion{Vacío}{}{colaP(Paquete)}
+  \InterfazFuncion{Vacía}{}{colaP(Paquete)}
   %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ vacio()}
+  {$res \igobs$ vacia()}
   [$\Complejidad{1}$]
   [Crea una nueva cola.]
 	
-  \InterfazFuncion{Agregar}{\Inout{c}{colaP(Paquete)}, \In{a}{nat}, \In{b}{nat}}{}
-  [$c_t \igobs c$]
-  {$c \igobs$ encolar(a, b, c\_t)}
-  [$\Complejidad{log_2\ N}$ con $N$ siendo la cantidad total de elementos en la cola.]
-  [Agrega dos nuevos numeros a la cola.]
+  \InterfazFuncion{Agregar}{\Inout{c}{colaP(Paquete)}, \In{p}{Paquete}}{}
+  [$c \igobs c_0$]
+  {$c \igobs$ encolar(p, c_0)}
+  [$\Complejidad{log_2\ n}$ con $n$ siendo la cantidad total de elementos en la cola.]
+  [Agrega un paquete a la cola.]
 	
 	\InterfazFuncion{Vacia?}{\In{c}{colaP(Paquete)}}{bool}
   %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ vacia?()}
+  {$res \igobs$ vacia?(c)}
   [$\Complejidad{1}$]
   [Revisa si la cola contiene por lo menos algun elemento.]
 	
-	\InterfazFuncion{Desencolar}{\Inout{c}{colaP(Paquete)}}{tupla(a: nat, b: nat)}
-  [$c \igobs c_t \wedge \neg$(vacia?(c))]
-  {$res \igobs$ proximo(c\_t) $\wedge\ c \igobs$ desencolar(c\_t)}
-  [$\Complejidad{log_2\ N}$ con $N$ siendo la cantidad total de elementos en la cola.]
-  [Devuelve la tupla de numeros mas grande y la quita de la cola.]
-	
-	\InterfazFuncion{Tamaño}{\Inout{c}{colaP(Paquete)}}{nat}
-  %[$c \igobs c_t \wedge \neg$(vacia?(c))]
-  {$res \igobs$ tamaño(c)}
+	\InterfazFuncion{Desencolar}{\Inout{c}{colaP(Paquete)}}{Paquete}
+  [$c \igobs c_0 \wedge \neg$(vacia?(c))]
+  {$res \igobs$ proximo(c_0) $\wedge\ c \igobs$ desencolar(c_0)}
   [$\Complejidad{1}$]
-  [Devuelve la cantidad total de elementos.]
-	
-	\InterfazFuncion{Eliminar}{\Inout{c}{colaP(Paquete)}, \In{a}{nat}, \In{b}{nat}}{}
-  [c = c0]
-  {$c \igobs$ borrar(c0, k)}
-  [$\Complejidad{log_2\ N}$ con $N$ siendo la cantidad total de elementos en la cola.]
-  [Si a y b se encuentran en la cola, los quita de la misma.]
+  [Devuelve el paquete mas prioritario.]
 	
 \end{Interfaz}
 
@@ -95,27 +83,28 @@
 
 \begin{Representacion}
 
-Para representar la cola elegimos hacerla sobre un arbol AVL.
+Para representar la cola elegimos hacerla sobre un Heap. Sabiendo que los paquetes no están acotados, este Heap estará representado con nodos y punteros.
 
-\begin{Estructura}{colaP(Paquete)}[e\_cola]
-	\begin{Tupla}[e\_cola]
+\begin{Estructura}{colaP(Paquete)}[estr]
+	\begin{Tupla}[estr]
 		\tupTupItem{raiz}{\TipoVariable{puntero}(nodo)}
 		\tupItem{tam}{nat}
 		%\tupItem{cVac}{bool}
 	\end{Tupla}
 	
 	\begin{Tupla}[nodo]
-		\tupItem{pri}{nat}
-		\tupItem{seg}{nat}
+		\tupItem{paquete}{Paquete}
+		\tupItem{caminoReocrrido}{Secu(Compu)}
 		\tupTupItem{padre}{\TipoVariable{puntero}(nodo)}
-		\tupTupItem{izq}{\TipoVariable{puntero}(nodo)}
-		\tupTupItem{der}{\TipoVariable{puntero}(nodo)}
-		\tupItem{\\alt}{nat}
+		\tupTupItem{hijoIzq}{\TipoVariable{puntero}(nodo)}
+		\tupTupItem{hijoDer}{\TipoVariable{puntero}(nodo)}
 	\end{Tupla}
 	
 \end{Estructura}
 
 \subsection{InvRep y Abs}
+
+\textbf{CAMBIAR EL INVARIANTE POR EL DE HEAP!!}
 
 \textbf{InvRep en lenguaje coloquial:}
 
@@ -140,6 +129,8 @@ Para representar la cola elegimos hacerla sobre un arbol AVL.
 \end{enumerate}
 
 \vspace{2em}
+
+\textbf{CAMBIAR ABS POR LA DE HEAP!!}
 
 \textbf{Abs:}
 
@@ -172,15 +163,29 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 
 \begin{Algoritmos}
 
-\Algoritmo{IVacio}{}{colaP(Paquete)}{
+\Algoritmo{iVacia}{}{colaP(Paquete)}{
 	\State var res: colaP(Paquete) $\gets$ tupla(NULL, 0) \ComplejidadDer{1}
 	}{\Complejidad{1}}{}
 
-\Algoritmo{IAgregar}{\Inout{c}{colaP(Paquete)}, \In{a}{nat}, \In{b}{nat}}{}{
+\Algoritmo{IAgregar}{\Inout{c}{colaP(Paquete)}, \In{p}{Paquete}}{}{
 	\If{c.raiz $==$ NULL}
-		\State c.raiz $\gets$ \&(tupla(a, b, NULL, NULL, NULL, 1)) \ComplejidadDer{1}
+		\State c.raiz $\gets$ \&(tupla(p, <>, NULL, NULL, NULL)) \ComplejidadDer{1}
 		\State c.tam $\gets$ 1 \ComplejidadDer{1}
 	\Else
+		\State var iTam: int $\gets$ c.tam \ComplejidadDer{1}
+		\State var iAux: int $\gets$ c.tam \ComplejidadDer{1}
+		\State var aCoordenadas: arreglo[$\lfloor log_2(c.tam)\rfloor$] de bool 	\ComplejidadDer{\lfloor log_2(c.tam)\rfloor}
+		\While{iTam $>$ 0} \ComplejidadDer{1}
+			\If{iAux\%2 $==$ 0} \ComplejidadDer{1}
+				\State aCoordenadas[iTam-1] $=$ false \ComplejidadDer{1}
+			\Else
+				\State aCoordenadas[iTam-1] $=$ true \ComplejidadDer{1}
+			\EndIf
+			\State iAux $\gets$ $\lfloor iAux/2 \rfloor$ \ComplejidadDer{1}
+			\State iTam $\gets$ iTam - 1
+		\EndWhile
+	
+	
 		\State var seguir: bool $\gets$ true \ComplejidadDer{1}
 		\State var pNodo: puntero(nodo) $\gets$ c.raiz \ComplejidadDer{1}
 		\State var camino: arreglo[$\lfloor log_2(c.tam)\rfloor + 1$] de puntero(nodo) 

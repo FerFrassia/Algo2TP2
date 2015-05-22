@@ -17,5 +17,5 @@
 \contentsline {section}{\numberline {5}Cola Prioritaria}{16}
 \contentsline {subsection}{\numberline {5.1}TAD \textsc {ColaPrioritaria}}{16}
 \contentsline {subsection}{\numberline {5.2}Representacion}{17}
-\contentsline {subsection}{\numberline {5.3}InvRep y Abs}{18}
-\contentsline {subsection}{\numberline {5.4}Algoritmos}{19}
+\contentsline {subsection}{\numberline {5.3}InvRep y Abs}{17}
+\contentsline {subsection}{\numberline {5.4}Algoritmos}{18}
