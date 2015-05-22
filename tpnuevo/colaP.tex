@@ -53,32 +53,32 @@
 
   \Titulo{Operaciones básicas de COLA PRIORITARIA}
 
-  \InterfazFuncion{Vacia?}{\In{cp}{colaP(Paquete)}}{Bool}
+  \InterfazFuncion{Vacía?}{\In{cp}{colaP(Paquete)}}{Bool}
   %[ACA VA EL PRE SI LO HUBIERA]
-  {$res$ $\igobs$ vacia?(c)}
+  {$res$ $\igobs$ vacía?($cp$)}
   [$\Complejidad{1}$]
-  [verifica si una lista esta vacia]
+  [verifica si una lista esta vacía]
 
-  \InterfazFuncion{proximo}{\In{cp}{colaP(Paquete)}}{Paquete}
-  [$\neg$vacia?(cp)]
-  {$res$ $\igobs$ proximo(cp)}
+  \InterfazFuncion{próximo}{\In{cp}{colaP(Paquete)}}{Paquete}
+  [$\neg$vacía?($cp$)]
+  {$res$ $\igobs$ próximo(cp)}
   [$\Complejidad{log_2\ k}$]
 
   \InterfazFuncion{Desencolar}{\In{cp}{colaP(Paquete)}}{colaP(Paquete)}
-  [$c \igobs c_0 \wedge \neg$(vacia?(c))]
-  {$res \igobs$ proximo(c_0) $\wedge\ c \igobs$ desencolar(c_0)}
+  [$c$ $\igobs$ $c_0$ $\wedge$ $\neg$(vacia?(c))]
+  {$res$ $\igobs$ próximo($c_0$) $\wedge$ $c$ $\igobs$ desencolar($c_0$)}
   [$\Complejidad{1}$]
   [Devuelve el paquete mas prioritario.]
 
   \InterfazFuncion{Vacía}{}{colaP(Paquete)}
   %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ vacia()}
+  {$res$ $\igobs$ vacía()}
   [$\Complejidad{1}$]
   [Crea una nueva cola.]
 	
   \InterfazFuncion{Agregar}{\Inout{c}{colaP(Paquete)}, \In{p}{Paquete}}{}
-  [$c \igobs c_0$]
-  {$c \igobs$ encolar(p, c_0)}
+  [$c$ $\igobs$ $c_0$]
+  {$c$ $\igobs$ encolar($p$, $c_0$)}
   [$\Complejidad{log_2\ n}$ con $n$ siendo la cantidad total de elementos en la cola.]
   [Agrega un paquete a la cola.]
 	
