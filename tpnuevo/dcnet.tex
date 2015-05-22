@@ -96,9 +96,9 @@
 %DESCRIPCION
 
 \bigskip
-\begin{Estructura}{ciudad}[e\_cr]
-	\begin{Tupla}[e\_cr]
-		\tupItem{mapa}{mapa}
+\begin{Estructura}{dcnet}[e\_dc]
+	\begin{Tupla}[e\_dc]
+		\tupItem{red}{red}
 		\tupTupItem{RUREnEst}{\TipoVariable{diccString}$($\ignorespaces
 			\emph{estacion}: \TipoVariable{string}, 
 			\emph{robs}: \TipoVariable{colaP}$($\ignorespaces
@@ -228,16 +228,16 @@
 
 \begin{Algoritmos}
 
-	\begin{Algoritmo}{iPróximoRUR}{\In {c}{ciudad}}{rur}
+	\begin{Algoritmo}{iRed}{\In {d}{dcnet}}{red}
 	{
-		\State $res$ $\gets$ ($c.\#RURHistoricos$) \ComplejidadDer{1}
+		\State $res$ $\gets$ ($d.red$) \ComplejidadDer{1}
 	}
 	{\Complejidad{1}}
 	{}
 	
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iMapa}{\In {c}{ciudad}}{mapa}
+	\begin{Algoritmo}{iCaminoRecorrido}{\In {d}{dcnet},\In {p}{paquete}}{secu(compu)}
 	{
 		\State $res$ $\gets$ $c.mapa$ \ComplejidadDer{1}
 	}
