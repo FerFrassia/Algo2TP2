@@ -38,8 +38,8 @@
 \tadAxioma{próximo(agCompu(p, c, cp))}{próximo(cp)}
 \tadAxioma{desencolar(encolar(p, cp))}{\IF vacía?(cp) THEN cp ELSE {\IF prioridad(p) $\textless$ prioridad(próximo(cp)) THEN cp ELSE encolar(p, desencolar(cp)) FI} FI}
 \tadAxioma{desencolar(agCompu(p, c, cp))}{desencolar(cp)}
-\tadAxioma{suCamino($p_1$, encolar($p_2$, cp))}{\IF $p_1$ = $p_2$ THEN $\textless$$\textgreater$ ELSE suCamino(p1, cp) FI}
-\tadAxioma{suCamino($p_1$, agCompu($p_2$, c, cp))}{\IF $p_1$ = $p_2$ THEN suCamino(p1, cp) $\circ$ c ELSE suCamino(p1, cp) FI}
+\tadAxioma{suCamino($p_1$, encolar($p_2$, cp))}{\IF $p_1$ = $p_2$ THEN $\textless$$\textgreater$ ELSE suCamino($p_1$, cp) FI}
+\tadAxioma{suCamino($p_1$, agCompu($p_2$, c, cp))}{\IF $p_1$ = $p_2$ THEN suCamino($p_1$, cp) $\circ$ c ELSE suCamino($p_1$, cp) FI}
 \tadAxioma{está(p, cp)}{\IF vacía?(cp) THEN false ELSE {\IF p = próximo(cp) THEN true ELSE está?(p, desencolar(cp)) FI} FI}
 
 
@@ -53,6 +53,23 @@
 
   \Titulo{Operaciones básicas de COLA PRIORITARIA}
 
+  \InterfazFuncion{Vacia?}{\In{cp}{colaP(Paquete)}}{Bool}
+  %[ACA VA EL PRE SI LO HUBIERA]
+  {$res$ $\igobs$ vacia?(c)}
+  [$\Complejidad{1}$]
+  [verifica si una lista esta vacia]
+
+  \InterfazFuncion{proximo}{\In{cp}{colaP(Paquete)}}{Paquete}
+  [$\neg$vacia?(cp)]
+  {$res$ $\igobs$ proximo(cp)}
+  [$\Complejidad{log_2\ k}$]
+
+  \InterfazFuncion{Desencolar}{\In{cp}{colaP(Paquete)}}{colaP(Paquete)}
+  [$c \igobs c_0 \wedge \neg$(vacia?(c))]
+  {$res \igobs$ proximo(c_0) $\wedge\ c \igobs$ desencolar(c_0)}
+  [$\Complejidad{1}$]
+  [Devuelve el paquete mas prioritario.]
+
   \InterfazFuncion{Vacía}{}{colaP(Paquete)}
   %[ACA VA EL PRE (SI LO HUBIERA)]
   {$res \igobs$ vacia()}
@@ -65,17 +82,7 @@
   [$\Complejidad{log_2\ n}$ con $n$ siendo la cantidad total de elementos en la cola.]
   [Agrega un paquete a la cola.]
 	
-	\InterfazFuncion{Vacia?}{\In{c}{colaP(Paquete)}}{bool}
-  %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ vacia?(c)}
-  [$\Complejidad{1}$]
-  [Revisa si la cola contiene por lo menos algun elemento.]
-	
-	\InterfazFuncion{Desencolar}{\Inout{c}{colaP(Paquete)}}{Paquete}
-  [$c \igobs c_0 \wedge \neg$(vacia?(c))]
-  {$res \igobs$ proximo(c_0) $\wedge\ c \igobs$ desencolar(c_0)}
-  [$\Complejidad{1}$]
-  [Devuelve el paquete mas prioritario.]
+  
 	
 \end{Interfaz}
 
