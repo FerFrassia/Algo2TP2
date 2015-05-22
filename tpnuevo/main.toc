@@ -6,7 +6,7 @@
 \contentsline {subsection}{\numberline {2.1}Representaciorepresentacionn}{4}
 \contentsline {subsection}{\numberline {2.2}InvRep y Abs}{5}
 \contentsline {subsection}{\numberline {2.3}Algoritmos}{5}
-\contentsline {section}{\numberline {3}Ciudad Rob\'otica}{7}
+\contentsline {section}{\numberline {3}DCNet}{7}
 \contentsline {subsection}{\numberline {3.1}Representacion}{8}
 \contentsline {subsection}{\numberline {3.2}InvRep y Abs}{8}
 \contentsline {subsection}{\numberline {3.3}Algoritmos}{10}

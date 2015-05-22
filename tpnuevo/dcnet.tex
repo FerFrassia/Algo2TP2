@@ -1,4 +1,4 @@
-\section{Ciudad Robótica}
+\section{DCNet}
 
 \begin{Interfaz}
   
@@ -11,71 +11,54 @@
     %[función de copia de $\alpha$'s]
   %}
 
-  \textbf{se explica con}: \tadNombre{Ciudad Robótica, Iterador Unidireccional($\alpha$)}.
+  \textbf{se explica con}: \tadNombre{DCNet, Iterador Unidireccional($\alpha$)}.
 
-  \textbf{géneros}: \TipoVariable{ciudad, itRURs}.
+  \textbf{géneros}: \TipoVariable{dcnet}.
 
-  \Titulo{Operaciones básicas de Ciudad Robótica}
+  \Titulo{Operaciones básicas de DCNet}
 	
-  \InterfazFuncion{PróximoRUR}{\In {c}{ciudad}}{rur}
-  %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ próximoRUR($c$)}
-  [\Complejidad{1}]
-  [Devuelve el PróximoRUR de una ciudad, esto es, de añadirse un robot se le asignaría este RUR.]
-  
-  \InterfazFuncion{Mapa}{\In {c}{ciudad}}{mapa}
-  %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ mapa($c$)}
-  [\Complejidad{1}]
-  [Devuelve el mapa de la ciudad.]
-  
-  \InterfazFuncion{Robots}{\In {c}{ciudad}}{itRURs}
-  %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ crearIt(robots($c$))}
-  [\Complejidad{1}]
-  [Devuelve un iterador de los robots de la ciudad.]
-  
-  \InterfazFuncion{Estación}{\In {u}{rur}, \In {c}{ciudad}}{estacion}
-  [$u$ $\in$ robots($c$)]
-  {$res \igobs$ estación($u,c$)}
-  [\Complejidad{1}]
-  [Devuelve la estación en la cual está el robot.]
-  
-  \InterfazFuncion{Tags}{\In {u}{rur}, \In {c}{ciudad}}{conj(tags)}
-  [$u$ $\in$ robots($c$)]
-  {$res \igobs$ tags($u,c$)}
-  [\Complejidad{1}]
-  [Devuelve los tags del robot.]
-  
-  \InterfazFuncion{$\#$Infracciones}{\In {u}{rur}, \In {c}{ciudad}}{nat}
-  [$u$ $\in$ robots($c$)]
-  {$res \igobs$ $\#$infracciones($u,c$)}
-  [\Complejidad{1}]
-  [Devuelve la cantidad de infracciones cometidas por el robot.]
 
-  \InterfazFuncion{Crear}{\In {m}{mapa}}{ciudad}
+  \InterfazFuncion{Red}{\In {d}{dcnet}}{red}
   %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ crear($m$)}
-  [\Complejidad{Cardinal(Estaciones(m)) * |e_m|}]
-  [Crea una ciudad con un mapa y sin robots.]
+  {$res \igobs$ red($d$)}
+  [\Complejidad{1}]
+  [Devuelve la red del dcnet.]
   
-  \InterfazFuncion{Entrar}{\In {ts}{conj(tags)}, \In {e}{estación}, \Inout {c}{ciudad}}{}
-  [$c_0 \equiv c$ $\wedge$ e $\in$ estaciones($c_0$)]
-  {$c$ $\igobs$ entrar($ts, e, c_0$)}
-  [\Complejidad{log_2 N + |e| + S * R}]
-  [Añade un robot a la ciudad, le asigna el próximoRUR y sus infracciones son nulas.]
+  \InterfazFuncion{CaminoRecorrido}{\In {d}{dcnet}, \In{p}{paquete} }{secu(compu)}
+  [$p$ $\in$ paqueteEnTransito?($d,p$)]
+  {$res \igobs$ caminoRecorrido($d,p$))}
+  [\Complejidad{n*log_2 (K)}]
+  [Devuelve una secuencia con las computadoras por las que paso el paquete.]
   
-  \InterfazFuncion{Mover}{\In {u}{rur}, \In {e}{estación}, \Inout {c}{ciudad}}{}
-  [($c_0 \equiv c$ $\wedge$ $u$ $\in$ robots($c_0$) $\wedge$ $e$ $\in$ estaciones($c_0$)) $\yluego$ conectadas?(estación($u$, $c_0$), $e$ mapa($c_0$))]
-  {$c$ $\igobs$ mover($u, e, c_0$)}
-  [\Complejidad{|e| + |e_0| + log_2 N_e + log_2 N_{e0}}]
-  [Mueve un robot desde donde está a la estación indicada.]
+  \InterfazFuncion{cantidadEnviados}{\In {d}{dcnet}, \In {c}{compu}}{nat}
+  [$c$ $\in$ computadoras(red($d$))]
+  {$res \igobs$ cantidadEnviados($d,c$)}
+  [\Complejidad{1}]
+  [Devuelve la cantidad de paquetes que fueron enviados desde la computadora.]
   
-  \InterfazFuncion{Inspección}{\In {e}{estación}, \Inout{c}{ciudad}}{}
-  [$c_0 \equiv c$ $\wedge$ $e$ $\in$ estaciones($c_0$)]
-  {$c$ $\igobs$ inspeccion($e, c_0$)}
-  [\Complejidad{log_2 N}]
-  [Realiza la inspección de la estación indicada, remueve el robot con mayor cantidad de infracciones.]
+  \InterfazFuncion{enEspera}{\In {d}{dcnet}, \In {c}{compu}}{conj(paquete)}
+  [$c$ $\in$ computadoras(red($d$))]
+  {$res \igobs$ enEspera($d,c$)}
+  [\Complejidad{1}]
+  [Devuelve los paquetes que se encuentran en ese momento en la computadora.]
+  
+  \InterfazFuncion{IniciarDCNet}{\In {r}{red}}{dcnet}
+  %[ACA VA EL PRE (SI LO HUBIERA)]
+  {$res \igobs$ iniciarDCNet($r$)}
+  [\Complejidad{1}]
+  [Inicia un dcnet con la red y sin paquetes.]
+
+  \InterfazFuncion{CrearPaquete}{\In {p}{paquete}, \Inout {d}{dcnet}}{}
+  [$d_0 \equiv d$ $\wedge$ $\neg$ (($\exists$ $p_1$: paquete)(paqueteEnTransito($s,p_1$) $\wedge$ id($p_1$) $=$ id($p$)) $\wedge$ origen($p$) $\in$ computadoras(red($d$))$\yluego$ destino($p$) $\in$ computadoras(red($d$))$\yluego$ hayCamino?(red($d$,origen($p$),destino($p$))  ]
+  {$res \igobs$ iniciarDCNet($r$)}
+  [\Complejidad{}]
+  [Agrega el paquete al dcnet.]
+  
+  \InterfazFuncion{AvanzarSegundo}{\Inout {d}{dcnet)}}{}
+  [$d_0 \equiv d$ ]
+  {$d$ $\igobs$ avanzarSegundo($c_0$)}
+  [\Complejidad{}]
+  [El paquete de mayor prioridad de cada computadora avanza a su proxima computadora siendo esta la del camino mas corto.]
 	
 	\Titulo{Operaciones del iterador}
   
