@@ -16,4 +16,5 @@
 \contentsline {subsection}{\numberline {4.3}Algoritmos}{14}
 \contentsline {section}{\numberline {5}DiccRapido}{16}
 \contentsline {subsection}{\numberline {5.1}Representacion}{16}
-\contentsline {subsection}{\numberline {5.2}Algoritmos}{16}
+\contentsline {subsection}{\numberline {5.2}InvRep y Abs}{17}
+\contentsline {subsection}{\numberline {5.3}Algoritmos}{17}

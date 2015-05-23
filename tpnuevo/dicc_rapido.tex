@@ -50,11 +50,69 @@
 
 \begin{Representacion}
 
+Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la cantidad de claves no está acotada, este AVL estará representado con nodos y punteros. Cabe destacar, que las claves del diccionario deben contener una relación de orden.
+
+\begin{Estructura}{diccRapido}[estr]
+	\begin{Tupla}[estr]
+		\tupTupItem{raiz}{\TipoVariable{puntero}(nodo)}
+		\tupItem{tam}{nat}
+		%\tupItem{cVac}{bool}
+	\end{Tupla}
+	
+	\begin{Tupla}[nodo]
+		\tupItem{clave}{clave}
+		\tupItem{significado}{significado}
+		\tupTupItem{padre}{\TipoVariable{puntero}(nodo)}
+		\tupTupItem{izq}{\TipoVariable{puntero}(nodo)}
+		\tupTupItem{der}{\TipoVariable{puntero}(nodo)}
+		\tupTupItem{alt}{\TipoVariable{nat}}
+	\end{Tupla}
+	
+\end{Estructura}
+
+\subsection{InvRep y Abs}
+
 \end{Representacion}
 
 \subsection{Algoritmos}
 
 \begin{Algoritmos}
+
+\Algoritmo{IDef?}{\In{c}{clave}, \In{d}{diccRapido}}{bool}{
+	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
+	\While{*(pNodo) != NULL} \ComplejidadDer{log_2\ n}
+		\If{*(pNodo).clave == c} \ComplejidadDer{1}
+			\State $res$ $\gets$ true \ComplejidadDer{1}
+			\State return $res$ \ComplejidadDer{1}
+		\Else
+			\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
+				\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
+			\Else
+				\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
+			\EndIf	
+		\EndIf		
+	\EndWhile
+	\State $res$ $\gets$ false \ComplejidadDer{1}
+	}{\Complejidad{log_2\ n}}{
+}
+
+\Algoritmo{IObtener}{\In{c}{clave}, \In{d}{diccRapido}}{significado}{
+	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
+	\While{*(pNodo).clave != c} \ComplejidadDer{log_2\ n}
+		\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
+			\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
+		\Else
+			\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
+		\EndIf			
+	\EndWhile
+	\State $res$ $\gets$ *(pNodo).significado \ComplejidadDer{1}
+	}{\Complejidad{log_2\ n}}{
+}
+	
+\Algoritmo{IVacío}{}{diccRapido}{
+	\State var $res$: diccRapido $\gets$ tupla(NULL, 0) \ComplejidadDer{1}
+}{\Complejidad{1}}{
+}	
 
 \end{Algoritmos}
 
