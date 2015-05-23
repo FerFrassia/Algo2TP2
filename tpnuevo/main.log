@@ -1,15 +1,16 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.12.22)  22 MAY 2015 21:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.28)  23 MAY 2015 01:51
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
 **main.tex
 (./main.tex
 LaTeX2e <2014/05/01>
-Babel <3.9l> and hyphenation patterns for 79 languages loaded.
+Babel <3.9k> and hyphenation patterns for 78 languages loaded.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -27,7 +28,7 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/keyval.sty
-Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+Package: keyval 2014/05/08 v1.15 key=value parser (DPC)
 \KV@toks@=\toks14
 )
 (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ifpdf.sty
@@ -70,13 +71,13 @@ File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 ))
 (/usr/local/texlive/2014/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2014/09/25 3.9l The Babel package
+Package: babel 2014/03/24 3.9k The Babel package
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/babel-spanish/spanish.ldf
 Language: spanish.ldf 2014/04/24 v5.0n Spanish support from the babel system
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/babel/babel.def
-File: babel.def 2014/09/25 3.9l Babel common definitions
+File: babel.def 2014/03/24 3.9k Babel common definitions
 \babel@savecnt=\count90
 \U@D=\dimen111
 )
@@ -116,42 +117,41 @@ Package etexcmds Info: Could not find \expanded.
 )))
 (/usr/local/texlive/2014/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 (/usr/local/texlive/2014/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2014/11/25 v5471 L3 programming layer (loader) 
+Package: expl3 2014/05/20 v4814 L3 programming layer (loader) 
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/l3kernel/expl3-code.tex
-Package: expl3 2014/11/25 v5471 L3 programming layer (code) 
-L3 Module: l3bootstrap 2014/08/23 v5354 L3 Bootstrap code
+Package: expl3 2014/05/20 v4814 L3 programming layer (code) 
+L3 Module: l3bootstrap 2014/05/16 v4782 L3 Bootstrap code
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/etex-pkg/etex.sty
 Package: etex 1998/03/26 v2.0 eTeX basic definition package (PEB)
 \et@xins=\count92
 )
-L3 Module: l3names 2014/08/22 v5343 L3 Namespace for primitives
-L3 Module: l3basics 2014/08/24 v5364 L3 Basic definitions
-L3 Module: l3expan 2014/08/22 v5349 L3 Argument expansion
-L3 Module: l3tl 2014/11/19 v5460 L3 Token lists
-L3 Module: l3str 2014/08/24 v5368 L3 Strings
-L3 Module: l3seq 2014/08/23 v5354 L3 Sequences and stacks
-L3 Module: l3int 2014/09/14 v5421 L3 Integers
+L3 Module: l3names 2014/05/04 v4728 L3 Namespace for primitives
+L3 Module: l3basics 2014/05/04 v4728 L3 Basic definitions
+L3 Module: l3expan 2014/04/30 v4712 L3 Argument expansion
+L3 Module: l3tl 2014/05/04 v4728 L3 Token lists
+L3 Module: l3seq 2014/04/30 v4712 L3 Sequences and stacks
+L3 Module: l3int 2014/05/16 v4776 L3 Integers
 \c_max_int=\count93
 \l_tmpa_int=\count94
 \l_tmpb_int=\count95
 \g_tmpa_int=\count96
 \g_tmpb_int=\count97
-L3 Module: l3quark 2014/08/23 v5354 L3 Quarks
-L3 Module: l3prg 2014/08/23 v5354 L3 Control structures
+L3 Module: l3quark 2014/05/04 v4728 L3 Quarks
+L3 Module: l3prg 2014/05/04 v4728 L3 Control structures
 \g__prg_map_int=\count98
-L3 Module: l3clist 2014/08/23 v5354 L3 Comma separated lists
-L3 Module: l3token 2014/09/15 v5422 L3 Experimental token manipulation
-L3 Module: l3prop 2014/08/23 v5354 L3 Property lists
-L3 Module: l3msg 2014/08/24 v5358 L3 Messages
-L3 Module: l3file 2014/08/24 v5369 L3 File and I/O operations
+L3 Module: l3clist 2014/05/04 v4728 L3 Comma separated lists
+L3 Module: l3token 2014/05/04 v4728 L3 Experimental token manipulation
+L3 Module: l3prop 2014/04/30 v4712 L3 Property lists
+L3 Module: l3msg 2014/05/04 v4728 L3 Messages
+L3 Module: l3file 2014/05/05 v4737 L3 File and I/O operations
 \l_iow_line_count_int=\count99
 \l__iow_target_count_int=\count100
 \l__iow_current_line_int=\count101
 \l__iow_current_word_int=\count102
 \l__iow_current_indentation_int=\count103
-L3 Module: l3skip 2014/08/23 v5354 L3 Dimensions and skips
+L3 Module: l3skip 2014/05/05 v4738 L3 Dimensions and skips
 \c_zero_dim=\dimen112
 \c_max_dim=\dimen113
 \l_tmpa_dim=\dimen114
@@ -170,10 +170,10 @@ L3 Module: l3skip 2014/08/23 v5354 L3 Dimensions and skips
 \l_tmpb_muskip=\muskip13
 \g_tmpa_muskip=\muskip14
 \g_tmpb_muskip=\muskip15
-L3 Module: l3keys 2014/08/23 v5354 L3 Key-value interfaces
+L3 Module: l3keys 2014/05/08 v4753 L3 Key-value interfaces
 \g__keyval_level_int=\count104
 \l_keys_choice_int=\count105
-L3 Module: l3fp 2014/08/22 v5336 L3 Floating points
+L3 Module: l3fp 2014/04/30 v4712 L3 Floating points
 \c__fp_leading_shift_int=\count106
 \c__fp_middle_shift_int=\count107
 \c__fp_trailing_shift_int=\count108
@@ -183,13 +183,13 @@ L3 Module: l3fp 2014/08/22 v5336 L3 Floating points
 \c__fp_Bigg_leading_shift_int=\count112
 \c__fp_Bigg_middle_shift_int=\count113
 \c__fp_Bigg_trailing_shift_int=\count114
-L3 Module: l3box 2014/08/23 v5354 L3 Experimental boxes
+L3 Module: l3box 2014/05/04 v4728 L3 Experimental boxes
 \c_empty_box=\box26
 \l_tmpa_box=\box27
 \l_tmpb_box=\box28
 \g_tmpa_box=\box29
 \g_tmpb_box=\box30
-L3 Module: l3coffins 2014/08/23 v5354 L3 Coffin code layer
+L3 Module: l3coffins 2014/05/04 v4728 L3 Coffin code layer
 \l__coffin_internal_box=\box31
 \l__coffin_internal_dim=\dimen118
 \l__coffin_offset_x_dim=\dimen119
@@ -209,8 +209,11 @@ L3 Module: l3coffins 2014/08/23 v5354 L3 Coffin code layer
 \l__coffin_display_offset_dim=\dimen125
 \l__coffin_display_x_dim=\dimen126
 \l__coffin_display_y_dim=\dimen127
-L3 Module: l3color 2014/08/23 v5354 L3 Experimental color support
-L3 Module: l3candidates 2014/11/23 v5466 L3 Experimental additions to l3kernel
+L3 Module: l3color 2014/04/30 v4712 L3 Experimental color support
+L3 Module: l3luatex 2014/04/30 v4712 L3 Experimental LuaTeX-specific functions
+\g__cctab_allocate_int=\count115
+\g__cctab_stack_int=\count116
+L3 Module: l3candidates 2014/05/04 v4734 L3 Experimental additions to l3kernel
 \l__box_top_dim=\dimen128
 \l__box_bottom_dim=\dimen129
 \l__box_left_dim=\dimen130
@@ -227,24 +230,17 @@ L3 Module: l3candidates 2014/11/23 v5466 L3 Experimental additions to l3kernel
 \l__coffin_top_corner_dim=\dimen140
 \l__coffin_scaled_total_height_dim=\dimen141
 \l__coffin_scaled_width_dim=\dimen142
-)
-(/usr/local/texlive/2014/texmf-dist/tex/latex/l3kernel/l3unicode-data.def
-File: l3unicode-data.def 2014/11/23 v5465 L3 Unicode data
-)
-(/usr/local/texlive/2014/texmf-dist/tex/latex/l3kernel/l3pdfmode.def
-File: l3pdfmode.def 2014/11/23 v5466 L3 Experimental driver: PDF mode
-\l__driver_color_stack_int=\count115
 ))
-Package: xparse 2014/11/25 v5471 L3 Experimental document command parser
-\l__xparse_current_arg_int=\count116
-\l__xparse_m_args_int=\count117
-\l__xparse_mandatory_args_int=\count118
-\l__xparse_processor_int=\count119
-\l__xparse_v_nesting_int=\count120
+Package: xparse 2014/05/05 v4740 L3 Experimental document command parser
+\l__xparse_current_arg_int=\count117
+\l__xparse_m_args_int=\count118
+\l__xparse_mandatory_args_int=\count119
+\l__xparse_processor_int=\count120
+\l__xparse_v_nesting_int=\count121
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2011/01/03 v2.1 e-TeX tools for LaTeX
-\etb@tempcnta=\count121
+\etb@tempcnta=\count122
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/zref-abspage.sty
 Package: zref-abspage 2012/04/04 v2.24 Module abspage for zref (HO)
@@ -273,14 +269,14 @@ Package zref Info: New property: page on input line 761.
 (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/atbegshi.sty
 Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
 )
-\c@abspage=\count122
+\c@abspage=\count123
 Package zref Info: New property: abspage on input line 62.
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/needspace/needspace.sty
 Package: needspace 2010/09/12 v1.3d reserve vertical space
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
-Package: color 2014/10/28 v1.1a Standard LaTeX Color (DPC)
+Package: color 2014/04/23 v1.1a Standard LaTeX Color (DPC)
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
@@ -289,10 +285,10 @@ Package color Info: Driver file: pdftex.def on input line 137.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-\Gread@gobject=\count123
+\Gread@gobject=\count124
 ))
 \mdf@templength=\skip49
-\c@mdf@globalstyle@cnt=\count124
+\c@mdf@globalstyle@cnt=\count125
 \mdf@skipabove@length=\skip50
 \mdf@skipbelow@length=\skip51
 \mdf@leftmargin@length=\skip52
@@ -355,10 +351,10 @@ Package: pgfrcs 2013/12/20 v3.0.0 (rcs-revision 1.28)
 Package: pgf 2013/12/18 v3.0.0 (rcs-revision 1.14)
 (/usr/local/texlive/2014/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
 (/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+Package: graphicx 2014/04/25 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
@@ -392,10 +388,10 @@ ode.tex
 \pgf@yc=\dimen154
 \w@pgf@writea=\write3
 \r@pgf@reada=\read1
-\c@pgf@counta=\count125
-\c@pgf@countb=\count126
-\c@pgf@countc=\count127
-\c@pgf@countd=\count128
+\c@pgf@counta=\count126
+\c@pgf@countb=\count127
+\c@pgf@countc=\count128
+\c@pgf@countd=\count129
 \t@pgf@toka=\toks23
 \t@pgf@tokb=\toks24
 \t@pgf@tokc=\toks25
@@ -416,8 +412,8 @@ File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
 code.tex
 File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
-\pgfsyssoftpath@smallbuffer@items=\count129
-\pgfsyssoftpath@bigbuffer@items=\count130
+\pgfsyssoftpath@smallbuffer@items=\count130
+\pgfsyssoftpath@bigbuffer@items=\count131
 )
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
 code.tex
@@ -447,7 +443,7 @@ Package: pgfcore 2010/04/11 v3.0.0 (rcs-revision 1.7)
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen155
-\pgfmath@count=\count131
+\pgfmath@count=\count132
 \pgfmath@box=\box42
 \pgfmath@toks=\toks26
 \pgfmath@stack@operand=\toks27
@@ -472,7 +468,7 @@ code.tex)
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
 erarithmetics.code.tex)))
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count132
+\c@pgfmathroundto@lastzeros=\count133
 ))
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
 de.tex
@@ -510,7 +506,7 @@ File: pgfcorescopes.code.tex 2013/10/09  (rcs-revision 1.44)
 \pgfpic=\box43
 \pgf@hbox=\box44
 \pgf@layerbox@main=\box45
-\pgf@picture@serial@count=\count133
+\pgf@picture@serial@count=\count134
 )
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
 ate.code.tex
@@ -545,7 +541,7 @@ File: pgfcorearrows.code.tex 2013/11/07  (rcs-revision 1.40)
 e.tex
 File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
 \pgf@max=\dimen179
-\pgf@sys@shading@range@num=\count134
+\pgf@sys@shading@range@num=\count135
 )
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
 e.tex
@@ -608,7 +604,7 @@ Package: tikz 2013/12/13 v3.0.0 (rcs-revision 1.142)
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
 dlers.code.tex
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.0 (rcs-revision 1.20)
-\pgf@plot@mark@count=\count135
+\pgf@plot@mark@count=\count136
 \pgfplotmarksize=\dimen184
 )
 \tikz@lastx=\dimen185
@@ -621,19 +617,19 @@ File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.0 (rcs-revision 1.20)
 \tikz@figbox@bg=\box49
 \tikz@tempbox=\box50
 \tikz@tempbox@bg=\box51
-\tikztreelevel=\count136
-\tikznumberofchildren=\count137
-\tikznumberofcurrentchild=\count138
-\tikz@fig@count=\count139
+\tikztreelevel=\count137
+\tikznumberofchildren=\count138
+\tikznumberofcurrentchild=\count139
+\tikz@fig@count=\count140
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
 e.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
-\pgfmatrixcurrentrow=\count140
-\pgfmatrixcurrentcolumn=\count141
-\pgf@matrix@numberofcolumns=\count142
+\pgfmatrixcurrentrow=\count141
+\pgfmatrixcurrentcolumn=\count142
+\pgf@matrix@numberofcolumns=\count143
 )
-\tikz@expandcount=\count143
+\tikz@expandcount=\count144
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarytopaths.code.tex
@@ -674,7 +670,7 @@ File: md-frame-1.mdf 2013/07/01\ 1.9b: md-frame-1
 \mdf@horizontalspaceofbox=\skip113
 \mdfsubtitleheight=\skip114
 \mdfsubsubtitleheight=\skip115
-\c@mdfcountframes=\count144
+\c@mdfcountframes=\count145
 
 ****** mdframed patching \endmdf@trivlist
 
@@ -683,17 +679,19 @@ File: md-frame-1.mdf 2013/07/01\ 1.9b: md-frame-1
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \newmdtheoremenv with sig. 'O{} m o m o ' on line 601.
+. Defining document command \newmdtheoremenv with arg. spec. 'O{} m o m o ' on
+. line 601.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \mdtheorem with sig. ' O{} m o m o ' on line 701.
+. Defining document command \mdtheorem with arg. spec. ' O{} m o m o ' on line
+. 701.
 .................................................
-\mdf@envdepth=\count145
-\c@mdf@env@i=\count146
-\c@mdf@env@ii=\count147
-\c@mdf@zref@counter=\count148
+\mdf@envdepth=\count146
+\c@mdf@env@i=\count147
+\c@mdf@env@ii=\count148
+\c@mdf@zref@counter=\count149
 Package zref Info: New property: mdf@pagevalue on input line 895.
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/fontenc.sty
@@ -704,28 +702,26 @@ File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 ))
 (/usr/local/texlive/2014/texmf-dist/tex/latex/tools/xspace.sty
-Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/xargs/xargs.sty
 Package: xargs 2008/03/22 v1.1  extended macro definitions  (mpg)
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/xkeyval/xkeyval.sty
-Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+Package: xkeyval 2014/05/09 v2.6d package option processing (HA)
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/xkeyval/xkeyval.tex
-(/usr/local/texlive/2014/texmf-dist/tex/generic/xkeyval/xkvutils.tex
 \XKV@toks=\toks31
 \XKV@tempa@toks=\toks32
-)
-\XKV@depth=\count149
-File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+\XKV@depth=\count150
+File: xkeyval.tex 2014/05/09 v2.6d key=value parser (HA)
 ))
-\xargs@max=\count150
+\xargs@max=\count151
 \xargs@toksa=\toks33
 \xargs@toksb=\toks34
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 \fancy@headwidth=\skip116
@@ -744,16 +740,16 @@ Package: lastpage 2013/01/28 v1.2l Refers to last page's name (HMM; JPG)
 (./aed2-tad.sty
 Package: aed2-tad 2011/04/04 - Para especificar TADs en formato AED2
  (/usr/local/texlive/2014/texmf-dist/tex/latex/tools/calc.sty
-Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count151
-\calc@Bcount=\count152
+Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count152
+\calc@Bcount=\count153
 \calc@Adimen=\dimen191
 \calc@Bdimen=\dimen192
 \calc@Askip=\skip125
 \calc@Bskip=\skip126
 LaTeX Info: Redefining \setlength on input line 75.
 LaTeX Info: Redefining \addtolength on input line 76.
-\calc@Ccount=\count153
+\calc@Ccount=\count154
 \calc@Cskip=\skip127
 )
 (./aed2-tokenizer.sty
@@ -804,13 +800,13 @@ Package: amsbsy 1999/11/29 v1.2d
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count154
+\inf@bad=\count155
 LaTeX Info: Redefining \frac on input line 210.
-\uproot@=\count155
-\leftroot@=\count156
+\uproot@=\count156
+\leftroot@=\count157
 LaTeX Info: Redefining \overline on input line 306.
-\classnum@=\count157
-\DOTSCASE@=\count158
+\classnum@=\count158
+\DOTSCASE@=\count159
 LaTeX Info: Redefining \ldots on input line 378.
 LaTeX Info: Redefining \dots on input line 381.
 LaTeX Info: Redefining \cdots on input line 466.
@@ -819,15 +815,15 @@ LaTeX Info: Redefining \cdots on input line 466.
 \big@size=\dimen195
 LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
-\macc@depth=\count159
-\c@MaxMatrixCols=\count160
+\macc@depth=\count160
+\c@MaxMatrixCols=\count161
 \dotsspace@=\muskip16
-\c@parentequation=\count161
-\dspbrk@lvl=\count162
+\c@parentequation=\count162
+\dspbrk@lvl=\count163
 \tag@help=\toks36
-\row@=\count163
-\column@=\count164
-\maxfields@=\count165
+\row@=\count164
+\column@=\count165
+\maxfields@=\count166
 \andhelp@=\toks37
 \eqnshift@=\dimen196
 \alignsep@=\dimen197
@@ -866,21 +862,21 @@ Normal \dimen register pool exhausted, switching to extended pool.
 \enit@outerparindent=\dimen256
 \enit@toks=\toks40
 \enit@inbox=\box60
-\enitdp@description=\count166
+\enitdp@description=\count167
 )
 (./algorithm.sty
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
 nment
  (/usr/local/texlive/2014/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count167
+\c@float@type=\count168
 \float@exts=\toks41
 \float@box=\box61
 \@float@everytoks=\toks42
 \@floatcapt=\box62
 )
 \@float@every@algorithm=\toks43
-\c@algorithm=\count168
+\c@algorithm=\count169
 ) (/usr/local/texlive/2014/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
 Package: algpseudocode 
 
@@ -888,34 +884,34 @@ Package: algpseudocode
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
-\c@ALG@line=\count169
-\c@ALG@rem=\count170
-\c@ALG@nested=\count171
+\c@ALG@line=\count170
+\c@ALG@rem=\count171
+\c@ALG@nested=\count172
 \ALG@tlm=\skip153
 \ALG@thistlm=\skip154
-\c@ALG@Lnr=\count172
-\c@ALG@blocknr=\count173
-\c@ALG@storecount=\count174
-\c@ALG@tmpcounter=\count175
+\c@ALG@Lnr=\count173
+\c@ALG@blocknr=\count174
+\c@ALG@storecount=\count175
+\c@ALG@tmpcounter=\count176
 \ALG@tmplength=\skip155
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (/usr/local/texlive/2014/texmf-dist/tex/latex/koma-script/scrextend.sty
-Package: scrextend 2014/10/28 v3.14 KOMA-Script package (extend other classes w
-ith features of KOMA-Script classes)
+Package: scrextend 2013/12/19 v3.12 KOMA-Script KOMA-Script package (extend oth
+er classes with features of KOMA-Script classes)
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/koma-script/scrkbase.sty
-Package: scrkbase 2014/10/28 v3.14 KOMA-Script package (KOMA-Script-dependent b
+Package: scrkbase 2013/12/19 v3.12 KOMA-Script package (KOMA-Script-dependent b
 asics and keyval usage)
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/koma-script/scrbase.sty
-Package: scrbase 2014/10/28 v3.14 KOMA-Script package (KOMA-Script-independent 
+Package: scrbase 2013/12/19 v3.12 KOMA-Script package (KOMA-Script-independent 
 basics and keyval usage)
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/koma-script/scrlfile.sty
-Package: scrlfile 2014/10/28 v3.14 KOMA-Script package (loading files)
+Package: scrlfile 2013/12/19 v3.12 KOMA-Script package (loading files)
 
-Package scrlfile, 2014/10/28 v3.14 KOMA-Script package (loading files)
+Package scrlfile, 2013/12/19 v3.12 KOMA-Script package (loading files)
                   Copyright (C) Markus Kohm
 
 )))) (/usr/local/texlive/2014/texmf-dist/tex/latex/framed/framed.sty
@@ -989,16 +985,16 @@ LaTeX Info: Redefining \% on input line 203.
 \AtBeginShipoutBox=\box63
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count176
+\scratchcounter=\count177
 \scratchdimen=\dimen261
 \scratchbox=\box64
-\nofMPsegments=\count177
-\nofMParguments=\count178
+\nofMPsegments=\count178
+\nofMParguments=\count179
 \everyMPshowfont=\toks44
-\MPscratchCnt=\count179
+\MPscratchCnt=\count180
 \MPscratchDim=\dimen262
-\MPnumerator=\count180
-\makeMPintoPDFobject=\count181
+\MPnumerator=\count181
+\makeMPintoPDFobject=\count182
 \everyMPtoPDFconversion=\toks45
 ) ABD: EveryShipout initializing macros
 (/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
@@ -1032,18 +1028,18 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 243.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./main
+.toc
+LaTeX Info: Redefining \. on input line 1.
+LaTeX Info: Redefining \% on input line 1.
 )
-
-LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 272.
-
-[1
-
-{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-(./main.toc)
 \tf@toc=\write4
 \openout4 = `main.toc'.
 
- [2] (./tadext.tex
+
+[2] (./tadext.tex
 Overfull \hbox (13.89026pt too wide) in paragraph at lines 13--13
 []\T1/cmr/m/n/10 elemDeSecu(s, n)| $\OMS/cmsy/m/n/10 ^^Q$| [] 
  []
@@ -1080,7 +1076,7 @@ Overfull \hbox (14.99998pt too wide) in paragraph at lines 34--34
 ) [3] (./red.tex
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 16.
  (/usr/local/texlive/2014/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 Overfull \hbox (3.11226pt too wide) in paragraph at lines 61--61
 \T1/cmr/bx/n/10 Pre $\OMS/cmsy/m/n/10 ^^Q$ \T1/cmr/m/n/10 {$\OML/cmm/m/it/10 r[
@@ -1184,46 +1180,45 @@ Overfull \hbox (13.89026pt too wide) in paragraph at lines 97--97
 LaTeX Warning: Command \' invalid in math mode on input line 126.
 
 Missing character: There is no ó in font cmr10!
-[14]) [15] (./dicc_rapido.tex
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 7.
-
-(/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 7.
-)
-! Incomplete \ifmmode; all text was ignored after line 22.
-<inserted text> 
-                \fi 
-l.301 \input{dicc_rapido.tex}
-                             
-The file ended while I was skipping conditional text.
-This kind of error happens when you say `\if...' and forget
-the matching `\fi'. I've inserted a `\fi'; this might work.
-
-)
-! Incomplete \ifmmode; all text was ignored after line 22.
-<inserted text> 
-                \fi 
-<*> main.tex
-            
-The file ended while I was skipping conditional text.
-This kind of error happens when you say `\if...' and forget
-the matching `\fi'. I've inserted a `\fi'; this might work.
-
-! Emergency stop.
-<*> main.tex
-            
-*** (job aborted, no legal \end found)
-
- 
+[14]) [15] (./dicc_rapido.tex) 
+AED: lastpage setting LastPage
+[16] (./main.aux
+LaTeX Info: Redefining \. on input line 7.
+LaTeX Info: Redefining \% on input line 7.
+) ) 
 Here is how much of TeX's memory you used:
- 22993 strings out of 493109
- 439284 string characters out of 6135009
- 518563 words of memory out of 5000000
- 26020 multiletter control sequences out of 15000+600000
- 21916 words of font info for 61 fonts, out of 8000000 for 9000
+ 22595 strings out of 493117
+ 430718 string characters out of 6135433
+ 515052 words of memory out of 5000000
+ 25631 multiletter control sequences out of 15000+600000
+ 21661 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  67i,11n,83p,10417b,929s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
+{/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc
+}</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
+</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></
+usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></us
+r/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
+local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/loc
+al/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/
+texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
+exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
+live/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texli
+ve/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive
+/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2
+014/texmf-dist/fonts/type1/public/cm-super/sfcc1000.pfb></usr/local/texlive/201
+4/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2014/
+texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2014/te
+xmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2014/texm
+f-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2014/texmf-
+dist/fonts/type1/public/cm-super/sfrm2488.pfb></usr/local/texlive/2014/texmf-di
+st/fonts/type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2014/texmf-dist
+/fonts/type1/public/cm-super/sftt1000.pfb>
+Output written on main.pdf (16 pages, 325145 bytes).
+PDF statistics:
+ 141 PDF objects out of 1000 (max. 8388607)
+ 101 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 13 words of extra memory for PDF output out of 10000 (max. 10000000)
+
