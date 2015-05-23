@@ -37,7 +37,7 @@
  {$d$ $\igobs$ borrar($c, d_0$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
  [Borra la clave del diccionario]
-
+ 
  \InterfazFuncion{Claves}{\In{d}{diccRapido}}{itPaquete}
  [true]
  {$res$ $\igobs$ claves($d$)}
@@ -50,7 +50,7 @@
 
 \begin{Representacion}
 
-Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la cantidad de claves no está acotada, este AVL estará representado con nodos y punteros. Cabe destacar, que las claves del diccionario deben contener una relación de orden.
+Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la cantidad de claves no está acotada, este AVL estará representado con nodos y punteros. Cabe destacar, que las claves del diccionario deben contener una relación de orden. Las claves y los significados se pasan por referencia.
 
 \begin{Estructura}{diccRapido}[estr]
 	\begin{Tupla}[estr]
@@ -113,6 +113,83 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 	\State var $res$: diccRapido $\gets$ tupla(NULL, 0) \ComplejidadDer{1}
 }{\Complejidad{1}}{
 }	
+
+\Algoritmo{IDefinir}{\In{c}{clave}, \In{s}{significado}, \Inout{d}{diccRapido}}{}{
+	\State \If{d.raiz == NULL} \ComplejidadDer{1}
+			\State d.raiz $\gets$ $\&$tupla(c, s, NULL, NULL, NULL, 1) \ComplejidadDer{1}
+		  	\State d.tam $\gets$ 1 \ComplejidadDer{1}
+		  \Else
+		  	\If{Def?(c, d)} \ComplejidadDer{log_2\ n}
+				\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
+				\While{*(pNodo).clave != c} \ComplejidadDer{log_2\ n}
+					\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
+						\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
+					\Else
+						\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
+					\EndIf			
+				\EndWhile
+				\State *(pNodo).significado $\gets$ s \ComplejidadDer{1}
+			\Else
+		  		\State var	seguir: bool $\gets$ true \ComplejidadDer{1}
+				\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
+				\State var camino: arreglo[$\lfloor log_2\ (d.tam) \rfloor+ 1$] de puntero(nodo) \ComplejidadDer{\lfloor log_2\ (d.tam) \rfloor+ 1}
+ 				\State var nroCamino: nat $\gets$ 0 \ComplejidadDer{1}
+				\State camino[0] $\gets$ pNodo \ComplejidadDer{1}
+				\While{seguir == true}
+					\If{c $\textgreater$ *(pNodo).clave $\wedge$ *(pNodo).der == NULL} \ComplejidadDer{1}
+							\If{*(pNodo).izq == NULL}
+								\State *(pNodo).alt $\gets$ 2 \ComplejidadDer{1}
+							\Else
+							\EndIf
+						 	\State *(pNodo).der $\gets$ $\&$tupla(c, s, pNodo, NULL, NULL, 1) \ComplejidadDer{1}
+							\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+							\State camino[nroCamino] $\gets$ *(pNodo).der \ComplejidadDer{1}
+							\State seguir $\gets$ false \ComplejidadDer{1}
+							
+				        \Else
+					  		\If{c $\textgreater$ *(pNodo).clave $\wedge$ *(pNodo).der != NULL} \ComplejidadDer{1}
+								\If{*(pNodo).izq == NULL} \ComplejidadDer{1}
+									\State *(pNodo).alt $\gets$ *(pNodo).alt + 1 \ComplejidadDer{1}
+								\Else
+									\State *(pNodo).alt $\gets$ max(*(*(pNodo).izq).alt, *(*(pNodo).der).alt + 1) \Complejidad{1}
+								\EndIf
+								
+								\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
+								\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+								\State camino[nroCamino] $\gets$ *(pNodo).der \ComplejidadDer{1}			
+							\Else
+							\EndIf	
+				        \EndIf
+				\EndWhile
+			\EndIf			
+		  \EndIf
+			
+			 
+}{\Complejidad{log_2\ n}}{
+}
+
+\Algoritmo{IRotarSimpleIzq}{}{}{
+	\State 
+}{\Complejidad{1}}{
+}	
+
+\Algoritmo{IRotarSimpleDer}{}{}{
+	\State 
+}{\Complejidad{1}}{
+}	
+
+\Algoritmo{IRotarDobleIzq}{}{}{
+	\State 
+}{\Complejidad{1}}{
+}	
+
+\Algoritmo{IRotarDobleDer}{}{}{
+	\State 
+}{\Complejidad{1}}{
+}	
+
+
+
 
 \end{Algoritmos}
 
