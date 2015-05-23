@@ -1,114 +1,60 @@
-\section{Cola Prioritaria}
-
-\subsection{TAD \tadNombre{ColaPrioritaria}}
-
-\begin{tad}{\tadNombre{ColaPrioritaria}}
-\tadIgualdadObservacional{c1}{c2}{colaP(Paquete)}{vacía?($c_1$) $\igobs$ vacía?($c_2$) $\yluego$ \\
-($\neg$vacía($c_1$) $\impluego$ \\ (próximo($c_1$) $\igobs$ próximo($c_2$) $\wedge$ \\ suCamino(próximo($c_1$)) $\igobs$ suCamino(próximo($c_2$)) $\wedge$ \\ desencolar($c_1$) $\igobs$ desencolar($c_2$)))}
-
-\tadGeneros{colaP(Paquete)}
-
-\tadExporta{colaP(Paquete), generadores, observadores}
-\tadUsa{\tadNombre{Bool}, \tadNombre{Nat}, \tadNombre{Paquete}, \tadNombre{Secu($\alpha$)}, \tadNombre{Compu}}
-
-\tadObservadores
-\tadAlinearFunciones{desencolar}{Paquete/p, colaP(Paquete)/cp}
-\tadOperacion{vacía?}{colaP(Paquete)}{Bool}{}
-\tadOperacion{próximo}{colaP(Paquete)/cp}{Paquete}{$\neg$vacía?(cp)}
-\tadOperacion{desencolar}{colaP(Paquete)/cp}{colaP(Paquete)}{$\neg$vacía?(cp)}
-\tadOperacion{suCamino}{Paquete/p, colaP(Paquete)/cp}{Secu(Compu)}{está?(p, cp)}
-
-
-\tadGeneradores
-\tadAlinearFunciones{encolar}{Paquete/p, Compu/c, colaP(Paquete)/cp}
-\tadOperacion{vacía}{}{colaP(Paquete)}{}
-\tadOperacion{encolar}{Paquete/p, colaP(Paquete)/cp}{colaP(Paquete)}{$\neg$está?(p, cp)}
-\tadOperacion{agCompu}{Paquete/p, Compu/c, colaP(Paquete)/cp}{colaP(Paquete)}{está?(p, cp)}
-
-\tadOtrasOperaciones
-\tadOperacion{está?}{Paquete/p, colaP(Paquete)/cp}{Bool}{}
-
-\tadAxiomas[\paratodo{Paquete}{p, p1, p2}, \paratodo{Compu}{c}, \paratodo{colaP(Paquete)}{cp}]
-\tadAlinearAxiomas{suCamino(p1, agCompu(p2, c, cp))}
-
-\tadAxioma{vacía?(vacía)}{true}
-\tadAxioma{vacía?(encolar(p, cp))}{false}
-\tadAxioma{vacía?(agCompu(p, c, cp))}{false}
-\tadAxioma{próximo(encolar(p, cp))}{\IF vacía?(cp) THEN p ELSE {\IF prioridad(p) $\textless$ prioridad(próximo(cp)) THEN p ELSE próximo(cp) FI} FI}
-\tadAxioma{próximo(agCompu(p, c, cp))}{próximo(cp)}
-\tadAxioma{desencolar(encolar(p, cp))}{\IF vacía?(cp) THEN cp ELSE {\IF prioridad(p) $\textless$ prioridad(próximo(cp)) THEN cp ELSE encolar(p, desencolar(cp)) FI} FI}
-\tadAxioma{desencolar(agCompu(p, c, cp))}{desencolar(cp)}
-\tadAxioma{suCamino($p_1$, encolar($p_2$, cp))}{\IF $p_1$ = $p_2$ THEN $\textless$$\textgreater$ ELSE suCamino($p_1$, cp) FI}
-\tadAxioma{suCamino($p_1$, agCompu($p_2$, c, cp))}{\IF $p_1$ = $p_2$ THEN suCamino($p_1$, cp) $\circ$ c ELSE suCamino($p_1$, cp) FI}
-\tadAxioma{está(p, cp)}{\IF vacía?(cp) THEN false ELSE {\IF p = próximo(cp) THEN true ELSE está?(p, desencolar(cp)) FI} FI}
-
-
-\end{tad}
+\section{DiccRapido}
 
 \begin{Interfaz}
   
-  \textbf{se explica con}: \tadNombre{ColaPrioritaria}.
+  \textbf{se explica con}: \tadNombre{Diccionario(clave, significado)}.
 
-  \textbf{géneros}: \TipoVariable{colaP(Paquete)}.
+  \textbf{gÃ©neros}: \TipoVariable{diccRapido}.
 
-  \Titulo{Operaciones básicas de COLA PRIORITARIA}
+  \Titulo{Operaciones bÃ¡sicas de DICCRAPIDO}
 
-  \InterfazFuncion{Vacía?}{\In{cp}{colaP(Paquete)}}{Bool}
-  %[ACA VA EL PRE SI LO HUBIERA]
-  {$res$ $\igobs$ vacía?($cp$)}
-  [$\Complejidad{1}$]
-  [Verifica si una cola esta vacía]
-
-  \InterfazFuncion{próximo}{\In{cp}{colaP(Paquete)}}{Paquete}
-  [$\neg$vacía?($cp$)]
-  {$res$ $\igobs$ próximo($cp$)}
-  [$\Complejidad{log_2\ k}$]
-  [Devuelve el próximo paquete a desencolar]
-
-  \InterfazFuncion{Desencolar}{\Inout{cp}{colaP(Paquete)}}{}
-  [$cp$ $\igobs$ $cp_0$ $\wedge$ $\neg$(vacia?($cp_0$))]
-  {$cp$ $\igobs$ desencolar($cp_0$)}
-  [$\Complejidad{log_2\ k}$]
-  [Elimina el próximo paquete a desencolar]
-
-  \InterfazFuncion{SuCamino}{\In{p}{Paquete}, \In{cp}{colaP(Paquete)}}{Secu(Compu)}
-  [está?($p, cp$)]
-  {$res$ $\igobs$ suCamino($p, cp$)}
-  [$\Complejidad{log_2\ k}$]
-  [Devuelve la secuencia de computadoras asociadas al paquete]
-
-  \InterfazFuncion{Vacía}{}{colaP(Paquete)}
-  %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res$ $\igobs$ vacía()}
-  [$\Complejidad{1}$]
-  [Crea una nueva cola.]
-  
-  \InterfazFuncion{Encolar}{\In{p}{Paquete}, \Inout{cp}{colaP(Paquete)}}{}
-  [$cp$ $\igobs$ $cp_0$ $\wedge$ $\neg$está($p, cp_0$)]
-  {$cp$ $\igobs$ encolar($p, cp_0$)}
-  [$\Complejidad{log_2\ k}$]
-  [Agrega el paquete a la cola]
-
-  \InterfazFuncion{AgCompu}{\In{p}{Paquete}, \In{c}{Compu}, \Inout{cp}{colaP(Paquete)}}{}
-  [$cp$ $\igobs$ $cp_0$ $\wedge$ está($p, cp_0$)] 
-  {$cp$ $\igobs$ agCompu($p, c, cp_0$)}
-  [$\Complejidad{log_2\ k}$]
-  [Agrega la computadora al paquete]
-  
-  \InterfazFuncion{Está?}{\In{p}{Paquete}, \In{cp}{colaP(Paquete)}}{Bool}
+  \InterfazFuncion{Def?}{\In{c}{clave}, \In{d}{diccRapido}{bool}
   []
-  {$res$ $\igobs$ está?($p, cp$)}
-  [$\Complejidad{log_2\ k}$]
-  [Verifica si un paquete está en la cola]
-	
-	
+  {$res$ $\igobs$ def?($c, d$)}
+  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
+  [Verifica si una clave esta definida.]
+  
+  \InterfazFuncion{Obtener}{\In{c}{clave}}, \In{d}{diccRapido}}{significado}
+  [def?($c, d$)]
+  {$res$ $\igobs$ obtener($c, d$)}
+  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
+  [Devuelve el significado asociado a una clave]
+  
+  \InterfazFuncion{Vacio}{}{diccRapido}
+  [true]
+  {$res$ $\igobs$ vacio()}
+  [$\Complejidad{1}$]
+  [Crea un nuevo diccionario vacio]  
+  
+  \InterfazFuncion{Definir}{\In{c}{clave}, \In{s}{significado}, \Inout{d}{diccRapido}}{}
+  [$d$ $\igobs$ $d_0$]
+  {$d$ $\igobs$ definir($c, s, d_0$)}
+  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
+  [Define la clave, asociando su significado, al diccionario]
+  
+  \InterfazFuncion{Borrar}{\In{c}{clave}, \Inout{d}{diccRapido}}{}
+  [$d$ $\igobs$ $d_0$ $\wedge$ def?($c, d_0$)]
+  {$d$ $\igobs$ borrar($c, d_0$)}
+  [$\Complejidad{log_2 \n}$, siendo n la cantidad de claves]
+  [Borra la clave del diccionario]
+
+  \InterfazFuncion{Claves}{\In{d}{diccRapido}}{itPaquete}
+  []
+  {$res$ $\igobs$ claves($d$)}
+  [$\Complejidad{1}$]
+  [Devuelve un iterador de las claves, que son el id del paquete, pero con las demas componentes de su tupla unida]  
+  
 \end{Interfaz}
 
 \subsection{Representacion}
 
+
+
 \begin{Representacion}
 
-Para representar la cola de prioridad, elegimos hacerla sobre un AVL. Sabiendo que la cantidad de paquetes no está acotada, este AVL estará representado con nodos y punteros.
+\textbf{OJO, SOLO ESTA HECHA LA INTERFAZ. DE ACA EN ADELANTE ES TODO VIEJO}
+
+Para representar la cola de prioridad, elegimos hacerla sobre un AVL. Sabiendo que la cantidad de paquetes no estÃ¡ acotada, este AVL estarÃ¡ representado con nodos y punteros.
 
 \begin{Estructura}{colaP(Paquete)}[estr]
 	\begin{Tupla}[estr]
@@ -179,7 +125,7 @@ Para representar la cola de prioridad, elegimos hacerla sobre un AVL. Sabiendo q
 																	false FI}FI}FI}
 \vspace{1em}
 
-Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que estamos trabajando con Arboles Binarios de Búsqueda (en nuestro caso AVL), la lógica de ambas funciones es la misma que está expresada en el pseudocódigo del módulo. En particular ''maxElem'' se limita a buscar el nodo más a la derecha del árbol, mientras que ''borrarMax'' (una vez encontrado el máximo) procede a eliminarlo y reordenar el árbol.
+Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que estamos trabajando con Arboles Binarios de BÃºsqueda (en nuestro caso AVL), la lÃ³gica de ambas funciones es la misma que estÃ¡ expresada en el pseudocÃ³digo del mÃ³dulo. En particular ''maxElem'' se limita a buscar el nodo mÃ¡s a la derecha del Ã¡rbol, mientras que ''borrarMax'' (una vez encontrado el mÃ¡ximo) procede a eliminarlo y reordenar el Ã¡rbol.
 
 \end{Representacion}
 
@@ -187,12 +133,12 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 
 \begin{Algoritmos}
 
-\Algoritmo{IVacía?}{\In{cp}{colaP(Paquete)}}{Bool}{
+\Algoritmo{IVacÃ­a?}{\In{cp}{colaP(Paquete)}}{Bool}{
 	\State res $\gets$ cp.raiz $==$ NULL \ComplejidadDer{1}
 	}{\Complejidad{1}}{
 }
 	
-\Algoritmo{IPróximo}{\In{cp}{colaP(Paquete)}}{Paquete}{
+\Algoritmo{IPrÃ³ximo}{\In{cp}{colaP(Paquete)}}{Paquete}{
 	\State var pNodo: puntero(nodo) $\gets$ cp.raiz \ComplejidadDer{1}
 		\While{*(pNodo).der != NULL} \ComplejidadDer{log_2\ k}
 			\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
@@ -755,7 +701,7 @@ Las funciones ''maxElem'' y ''borrarMax'' no han sido axiomatizadas. Ya que esta
 	2 * \Complejidad{1} = \Complejidad{1}$
 	}
 
-\Algoritmo{ITamaño}{\Inout{c}{colaP(Paquete)}}{nat}{
+\Algoritmo{ITamaÃ±o}{\Inout{c}{colaP(Paquete)}}{nat}{
 	\State res $\gets$ c.tam \ComplejidadDer{1}
 	}{\Complejidad{1}}{
 	}
