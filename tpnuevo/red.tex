@@ -1,4 +1,4 @@
-\section{Mapa}
+\section{Red}
 
 \begin{Interfaz}
   
@@ -52,41 +52,58 @@
   {$r$ $\igobs$ agregarComputadora($r_0, c$)}
   [$\Complejidad{|c|}$]
   [Agrega una computadora a la red.]
-
-  \InterfazFuncion{Conectar}{\Inout{r}{red}, \In{c_1}{compu}, \In{i_1}{interfaz}, \In{c_2}{compu}, \In{i_2}{interfaz}}{}
+  
+   \InterfazFuncion{Conectar}{\Inout{r}{red}, \In{c_1}{compu}, \In{i_1}{interfaz}, \In{c_2}{compu}, \In{i_2}{interfaz}}{}
   [$r_0$ $\igobs$ r $\wedge$ \{$c_1,c_2$\} $\subseteq$ computadoras($r$) $\wedge$ ip($c_1$) $\neq$ ip($c_2$) $\yluego$ $\neg$ conectadas?($r, c_1, c_2$) $\wedge$ $\neg$ usaInterfaz?($r, c_1, i_1$) $\wedge$ $\neg$ usaInterfaz?($r, c_2, i_2$)]
   {$r$ $\igobs$ conectar($r, c_1, i_1, c_2, i_2$)}
   [$\Complejidad{|c_1| + |c_2|}$]
   [Conecta dos computadoras y les añade la interfaz correspondiente.]
-  
-  %\InterfazFuncion{}
-%
- % \InterfazFuncion{NroConexion}{\In{e_1}{estación}, \In{e_2}{estación}, \In{m}{mapa}}{nat}
-  %[\{$e_1,e_2$\} $\subset$ estaciones($m$) $\yluego$ conectadas?($e_1, e_2, m$)]
-  %{$res \igobs$ nroConexion($e_1$, $e_2$, $m$)}
-  %[$\Complejidad{|e_1| + |e_2|}$]
-  %[Obtiene el Nro. de Senda entre dos estaciones.]
-	
-  %\InterfazFuncion{EvaluarSendas}{\In{c}{conj(tag)}, \In{m}{mapa}}{arreglo\_dimesionable de bool}
-  %[\{e1,e2\} $\in$ estaciones(m) $\yluego$ $res \igobs$ conectadas?(e1, e2, m)]
-  %{$(\forall i$: Nat) (0 $\leq i <$ long(restricciones($m$)) $\impluego$ res[$i$] $\igobs$ verifica?($c$, elemDeSecu(restricciones($m$), $i$)))}
-  %[$\Complejidad{S \cdot R}$]
-  %[Devuelve un arreglo con todas las sendas evaluadas con respecto al conjunto $c$.
-	%NOTA: La $R$ es el costo de evaluar la restriccion mas grande.]
-	
-%	\InterfazFuncion{Restricciones}{\In{m}{mapa}}{arreglo\_dimesionable de restriccion}
-  %[\{e1,e2\} $\in$ estaciones(m) $\yluego$ $res \igobs$ conectadas?(e1, e2, m)]
- % {$(\forall i$: Nat) (0 $\leq i <$ long(restricciones($m$)) $\impluego$ res[$i$] $\igobs$ elemDeSecu(restricciones($m$), $i$)}
-  %[$\Complejidad{S}$]
-  %[Devuelve un arreglo con todas las restricciones]
+
+  \InterfazFuncion{Vecinos}{\In{r}{red}, \In{c}{compu}}{itConj(compu)}
+  [$c$ $\in$ computadoras($r$)]
+  {$res$ $\igobs$ crearIt(vecinos(r, c))}
+  []
+  [Devuelve todas las computadoras que están conectadas directamente con c]
+
+  \InterfazFuncion{UsaInterfaz?}{\In{r}{red}, \In{c}{compu}, \In{i}{interfaz}}{bool}
+  [$c$ $\in$ computadoras($r$)]
+  {$res$ $\igobs$ usaInterfaz?(r, c, i)}
+  []
+  [Verifica que una computadora use una interfaz]
+
+  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista(compu))}
+  [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
+  {$res$ $\igobs$ caminosMinimos(r, $c_1$, $c_2$)}
+  []
+  [Devuelve todos los caminos minimos de conexiones entre una computadora y otra]
+
+  \InterfazFuncion{HayCamino?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
+  [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
+  {$res$ $\igobs$ hayCamino?(r, $c_1$, $c_2$)}
+  []
+  [Verifica que haya un camino de conexiones entre una computadora y otra]
   
 \end{Interfaz}
 
-\subsection{Representaciorepresentacionn}
+\subsection{Auxiliares}
+
+\begin{Auxiliares}
+
+  \Titulo{Operaciones auxiliares}
+
+  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista(compu))}
+  [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
+  {$res$ $\igobs$ caminosMinimos(r, $c_1$, $c_2$)}
+  []
+  [Devuelve los caminos mínimos entre c_1 y c_2]
+
+\end{Auxiliares}
+
+\subsection{Representacion}
 
 \begin{Representacion}
 
-%ACA VA LA DESCRIPCION DE LA CACONA DEL MAPA
+%ACA VA LA DESCRIPCION DE LA CACONA DE LA RED
 
 \bigskip
 \begin{Estructura}{red}[e\_red]
@@ -94,33 +111,23 @@
 		\tupTupItem{vecinosEInterfaces}{\TipoVariable{diccString}$($\ignorespaces
 			% NOTA:tupTupItem es un engendro que agregue para este caso, NO USAR EN OTRO LADO, USAR tupItem EN SU LUGAR.
 			\emph{compu}: \TipoVariable{string},
-			\TipoVariable{diccString}$($\ignorespaces
+			tupla(
+			\emph{interfaces}: \TipoVariable{diccString}$($\ignorespaces
 				\emph{compu}: \TipoVariable{string}, \ignorespaces
 				\emph{interfaz}: \TipoVariable{nat}\ignorespaces
-			$))$} \\
+			$)$,
+			\emph{compusVecinas}: \TipoVariable{conj(compu)}
+			$) )$} \\
 			\tupTupItem{deOrigenADestino}{\TipoVariable{diccString}$($\ignorespaces
 			\emph{compu}: \TipoVariable{string},
 			\TipoVariable{diccString}$($\ignorespaces
 				\emph{compu}: \TipoVariable{string}, \ignorespaces
-				\emph{secu(compu)}: \TipoVariable{secu(string)}\ignorespaces
-			$))$} \\
+				\emph{caminosMinimos}: \TipoVariable{conj(lista(compu))}\ignorespaces
+			$) )$} \\
 			\tupItem{computadoras}{\TipoVariable{conj(compu)}}
 	\end{Tupla}
 	
 \end{Estructura}
-
-%\begin{Estructura}{mapa}[e\_mapa]
-	%\begin{Tupla}[e\_mapa]
-		%\tupTupItem{unionesDe}{DiccString(\TipoVariable{conj}$($\ignorespaces
-			%% NOTA:tupTupItem es un engendro que agregue para este caso, NO USAR EN OTRO LADO, USAR tupItem EN SU LUGAR.
-			%\TipoVariable{tupla}$($\ignorespaces
-				%\emph{con}: \TipoVariable{estacion},
-				%\emph{res}: \TipoVariable{restricción}\ignorespaces
-			%$)))$}
-		%\tupItem{\\estaciones}{conj$($estacion$)$}
-	%\end{Tupla}
-	%
-%\end{Estructura}
 
 \subsection{InvRep y Abs}
 
@@ -189,14 +196,14 @@
 	
 	\begin{Algoritmo}{iConectadas?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
 	{
-		\State $res$ $\gets$ Definido?(Significado($r.vecinosEInterfaces$, $c_1$), $c_2$) \ComplejidadDer{|c_1| + |c_2|}
+		\State $res$ $\gets$ Definido?(Significado($r.vecinosEInterfaces$, $c_1.ip$)$.interfaces$, $c_2.ip$) \ComplejidadDer{|c_1| + |c_2|}
 	}
 	{$\Complejidad{|c_1| + |c_2|}$}{}
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iInterfazUsada}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{interfaz}
 	{
-		\State $res$ $\gets$ Significado(Significado($r.vecinosEInterfaces$, $c_1$), $c_2$)\ComplejidadDer{|c_1| + |c_2|}
+		\State $res$ $\gets$ Significado(Significado($r.vecinosEInterfaces$, $c_1.ip$)$.interfaces$, $c_2.ip$)\ComplejidadDer{|c_1| + |c_2|}
 	}
 	{$\Complejidad{|c_1| + |c_2|}$}{}
 	\end{Algoritmo}
@@ -213,8 +220,8 @@
 	\begin{Algoritmo}{iAgregarComputadora}{\Inout{r}{red}, \In{c}{compu}}{}
 	{
 		\State Agregar($r.computadoras$, $c$) \ComplejidadDer{1}
-		\State Definir($r.vecinosEInterfaces$, $c$, Vacío()) \ComplejidadDer{|c|}
-		\State Definir($r.deOrigenADestino$, $c$, Vacío()) \ComplejidadDer{|c|}
+		\State Definir($r.vecinosEInterfaces$, $c.ip$, tupla(Vacío(), Vacio())) \ComplejidadDer{|c|}
+		\State Definir($r.deOrigenADestino$, $c.ip$, Vacío()) \ComplejidadDer{|c|}
 	}
 	{$\Complejidad{|c|}$}
 	{$\Complejidad{1} + \Complejidad{|c|} + \Complejidad{|c|} = \newline
@@ -223,14 +230,27 @@
 	
 	\begin{Algoritmo}{iConectar}{\Inout{r}{red}, \In{c_1}{compu}, \In{i_1}{interfaz}, \In{c_2}{compu}, \In{i_2}{interfaz}}{}
 	{
-		%\State Definir(Significado($m.uniones$, $e1$), $e2$, $m.\#senda$) \ComplejidadDer{|e_1| + |e_2|}
-		%\State Definir(Significado($m.uniones$, $e2$), $e1$, $m.\#senda$) \ComplejidadDer{|e_2| + |e_1|}
-		%\State Agregar($m.sendas$, $m.\#sendas$, $r$) \ComplejidadDer{1}
-		%\State $m.\#sendas++$ \ComplejidadDer{1}
-	
-		\State Definir(Significado($r.vecinosEInterfaces$, $c_1$), $c_2$, $i_1$) \ComplejidadDer{|c_1| + |c_2| + 1}
-		\State Definir(Significado($r.vecinosEInterfaces$, $c_2$), $c_1$, $i_2$) \ComplejidadDer{|c_2| + |c_1| + 1} 
-		\State 
+		%Armo la primera componente de e_red
+		
+		\State var $tupSig1$:tupla $\gets$ Significado($r.vecinosEInterfaces$, $c_1.ip$)
+		%Guardo la interfaz usada por c_1
+		\State Definir($tupSig1.interfaces$, $c_2.ip$, $i_1$) \ComplejidadDer{|c_1| + |c_2| + 1}
+		%Agrego c_2 a las compusVecinas de c_1
+		\State Agregar($tupSig1.compusVecinas$, $c_2$) \ComplejidadDer{1}
+
+		\State var $tupSig2$:tupla $\gets$ Significado($r.vecinosEInterfaces$, $c_2.ip$)
+		%Guardo la interfaz usada por c_2		
+		\State Definir($tupSig2.interfaces$, $c_1.ip$, $i_2$) \ComplejidadDer{|c_1| + |c_2| + 1}
+		%Agrego c_2 a las compusVecinas de c_1
+		\State Agregar($tupSig2.compusVecinas$, $c_1$) \ComplejidadDer{1}
+		
+
+		%Armo la segunda componente de e_red
+				
+		%Guardo los caminos mínimos de c_1 a c_2
+		\State Definir(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$, CaminosMinimos(r, c_1, c_2)) \ComplejidadDer{1}
+		%Guardo los caminos mínimos de c_2 a c_1
+		\State Definir(Significado($r.deOrigenADestino$, $c_2.ip$), $c_1.ip$, CaminosMinimos(r, c_2, c_1)) \ComplejidadDer{1}		
 	}
 	{$\Complejidad{|e_1| + |e_2|}$}
 	{$\Complejidad{|e_1| + |e_2|} + \Complejidad{|e_1| + |e_2|} + \Complejidad{1} + \Complejidad{1} = \newline
@@ -238,6 +258,56 @@
 		2 * \Complejidad{|e_1| + |e_2|} = \Complejidad{|e_1| + |e_2|}$}
 	\end{Algoritmo}
 	
+	\begin{Algoritmo}{iVecinos}{\In{r}{red}, \In{c}{compu}}{itConj(compu)}
+	{
+		\State $res$ $\gets$ crearIt((Significado($r.vecinosEInterfaces$, $c.ip$))$.compusVecinas$)
+	}
+	{}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iUsaInterfaz}{\In{r}{red}, \In{c}{compu}, \In{i}{interfaz}}{bool}
+	{
+		\State var $tupVecinos$:tupla $\gets$ Significado($r.vecinosEInterfaces$, $c.ip$) \ComplejidadDer{1}
+		\State var $itCompusVecinas$:itConj(compu) $\gets$ CrearIt($tupVecinos.compusVecinas$) \ComplejidadDer{1}
+		\State $res$:bool $\gets$ $false$ \ComplejidadDer{1}
+		\While{HaySiguiente($itCompusVecinas$) AND $¬res$} \ComplejidadDer{1}
+		\If {Significado($tupVecinos.interfaces$, Siguiente($itCompusVecinas$)$.ip$) $==$ $i$} \ComplejidadDer{1}
+			\State $res$ $\gets$ $true$  \ComplejidadDer{1}
+		\EndIf
+		\State Avanzar($it$) \ComplejidadDer{1}
+		\EndWhile
+	}
+	{}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista(compu))}
+	{
+		\State $res$ $\gets$ Significado(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$)	\ComplejidadDer{|c_1| + |c_2|}
+	}
+	{}
+	{}
+	\end{Algoritmo}
+
+	\begin{Algoritmo}{iHayCamino}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
+	{
+		\State var $conjCaminosMinimos$ $\gets$ CaminosMinimos($r$, $c_1$, $c_2$) \ComplejidadDer{1}
+		\State $res$ $\gets$ EsVacio?($conjCaminosMinimos$) \ComplejidadDer{1}
+	}
+	{}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
+	{
+		%\State var $conjExcluidos$ $\gets$ Vacio()
+		%\State var $camino$
+	}
+	{}
+	{}
+	\end{Algoritmo}
+		
 	%\begin{Algoritmo}{iNroConexion}{\In{e1}{estación}, \In{e2}{estación}, \In{m}{mapa}}{nat}
 	%{
 	%	\State $res$ $\gets$ Significado(Significado($m.uniones$, $e1$), $e2$) \ComplejidadDer{|e_1| + |e_2|}
