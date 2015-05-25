@@ -87,8 +87,6 @@
 
 \subsection{Auxiliares}
 
-\begin{Auxiliares}
-
   \Titulo{Operaciones auxiliares}
 
   \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista(compu))}
@@ -97,13 +95,9 @@
   []
   [Devuelve los caminos mínimos entre c_1 y c_2]
 
-\end{Auxiliares}
-
 \subsection{Representacion}
 
 \begin{Representacion}
-
-%ACA VA LA DESCRIPCION DE LA CACONA DE LA RED
 
 \bigskip
 \begin{Estructura}{red}[e\_red]
@@ -247,10 +241,10 @@
 
 		%Armo la segunda componente de e_red
 				
-		%Guardo los caminos mínimos de c_1 a c_2
-		\State Definir(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$, CaminosMinimos(r, c_1, c_2)) \ComplejidadDer{1}
-		%Guardo los caminos mínimos de c_2 a c_1
-		\State Definir(Significado($r.deOrigenADestino$, $c_2.ip$), $c_1.ip$, CaminosMinimos(r, c_2, c_1)) \ComplejidadDer{1}		
+		%Guardo los caminos minimos de c_1 a c_2
+		\State Definir(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$, ArmarCaminosMinimos($r, c_1, c_2$)) \ComplejidadDer{1}
+		%Guardo los caminos minimos de c_2 a c_1
+		\State Definir(Significado($r.deOrigenADestino$, $c_2.ip$), $c_1.ip$, ArmarCaminosMinimos($r, c_2, c_1$)) \ComplejidadDer{1}		
 	}
 	{$\Complejidad{|e_1| + |e_2|}$}
 	{$\Complejidad{|e_1| + |e_2|} + \Complejidad{|e_1| + |e_2|} + \Complejidad{1} + \Complejidad{1} = \newline
@@ -299,10 +293,34 @@
 	{}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
+	\begin{Algoritmo}{iArmarCaminos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista)}
 	{
-		%\State var $conjExcluidos$ $\gets$ Vacio()
-		%\State var $camino$
+		\State var $pacial$:lista $\gets$ Vacia() \ComplejidadDer{1}
+		\State AgregarAtras($parcial$, $c_1$) \ComplejidadDer{1}
+		\State $res$ $\gets$ \NombreFuncion{TodosLosCaminos}($r$, $c_1$, $c_2$, $parcial$) \ComplejidadDer{1}
+	}
+	{}
+	{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{iTodosLosCaminos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}, \In{pacial}{lista(compu)}}{conj(lista)}
+	{
+		\State $res$ $\gets$ Vacio() \ComplejidadDer{1}
+		
+		\If {Pertenece?(Vecinos($r$, $c_1$), $c_2$)} \ComplejidadDer{1}
+			\State AgregarAtras($pacial$, $c_2$) \ComplejidadDer{1}		
+			\State Agregar($res$, $parcial$) \ComplejidadDer{1}
+		\Else
+			\State var $itVecinos$:itConj $\gets$ CrearIt(Vecinos($r$, $c_1$)) \ComplejidadDer{1}
+			\While{HaySiguiente?($itVecinos$)} \ComplejidadDer{1}
+				\If {$¬$Pertenece?($parcial$, Siguiente($itVecinos$))} \ComplejidadDer{1}
+					\State var $auxParcial$:lista $\gets$ parcial \ComplejidadDer{1}
+					\State AgregarAtras($auxParcial$, Siguiente($itVecinos$)) \ComplejidadDer{1}
+					\State Unir($res$, TodosLosCaminos($r$, Siguiente($itVecinos$), $c_2$, $auxParcial$)) \ComplejidadDer{1}
+				\EndIf	
+				\State Avanzar($itVecinos$) \ComplejidadDer{1}
+			\EndWhile			
+		\EndIf
 	}
 	{}
 	{}

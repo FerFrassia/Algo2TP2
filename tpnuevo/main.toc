@@ -2,19 +2,20 @@
 \contentsline {section}{\numberline {1}Tad Extendidos}{3}
 \contentsline {subsection}{\numberline {1.1}Secu($\alpha $)}{3}
 \contentsline {subsection}{\numberline {1.2}Mapa}{3}
-\contentsline {section}{\numberline {2}Mapa}{4}
-\contentsline {subsection}{\numberline {2.1}Representaciorepresentacionn}{4}
-\contentsline {subsection}{\numberline {2.2}InvRep y Abs}{5}
-\contentsline {subsection}{\numberline {2.3}Algoritmos}{5}
-\contentsline {section}{\numberline {3}DCNet}{7}
-\contentsline {subsection}{\numberline {3.1}Representacion}{8}
-\contentsline {subsection}{\numberline {3.2}InvRep y Abs}{8}
-\contentsline {subsection}{\numberline {3.3}Algoritmos}{10}
-\contentsline {section}{\numberline {4}Diccionario String($\alpha $)}{13}
-\contentsline {subsection}{\numberline {4.1}Representacion}{13}
-\contentsline {subsection}{\numberline {4.2}InvRep y Abs}{14}
-\contentsline {subsection}{\numberline {4.3}Algoritmos}{14}
-\contentsline {section}{\numberline {5}DiccRapido}{16}
-\contentsline {subsection}{\numberline {5.1}Representacion}{16}
-\contentsline {subsection}{\numberline {5.2}InvRep y Abs}{17}
-\contentsline {subsection}{\numberline {5.3}Algoritmos}{17}
+\contentsline {section}{\numberline {2}Red}{4}
+\contentsline {subsection}{\numberline {2.1}Auxiliares}{5}
+\contentsline {subsection}{\numberline {2.2}Representacion}{5}
+\contentsline {subsection}{\numberline {2.3}InvRep y Abs}{5}
+\contentsline {subsection}{\numberline {2.4}Algoritmos}{6}
+\contentsline {section}{\numberline {3}DCNet}{9}
+\contentsline {subsection}{\numberline {3.1}Representacion}{10}
+\contentsline {subsection}{\numberline {3.2}InvRep y Abs}{10}
+\contentsline {subsection}{\numberline {3.3}Algoritmos}{12}
+\contentsline {section}{\numberline {4}Diccionario String($\alpha $)}{15}
+\contentsline {subsection}{\numberline {4.1}Representacion}{15}
+\contentsline {subsection}{\numberline {4.2}InvRep y Abs}{16}
+\contentsline {subsection}{\numberline {4.3}Algoritmos}{16}
+\contentsline {section}{\numberline {5}DiccRapido}{18}
+\contentsline {subsection}{\numberline {5.1}Representacion}{18}
+\contentsline {subsection}{\numberline {5.2}InvRep y Abs}{19}
+\contentsline {subsection}{\numberline {5.3}Algoritmos}{19}
