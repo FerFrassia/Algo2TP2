@@ -119,7 +119,7 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 			\State d.raiz $\gets$ $\&$tupla(c, s, NULL, NULL, NULL, 1) \ComplejidadDer{1}
 		  	\State d.tam $\gets$ 1 \ComplejidadDer{1}
 		  \Else
-		  	\If{Def?(c, d)} \ComplejidadDer{log_2\ n}
+		  	\If{\NombreFuncion{Def?}(c, d)} \ComplejidadDer{log_2\ n}
 				\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
 				\While{*(pNodo).clave != c} \ComplejidadDer{log_2\ n}
 					\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
@@ -134,10 +134,10 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 				\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
 				\State var camino: arreglo[$\lfloor log_2\ (d.tam) \rfloor+ 1$] de puntero(nodo) \ComplejidadDer{\lfloor log_2\ (d.tam) \rfloor+ 1}
  				\State var nroCamino: nat $\gets$ 0 \ComplejidadDer{1}
-				\State camino[0] $\gets$ pNodo \ComplejidadDer{1}
-				\While{seguir == true}
+				\State camino[nroCamino] $\gets$ pNodo \ComplejidadDer{1}
+				\While{seguir == true} \ComplejidadDer{log2\ n}
 					\If{c $\textgreater$ *(pNodo).clave $\wedge$ *(pNodo).der == NULL} \ComplejidadDer{1}
-							\If{*(pNodo).izq == NULL}
+							\If{*(pNodo).izq == NULL} \ComplejidadDer{1}
 								\State *(pNodo).alt $\gets$ 2 \ComplejidadDer{1}
 							\Else
 							\EndIf
@@ -151,16 +151,43 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 								\If{*(pNodo).izq == NULL} \ComplejidadDer{1}
 									\State *(pNodo).alt $\gets$ *(pNodo).alt + 1 \ComplejidadDer{1}
 								\Else
-									\State *(pNodo).alt $\gets$ max(*(*(pNodo).izq).alt, *(*(pNodo).der).alt + 1) \Complejidad{1}
+									\State *(pNodo).alt $\gets$ max(*(*(pNodo).izq).alt, *(*(pNodo).der).alt + 1) \ComplejidadDer{1}
 								\EndIf
-								
 								\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
 								\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
-								\State camino[nroCamino] $\gets$ *(pNodo).der \ComplejidadDer{1}			
+								\State camino[nroCamino] $\gets$ pNodo \ComplejidadDer{1}			
 							\Else
+								\If{c $\textless$ *(pNodo).clave $\wedge$ *(pNodo).izq == NULL} \ComplejidadDer{1}
+									\If{*(pNodo).der ==NULL} \ComplejidadDer{1}
+										\State *(pNodo).alt $\gets$ 2 \ComplejidadDer{1}
+									\Else
+									\EndIf
+									\State *(pNodo).izq $\gets$ $\&$tupla(c, s, pNodo, NULL, NULL, 1) \ComplejidadDer{1}
+									\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+									\State camino[nroCamino] $\gets$ *(pNodo).izq \ComplejidadDer{1}
+									\State seguir $\gets$ false \ComplejidadDer{1}
+ 								\Else
+									\If{*(pNodo).der == NULL} \ComplejidadDer{1}
+										\State *(pNodo).alt $\gets$ *(pNodo).alt + 1 \ComplejidadDer{1}
+									\Else
+										\State *(pNodo).alt $\gets$ max(*(*(pNodo).izq).alt + 1, *(*(pNodo).der).alt) \ComplejidadDer{1}
+									\EndIf
+									\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
+									\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+									\State camino[nroCamino] $\gets$ pNodo \ComplejidadDer{1}
+								\EndIf
 							\EndIf	
 				        \EndIf
 				\EndWhile
+				\State d.tam $\gets$ d.tam + 1 \ComplejidadDer{1}
+				\While{nroCamino $\geq$ 0} \ComplejidadDer{log2\ n}
+					\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
+					\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
+						\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
+					\Else
+					\EndIf
+					\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+ 				\EndWhile
 			\EndIf			
 		  \EndIf
 			
@@ -168,27 +195,231 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 }{\Complejidad{log_2\ n}}{
 }
 
-\Algoritmo{IRotarSimpleIzq}{}{}{
-	\State 
+\Algoritmo{IBorrar}{\In{c}{clave}, \Inout{d}{diccRapido}}{}{
+	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
+	\State var camino: arreglo[$\lfloor log_2\ (d.tam) \rfloor+ 1$] de puntero(nodo) \ComplejidadDer{\lfloor log_2\ (d.tam) \rfloor+ 1}
+ 	\State var nroCamino: nat $\gets$ 0 \ComplejidadDer{1}
+	\State camino[nroCamino] $\gets$ pNodo \ComplejidadDer{1}	
+	\While{c != *(pNodo).clave} \ComplejidadDer{log_2\ n}
+		\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
+			\If{*(pNodo).izq == NULL} \ComplejidadDer{1}
+				\State *(pNodo).alt $\gets$ *(pNodo).alt - 1 \ComplejidadDer{1}
+			\Else
+				\State *(pNodo).alt $\gets$ max(*(*(pNodo).izq).alt, *(*(pNodo).der).alt - 1) \ComplejidadDer{1}
+			\EndIf
+			\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
+			\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+			\State camino[nroCamino] $\gets$ pNodo \ComplejidadDer{1}	
+		\Else
+			\If{*(pNodo).der == NULL} \ComplejidadDer{1}
+				\State *(pNodo).alt $\gets$ *(pNodo).alt - 1 \ComplejidadDer{1}
+			\Else
+				\State *(pNodo).alt $\gets$ max(*(*(pNodo).izq).alt - 1, *(*(pNodo).der).alt) \ComplejidadDer{1}
+			\EndIf
+			\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
+			\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+			\State camino[nroCamino] $\gets$ pNodo \ComplejidadDer{1}
+		\EndIf			
+	\EndWhile
+	\If{*(pNodo).izq == NULL $\wedge$ *(pNodo).der == NULL} \ComplejidadDer{1}
+		%EL NODO NO TIENE HOJAS
+		\If{*(pNodo).padre == NULL} \ComplejidadDer{1}
+			\State d.raiz $\gets$ NULL \ComplejidadDer{1}
+			\State delete pNodo \ComplejidadDer{1}
+		\Else
+			\If{*(pNodo).clave == *(*(*(pNodo).padre).izq).clave} \ComplejidadDer{1}
+				\State *(*(pNodo).padre).izq $\gets$ NULL \ComplejidadDer{1}
+			\Else
+				\State *(*(pNodo).padre).der $\gets$ NULL \ComplejidadDer{1}
+			\EndIf
+			\State delete pNodo \Complejidad{1}
+			\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+			\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
+				\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
+				\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
+					\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
+				\Else
+				\EndIf
+				\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+			\EndWhile
+		\EndIf
+	\Else
+		\If{*(pNodo).izq == NULL $\wedge$ *(pNodo).der != NULL} \ComplejidadDer{1}
+			%EL NODO TIENE UNA HOJA DER
+			\If{*(pNodo).padre == NULL} \ComplejidadDer{1}
+				\State *(*(pNodo).der).padre $\gets$ NULL \ComplejidadDer{1}
+				\State  d.raiz $\gets$ *(pNodo).der \ComplejidadDer{1}
+				\State delete pNodo \ComplejidadDer{1}
+			\Else
+				\If{*(pNodo).clave == *(*(*(pNodo).padre).izq).clave} \ComplejidadDer{1}
+					\State *(*(pNodo).padre).izq $\gets$ *(pNodo).der \ComplejidadDer{1}
+				\Else
+					\State *(*(pNodo).padre).der $\gets$ *(pNodo).der \ComplejidadDer{1}
+				\EndIf
+				\State *(*(pNodo).der).padre $\gets$ *(pNodo).padre \ComplejidadDer{1}
+				\State delete pNodo \ComplejidadDer{1}
+				\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+				\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
+					\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
+					\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
+						\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
+					\Else
+					\EndIf
+					\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+				\EndWhile
+			\EndIf
+		\Else
+			\If{*(pNodo).izq != NULL $\wedge$ *(pNodo).der == NULL}
+				%EL NODO TIENE UNA HOJA IZQ
+				\If{*(pNodo).padre == NULL} \ComplejidadDer{1}
+					\State *(*(pNodo).izq).padre $\gets$ NULL \ComplejidadDer{1}
+					\State d.raiz $\gets$ *(pNodo).izq \ComplejidadDer{1}
+					\State delete pNodo \ComplejidadDer{1}
+				\Else
+					\If{*(pNodo).clave == *(*(*(pNodo).padre).izq).clave} \ComplejidadDer{1}
+						\State *(*(pNodo).padre).izq $\gets$ *(pNodo).izq \ComplejidadDer{1}
+					\Else
+						\State *(*(pNodo).padre).der $\gets$ *(pNodo).izq \ComplejidadDer{1}
+					\EndIf
+					\State *(*(pNodo).izq).padre $\gets$ *(pNodo).padre \ComplejidadDer{1}
+					\State delete pNodo \ComplejidadDer{1}
+					\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+					\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
+						\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
+						\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
+							\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
+						\Else
+						\EndIf
+						\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+					\EndWhile
+				\EndIf 
+			\Else
+				%EL NODO TIENE DOS HOJAS
+				%ATENCIONNN VOY POR ACA!!!
+			\EndIf
+		\EndIf
+	\EndIf
+}{\Complejidad{log_2\ n}}{
+}
+
+\Algoritmo{IRotar}{\Inout{p}{puntero(nodo)}}{}{
+	\If{\NombreFuncion{FactorDesbalance}(p) $<$ 1} \ComplejidadDer{1}
+		\If{\NombreFuncion{FactorDesbalance}(*(p).der) $>$ 1} \ComplejidadDer{1}
+			\State $res$ $\gets$ \NombreFuncion{RotarDobleIzq}($p$) \ComplejidadDer{1}
+		\Else 
+			\State $res$ $\gets$ \NombreFuncion{RotarSimpleIzq}($p$) \ComplejidadDer{1}
+		\EndIf
+	\Else
+		\If{\NombreFuncion{FactorDesbalance}(*(p).izq) $<$ 1} \ComplejidadDer{1}
+			\State $res$ $\gets$\NombreFuncion{RotarDobleDer}($p$) \ComplejidadDer{1}
+		\Else
+			\State $res$ $\gets$ \NombreFuncion{RotarSimpleDer}($p$) \ComplejidadDer{1}
+		\EndIf
+	\EndIf
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{IRotarSimpleIzq}{\Inout{p}{puntero(nodo)}}{}{
+	\State var r: puntero(nodo) $\gets$ p \ComplejidadDer{1}
+	\State var r2: puntero(nodo) $\gets$ *(r).der \ComplejidadDer{1}
+	\State var i: puntero(nodo) $\gets$ *(r).izq \ComplejidadDer{1}
+	\State var i2: puntero(nodo) $\gets$ *(r2).izq \ComplejidadDer{1}
+	\State var d2: puntero(nodo) $\gets$ *(r2).der \ComplejidadDer{1}
+	\State var padre: puntero(nodo) $\gets$ *(r).padre \ComplejidadDer{1}
+	\If{padre != NULL}
+		\If{*(r).clave == *(*(padre).izq).clave} \ComplejidadDer{1}
+			\State  *(padre).izq $\gets$ r2 \ComplejidadDer{1}
+		\Else
+			\State *(padre).der $\gets$ r2 \ComplejidadDer{1}
+ 		\EndIf
+	\Else
+	\EndIf
+	\State *(r2).padre $\gets$ padre \ComplejidadDer{1}
+	\State *(r2).izq $\gets$ r \ComplejidadDer{1}
+	\State *(r).padre $\gets$ r2 \ComplejidadDer{1}
+	\State *(r).der $\gets$ i2 \ComplejidadDer{1}
+	\If{i2 != NULL}
+		\State *(i2).padre $\gets$ r \ComplejidadDer{1}
+	\Else
+	\EndIf
+	\State *(r).alt $\gets$ \NombreFuncion{Altura}(r) \ComplejidadDer{1}
+	\State *(r2).alt $\gets$ \NombreFuncion{Altura}(r2) \ComplejidadDer{1}
+ }{\Complejidad{1}}{
+}	
+
+\Algoritmo{IRotarSimpleDer}{\Inout{p}{puntero(nodo)}}{}{
+	\State var r: puntero(nodo) $\gets$ p \ComplejidadDer{1}
+	\State var r2: puntero(nodo) $\gets$ *(r).izq \ComplejidadDer{1}
+	\State var d: puntero(nodo) $\gets$ *(r).der \ComplejidadDer{1}
+	\State var i2: puntero(nodo) $\gets$  *(r2).izq \ComplejidadDer{1}
+	\State var d2: puntero(nodo) $\gets$ *(r2).der \ComplejidadDer{1}
+	\State var padre: puntero(nodo) $\gets$ *(r).padre \ComplejidadDer{1}
+	\If{padre != NULL}
+		\If{*(r).clave == *(*(padre).izq).clave} \ComplejidadDer{1}
+			\State  *(padre).izq $\gets$ r2 \ComplejidadDer{1}
+		\Else
+			\State *(padre).der $\gets$ r2 \ComplejidadDer{1}
+ 		\EndIf
+	\Else
+	\EndIf	
+	\State *(r2).padre $\gets$ padre \ComplejidadDer{1}
+	\State *(r2).der $\gets$ r \ComplejidadDer{1}
+	\State *(r).padre $\gets$ r2 \ComplejidadDer{1}
+	\State *(r).izq $\gets$ d2 \ComplejidadDer{1}
+	\If{d2 != NULL}
+		\State *(d2).padre $\gets$ r \ComplejidadDer{1}
+ 	\Else
+	\EndIf
+	\State *(r).alt $\gets$ \NombreFuncion{Altura}(r) \ComplejidadDer{1}
+	\State *(r2).alt $\gets$ \NombreFuncion{Altura}(r2) \ComplejidadDer{1}
 }{\Complejidad{1}}{
 }	
 
-\Algoritmo{IRotarSimpleDer}{}{}{
-	\State 
+\Algoritmo{IRotarDobleIzq}{\Inout{p}{puntero(nodo)}, \Inout{d}{diccRapido}}{}{
+	\State \NombreFuncion{RotarSimpleDer}(*(p).der) \ComplejidadDer{1}
+	\State \NombreFuncion{RotarSimpleIzq}(p) \ComplejidadDer{1}
 }{\Complejidad{1}}{
 }	
 
-\Algoritmo{IRotarDobleIzq}{}{}{
-	\State 
+\Algoritmo{IRotarDobleDer}{\Inout{p}{puntero(nodo)}}{}{
+	\State \NombreFuncion{RotarSimpleIzq}(*(p).izq) \ComplejidadDer{1}
+	\State \NombreFuncion{RotarSimpleDer}(p) \ComplejidadDer{1}
 }{\Complejidad{1}}{
 }	
 
-\Algoritmo{IRotarDobleDer}{}{}{
-	\State 
+\Algoritmo{IAltura}{\In{p}{puntero(nodo)}}{nat}{
+	\If{*(p).izq == NULL $\wedge$ *(p).der == NULL} \ComplejidadDer{1}
+		\State $\res$ $\gets$ 1 \ComplejidadDer{1}
+	\Else
+		\If{*(p).izq != NULL $\wedge$ *(p).der == NULL} \ComplejidadDer{1}
+			\State $\res$ $\gets$ *(*(p).izq).alt + 1 \ComplejidadDer{1}
+		\Else
+			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{2}
+				\State $res$ $\gets$ *(*(p).der).alt + 1 \ComplejidadDer{1}
+			\Else
+				\State $res$ $\gets$ max(*(*(p).izq).alt, *(*(p).der).alt) + 1 \ComplejidadDer{1}
+			\EndIf
+		\EndIf
+	\EndIf
 }{\Complejidad{1}}{
-}	
+}
 
-
+\Algoritmo{IFactorDesbalance}{\In{p}{puntero(nodo)}}{nat}{
+		\If{*(p).izq == NULL $\wedge$ *(p).der == NULL} \ComplejidadDer{1}
+		\State $\res$ $\gets$ 0 \ComplejidadDer{1}
+	\Else
+		\If{*(p).izq != NULL $\wedge$ *(p).der == NULL} \ComplejidadDer{1}
+			\State $\res$ $\gets$ *(*(p).izq).alt \ComplejidadDer{1}
+		\Else
+			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{2}
+				\State $res$ $\gets$ - *(*(p).der).alt \ComplejidadDer{1}
+			\Else
+				\State $res$ $\gets$ *(*(p).izq).alt - *(*(p).der).alt \ComplejidadDer{1}
+			\EndIf
+		\EndIf
+	\EndIf
+}{\Complejidad{1}}{
+}
 
 
 \end{Algoritmos}

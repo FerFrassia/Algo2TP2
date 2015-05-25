@@ -83,18 +83,21 @@
   []
   [Verifica que haya un camino de conexiones entre una computadora y otra]
   
-\end{Interfaz}
+ \end{Interfaz}
 
 \subsection{Auxiliares}
-
+	%\Begin{Auxiliares}
   \Titulo{Operaciones auxiliares}
 
-  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista(compu))}
+	
+  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista)}
   [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
   {$res$ $\igobs$ caminosMinimos(r, $c_1$, $c_2$)}
-  []
-  [Devuelve los caminos mínimos entre c_1 y c_2]
+  [$\Complejidad{ALGO}$]
+  [Devuelve los caminos minimos entre $c_1$ y $c_2$]
+  
 
+	%\End{Auxiliares}
 \subsection{Representacion}
 
 \begin{Representacion}
