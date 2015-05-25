@@ -36,7 +36,7 @@
   [\Complejidad{1}]
   [Devuelve la cantidad de paquetes que fueron enviados desde la computadora.]
   
-  \InterfazFuncion{enEspera}{\In {d}{dcnet}, \In {c}{compu}}{conj(paquete)}
+  \InterfazFuncion{enEspera}{\In {d}{dcnet}, \In {c}{compu}}{itPaquete}
   [$c$ $\in$ computadoras(red($d$))]
   {$res \igobs$ enEspera($d,c$)}
   [\Complejidad{1}]
@@ -99,19 +99,23 @@
 \begin{Estructura}{dcnet}[e\_dc]
 	\begin{Tupla}[e\_dc]
 		\tupItem{red}{red}
-		\tupTupItem{MasEnviante}{\TipoVariable{tupla}$($\ignorespaces
+		\tupTupItem{\\MasEnviante}{\TipoVariable{tupla}$($\ignorespaces
 			\emph{compu}: \TipoVariable{compu}, 
 			\emph{enviados}: \TipoVariable{nat}$)$}
-		\tupTupItem{\\CompusYPaquetes}{\TipoVariable{DiccString}$($\ignorespaces
+		\tupTupItem{\\CompYPaq}{\TipoVariable{DiccString}$($\ignorespaces
 			\emph{compu}: \TipoVariable{compu},
 			\TipoVariable{tupla}$($\ignorespaces
-			\emph{PorMasPrioritarios}:{DiccRapido}$($
+			\emph{MasPriori}:{DiccRapido}$($\ignorespaces
 			\emph{prioridad} :{nat},
-			\emph{PaquetitosdePrioridad}:{conj$($paquete$)$}
+			\emph{PaqdePriori}:{conj$($paquete$)$}
 			 $)$,
-			\emph{PaquetesYCaminos}:{DiccRapido} $($\ignorespaces
-			\emph{paquetes}:{paquete},
-			\emph{CaminoRecorrido}:{secu$($compu$)$}$)$,
+			\emph{PaqYCam}:{DiccRapido} $($\ignorespaces
+			\emph{idpaq}:{nat},
+			\TipoVariable{tupla}$($\ignorespaces
+			\emph{CamRecorrido}:{secu$($compu$)$,
+			\emph{Origen}:{compu},
+			\emph{Destino}:{compu},
+			\emph{Prioridad}:{nat}}$)$,
 			\emph{Enviados}:{nat}$))$}
 	
 	\end{Tupla}
@@ -239,21 +243,22 @@
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iCaminoRecorrido}{\In {d}{dcnet},\In {p}{paquete}}{secu(compu)}
-	{%FALTA HACER
+	{
 		\State var $it$ $\gets$ computadoras(d.red) \ComplejidadDer{1}
-		\While {HaySiguiente($it$)}   \ComplejidadDer{1}
-		\If {definido?(p.id,significado(Siguiente($it$),CompusYPaquetes.d).PaquetesYCaminos)}
-		\State $res$ $\gets$ significado(p.id,significado(Siguiente($it$),CompusYPaquetes.d).PaquetesYCaminos).CaminoRecorrido 		\EndIf
+		\While {HaySiguiente($it$)}   \ComplejidadDer{Cardinal(pc)}
+		\If {def?(p.id, significado(Siguiente($it$), CompYPaq.d).PaqYCam)}	\ComplejidadDer{|Siguiente($it$) + log_2(N)}
+		\State $res$ $\gets$ obtener(p.id, significado(Siguiente($it$), CompYPaq.d).PaqYCam).CamRecorrido	\ComplejidadDer{|Siguiente($it$) + log_2(N)} 		
+		\EndIf
 		\State Avanzar($it$)  \ComplejidadDer{1}
 		\EndWhile
 	}
-	{\Complejidad{1}}
+	{\Complejidad{|compu| }}
 	{}
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iCantidadEnviados}{\In {d}{dcnet}, \In {c}{compu}}{nat}
 	{
-		\State $res$ $\gets$ Significado(c,d.CompusYPaquetes).Enviados  \ComplejidadDer{|c|}
+		\State $res$ $\gets$ Significado(c,d.CompYPaq).Enviados  \ComplejidadDer{|c|}
 	}
 	{\Complejidad{1}}
 	{}
@@ -261,7 +266,7 @@
 	
 	\begin{Algoritmo}{enEspera}{\In {d}{dcnet}, \In {c}{compu}}{itPaquete)}
 	{
-		\State $res$  $\gets$ claves(Significado(c , d.CompusYPaquetes).PaquetesYCaminos) \ComplejidadDer{1}
+		\State $res$  $\gets$ claves(Significado(c , d.CompYPaq).PaqYCam) \ComplejidadDer{1}
 	}
 	{\Complejidad{1}}
 	{}
@@ -269,7 +274,15 @@
 	
 	\begin{Algoritmo}{iIniciarDCNet}{\In {r}{red}, \Inout {d}{dcnet}}{}
 	{
-		\State  \ComplejidadDer{1}
+		\State d.red $\gets$ r \ComplejidadDer{1}
+		\State  var $it$ $\gets$ computadoras(red) \ComplejidadDer{1}
+		\State d.MasEnviante $\gets$ tupla(Siguiente($it$),0) \ComplejidadDer{1}
+		\State d.CompyPaq $\gets$ Vacio() \ComplejidadDer{1}
+		\While {HaySiguiente($it$)}  \ComplejidadDer{1}
+		\State Definir(d.CompyPaq, Siguiente($it$), tupla(Vacio(), Vacio(), 0) \ComplejidadDer{1}
+		\State Avanzar($it$) \ComplejidadDer{1}
+		\EndWhile
+		
 	}
 	{\Complejidad{1}}
 	{}
@@ -277,16 +290,55 @@
 	
 	\begin{Algoritmo}{iCrearPaquete}{\In {p}{rur}, \Inout {d}{dcnet}}{}
 	{
-		\State \ComplejidadDer{1}
-	}
+		\If {def?(p.prioridad,significado(d.CompYPaq. p.origen).MasPriori)}	\ComplejidadDer{1}
+			\State Definir(significado($d$.CompYPaq., $p$.origen).MasPriori, $p$.prioridad, Agregar(Vacio(),$p$))
+		\Else {Definir(significado(d.CompYPaq., p.origen).MasPriori, p.prioridad,Agregar(significado(significado(d.CompYPaq., p.origen).MasPriori, p.prioridad)} \ComplejidadDer{1}
+		\EndIf
+		
+		\State definir(p,significado(d.CompYPaq. p.origen).PaqYCam),AgregarAtras(<>,p.origen)	\ComplejidadDer{1}
+		
+		
+		}
 	{\Complejidad{1}}
 	{}
 	\end{Algoritmo}
+	
+	
 	
 	\begin{Algoritmo}{iAvanzarSegundo}{\Inout {d}{dcnet}}{}
 	{
-		\State \ComplejidadDer{1}
-	}
+		\State var $it$ $\gets$ computadoras(red) \ComplejidadDer{1}
+		\State var aux $\gets$ Vacia()
+		\While {HaySiguiente($it$)}	\ComplejidadDer{1}
+		\If {$\neg$ Vacio?(significado(d.CompYPaq,Siguiente($it$).MasPriori)}
+			\State var $it2$ $\gets$ crearIt(DameMAx(d.CompYPaq,Siguiente($it$).MasPriori)\ComplejidadDer{1}
+			\State AgregarAdelante(aux,Siguiente(tupla(paq: $it2$,pcant: $it$))
+			
+			\State Borrar(significado(d.CompYPaq,Siguiente($it$).PaqYCam , $it$.id)
+			\State EliminarSiguiente($it2$)
+			\State	significado(d.CompYPaq, Siguiente($it$)).Enviados ++ \ComplejidadDer{1}
+		\If {significado(d.CompYPaq, Siguiente ($it$).Enviados > d.MasEnviante.enviados }	\ComplejidadDer{1}
+			\State d.MasEnviante $\gets$ tupla(Siguiente($it$), significado(d.CompYPaq,Siguiente($it$).Enviados )	\ComplejidadDer{1}
+		\EndIf		
+		\EndIf
+		\State Avanzar($it$)
+		\EndWhile
+		\State var $it3$ $\gets$ crearIt(aux)
+		\While {HaySiguiente($it3$)}
+			\If {def?(($it3$.paq).prioridad,significado(d.CompYPaq,CaminoMinimo(d.red, $it3$.pcant,$it3$.destino).MasPriori)}	\ComplejidadDer{1}
+			
+			\State {Definir(significado(d.CompYPaq., CaminoMinimo(d.red, $it3$.pcant,$it3$.destino).MasPriori, $it3$.paq.prioridad,Agregar(significado(significado(d.CompYPaq., CaminoMinimo(d.red, $it3$.pcant,$it3$.destino)).MasPriori, $it3$.paq.prioridad)} \ComplejidadDer{1}
+		
+		
+		 \Else Definir(significado(d.CompYPaq., ($it3$.paq).destino).MasPriori, $it3$.prioridad, Agregar(Vacio(),$it3$.paq))
+		\EndIf
+		
+		\State definir(p,significado(d.CompYPaq. p.origen).PaqYCam),AgregarAtras(CaminoRecorrido(d, $it3$.paq) ,CaminoMinimo(d.red, $it3$.pcant,$it3$.destino))	\ComplejidadDer{1}
+		\State EliminarSiguiente($it3$)
+		\State Avanzar($it3$)
+		\EndWhile
+		
+		}
 	{\Complejidad{1}}
 	{}
 	\end{Algoritmo}
@@ -294,89 +346,6 @@
 	
 	
 	
-	
-	\begin{Algoritmo}{iCrear}{\In {m}{mapa}}{ciudad}
-	{
-		\State $res$ $\gets$ tupla($mapa$: $m$, $RUREnEst$: Vacío(), $RURs$: Vacía(), $\#RURHistoricos$: 0) \ComplejidadDer{1}
-		\State var $it$:itConj(Estacion) $\gets$ Estaciones($m$) \ComplejidadDer{1}
-		\While{HaySiguiente($it$)} \ComplejidadDer{1}
-		\State Definir($res.RUREnEst$, Siguiente($it$), Vacío()) \ComplejidadDer{|e_m|}
-		\State Avanzar($it$) \ComplejidadDer{1}
-		\EndWhile
-	}
-	{$\Complejidad{Cardinal(Estaciones(m)) * |e_m|}$}
-	{$\Complejidad{1} + \Complejidad{1} + \sum_{i=1}^{Cardinal(Estaciones(m))} (\Complejidad{|e_m|} + \Complejidad{1}) = \newline
-		 2 * \Complejidad{1} + Cardinal(Estaciones(m)) * (\Complejidad{|e_m|} + \Complejidad{1}) = \newline 
-		 Cardinal(Estaciones(m)) * (\Complejidad{|e_m|})
-	$}
-	%{\Complejidad{1} + \Complejidad{Cardinal(Estaciones(m))} * \Complejidad{|e_m|} = \Complejidad{Cardinal(Estaciones(m)) * |e_m|}}
-	\end{Algoritmo}
-	
-	\begin{Algoritmo}{iEntrar}{\In {ts}{conj(tags)}, \In {e}{string}, \Inout {c}{ciudad}}{}
-	{
-		\State Agregar(Significado($c.RUREnEst$, $e$), 0, $c.\#RURHistoricos$) \ComplejidadDer{log_2 n + |e|}
-		\State Agregar($c.RURs$, $c.\#RURHistoricos$, tupla($id$: $c.\#RURHistoricos$, $esta?$: $true$, $estacion$: $e$, $inf$: 0, $carac$: $ts$, $sendEv$: EvaluarSendas($ts$, $c.mapa$)) \ComplejidadDer{1 + S * R}
-		\State $c.\#RURHistoricos++$ \ComplejidadDer{1}
-	}
-	{$\Complejidad{log_2 n + |e| + S * R}$}
-	{$\Complejidad{log_2 n + |e|} + \Complejidad{1 + S * R} + \Complejidad{1} = \Complejidad{log_2 n + |e| + S * R}$}
-	\end{Algoritmo}
-	
-	\begin{Algoritmo}{iMover}{\In {u}{rur}, \In {e}{estación}, \Inout {c}{ciudad}}{}
-	{
-		\State Eliminar(Significado($c.RUREnEst$, $c.RURs[u].estacion$), $c.RURs[u].inf$, $u$) \ComplejidadDer{|e| + log_2 N_{e0}}
-		\State Agregar(Significado($c.RUREnEst$, $e$), $c.RURs[u].inf$, $u$) \ComplejidadDer{|e| + log_2 N_e}
-		\If{$\neg(c.RURs[u].sendEv$[NroConexion($c.RURs[u].estacion$, $e$, $c.mapa$)])} \ComplejidadDer{|e_0|	+ |e|}
-			\State $c.RURs[u].inf$++ \ComplejidadDer{1}
-		\EndIf
-		\State $c.RURs[u].estacion$ $\gets$ $e$ \ComplejidadDer{1}
-	}
-	{$\Complejidad{|e| + log_2 N_e$}}
-	{$\Complejidad{|e| + log_2 N_{e_0}} + \Complejidad{|e| + log_2 N_e} + \Complejidad{|e_0|, |e|} + max(\Complejidad{1}, \Complejidad{0}) + \Complejidad{1} = \newline
-		\Complejidad{2 * |e| + log_2 N_e + log_2 N_{e0}} + \Complejidad{|e_0| + |e|} + 2 * \Complejidad{1} = \newline
-		\Complejidad{|e| + log_2 N_e + log_2 N_{e0}} + \Complejidad{|e_0| + |e|} = \newline
-		\Complejidad{2 * |e| + |e_0| + log_2 N_e + log_2 N_{e0}} = \Complejidad{|e| + |e_0| + log_2 N_e + log_2 N_{e0}}
-	 $
-	Donde $e_0$ es c.RURs[u]estacion antes de modificar el valor}
-	\end{Algoritmo}
-	
-	%tupla($id$: nat, $esta?$: bool, $estacion$: string, $inf$: nat, $carac$: conj(string), $sendEv$: arreglo\_dimensionable de bool)
-	\begin{Algoritmo}{iInspección}{\In {e}{estación}, \Inout{c}{ciudad}}{}
-	{
-		\State var $rur$: nat $\gets$ Desencolar(Significado($c.RUREnEst$, $e$)) \ComplejidadDer{log_2 N}
-		\State $c.RURs[rur].esta?$ $\gets$ $false$ \ComplejidadDer{1}
-	}
-	{$\Complejidad{log_2 N}$}
-	{$\Complejidad{log_2 N} + \Complejidad{1} = \Complejidad{log_2 N}$}
-	\end{Algoritmo}
-	
-	\begin{Algoritmo}{icrearIt}{\In{c}{ciudad}}{itRURs}
-	{
-		\State $itRURS$ $\gets$ tupla($i: 0, maxI: c.\#RURHistoricos, ciudad: \&c$) \ComplejidadDer{1}
-	}
-	{$\Complejidad{1}$}{}
-	\end{Algoritmo}
-	
-	\begin{Algoritmo}{iActual}{\In{it}{itRURs}}{rur}
-	{
-		\State $res$ $\gets$ $(it.ciudad \rightarrow RURs)[it.i]$ \ComplejidadDer{1}
-	}
-	{$\Complejidad{1}$}{}
-	\end{Algoritmo}
-	
-	\begin{Algoritmo}{iAvanzar}{\In{it}{itRURs}}{itRURs}
-	{
-		\State $it.i++$ \ComplejidadDer{1}
-	}
-	{$\Complejidad{1}$}{}
-	\end{Algoritmo}
-	
-	\begin{Algoritmo}{iHayMas?}{\In{it}{itRURs}}{bool}
-	{
-		\State $res$ $\gets$ $(it.i < it.maxI)$ \ComplejidadDer{1}
-	}
-	{$\Complejidad{1}$}{}
-	\end{Algoritmo}
 
 	%\Algoritmo{IENTRAR}{\In {ts}{conj(tags)}, \In {e}{estación}, \Inout {c}{ciudad}}{}{
 		%\State e\_ciudad.cRUR $\gets$ e\_ciudad.cRUR + 1 \ComplejidadDer{1}
