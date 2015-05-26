@@ -111,19 +111,20 @@
 \bigskip
 \begin{Estructura}{red}[e\_red]
 	\begin{Tupla}[e\_red]
-		\tupTupItem{vecinosEInterfaces}{\TipoVariable{diccString}$($\ignorespaces
+		\tupTupItem{directasEInterfaces}{\TipoVariable{diccString}$($\ignorespaces
 			% NOTA:tupTupItem es un engendro que agregue para este caso, NO USAR EN OTRO LADO, USAR tupItem EN SU LUGAR.
 			\emph{compu}: \TipoVariable{string},
 			tupla(
-			\emph{interfaces}: \TipoVariable{diccString}$($\ignorespaces
+			\emph{directas}: \TipoVariable{diccString}$($\ignorespaces
 				\emph{compu}: \TipoVariable{string}, \ignorespaces
 				\emph{interfaz}: \TipoVariable{nat}\ignorespaces
 			$)$,
-			\emph{compusVecinas}: \TipoVariable{conj(compu)}
+			\emph{compusDirectas}: \TipoVariable{conj(compu)}
 			$) )$} \\
 			\tupTupItem{deOrigenADestino}{\TipoVariable{diccString}$($\ignorespaces
 			\emph{compu}: \TipoVariable{string},
-			\TipoVariable{diccString}$($\ignorespaces
+			\emph{indirectas}: \TipoVariable{diccString}
+			$($\ignorespaces
 				\emph{compu}: \TipoVariable{string}, \ignorespaces
 				\emph{caminosMinimos}: \TipoVariable{conj(lista(compu))}\ignorespaces
 			$) )$} \\
@@ -135,11 +136,8 @@
 \subsection{InvRep y Abs}
 
 \begin{enumerate}
-	\item{El conjunto de claves de ''uniones'' es igual al conjunto de estaciones ''estaciones''.}
-	\item{''\#sendas'' es igual a la mitad de las horas de ''uniones''.}
-	\item{Todo valor que se obtiene de buscar el significado del significado de cada clave de ''uniones'', es igual el valor hallado tras buscar en ''uniones'' con el sinificado de la clave como clave y la clave como significado de esta nueva clave, y no hay otras hojas ademas de estas dos, con el mismo valor.}
-	\item{Todas las hojas de ''uniones'' son mayores o iguales a cero y menores a ''\#sendas''.}
-	\item{La longitud de ''sendas'' es mayor o igual a ''\#sendas''.}
+	\item{Las claves de $directasEInterfaces$ son las mismas que las de $deOrigenADestino$ y también que el conjunto formado por las ip de $computadoras$.}
+		\item{}
 \end{enumerate}
 
 \Rep[e\_mapa][m]{
@@ -199,21 +197,21 @@
 	
 	\begin{Algoritmo}{iConectadas?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
 	{
-		\State $res$ $\gets$ Definido?(Significado($r.vecinosEInterfaces$, $c_1.ip$)$.interfaces$, $c_2.ip$) \ComplejidadDer{|c_1| + |c_2|}
+		\State $res$ $\gets$ Definido?(Significado($r.directasEInterfaces$, $c_1.ip$)$.directas$, $c_2.ip$) \ComplejidadDer{|c_1| + |c_2|}
 	}
 	{$\Complejidad{|c_1| + |c_2|}$}{}
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iInterfazUsada}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{interfaz}
 	{
-		\State $res$ $\gets$ Significado(Significado($r.vecinosEInterfaces$, $c_1.ip$)$.interfaces$, $c_2.ip$)\ComplejidadDer{|c_1| + |c_2|}
+		\State $res$ $\gets$ Significado(Significado($r.directasEInterfaces$, $c_1.ip$)$.directas$, $c_2.ip$)\ComplejidadDer{|c_1| + |c_2|}
 	}
 	{$\Complejidad{|c_1| + |c_2|}$}{}
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iIniciarRed}{}{red}
 	{
-		\State $res$ $\gets$ tupla($vecinosEInterfaces$: Vacío(), $deOrigenADestino$: Vacío(), $computadoras$: Vacío()) \ComplejidadDer{1 + 1 + 1}
+		\State $res$ $\gets$ tupla($directasEInterfaces$: Vacío(), $deOrigenADestino$: Vacío(), $computadoras$: Vacío()) \ComplejidadDer{1 + 1 + 1}
 	}
 	{$\Complejidad{1}$}
 	{$\Complejidad{1}  + \Complejidad{1} + \Complejidad{1} = \newline
@@ -223,7 +221,7 @@
 	\begin{Algoritmo}{iAgregarComputadora}{\Inout{r}{red}, \In{c}{compu}}{}
 	{
 		\State Agregar($r.computadoras$, $c$) \ComplejidadDer{1}
-		\State Definir($r.vecinosEInterfaces$, $c.ip$, tupla(Vacío(), Vacio())) \ComplejidadDer{|c|}
+		\State Definir($r.directasEInterfaces$, $c.ip$, tupla(Vacío(), Vacio())) \ComplejidadDer{|c|}
 		\State Definir($r.deOrigenADestino$, $c.ip$, Vacío()) \ComplejidadDer{|c|}
 	}
 	{$\Complejidad{|c|}$}
@@ -235,17 +233,17 @@
 	{
 		%Armo la primera componente de e_red
 		
-		\State var $tupSig1$:tupla $\gets$ Significado($r.vecinosEInterfaces$, $c_1.ip$)
+		\State var $tupSig1$:tupla $\gets$ Significado($r.directasEInterfaces$, $c_1.ip$)
 		%Guardo la interfaz usada por c_1
-		\State Definir($tupSig1.interfaces$, $c_2.ip$, $i_1$) \ComplejidadDer{|c_1| + |c_2| + 1}
-		%Agrego c_2 a las compusVecinas de c_1
-		\State Agregar($tupSig1.compusVecinas$, $c_2$) \ComplejidadDer{1}
+		\State Definir($tupSig1.directas$, $c_2.ip$, $i_1$) \ComplejidadDer{|c_1| + |c_2| + 1}
+		%Agrego c_2 a las compusDirectas de c_1
+		\State Agregar($tupSig1.compusDirectas$, $c_2$) \ComplejidadDer{1}
 
-		\State var $tupSig2$:tupla $\gets$ Significado($r.vecinosEInterfaces$, $c_2.ip$)
+		\State var $tupSig2$:tupla $\gets$ Significado($r.directasEInterfaces$, $c_2.ip$)
 		%Guardo la interfaz usada por c_2		
-		\State Definir($tupSig2.interfaces$, $c_1.ip$, $i_2$) \ComplejidadDer{|c_1| + |c_2| + 1}
-		%Agrego c_2 a las compusVecinas de c_1
-		\State Agregar($tupSig2.compusVecinas$, $c_1$) \ComplejidadDer{1}
+		\State Definir($tupSig2.directas$, $c_1.ip$, $i_2$) \ComplejidadDer{|c_1| + |c_2| + 1}
+		%Agrego c_2 a las compusDirectas de c_1
+		\State Agregar($tupSig2.compusDirectas$, $c_1$) \ComplejidadDer{1}
 		
 
 		%Armo la segunda componente de e_red
@@ -263,7 +261,7 @@
 	
 	\begin{Algoritmo}{iVecinos}{\In{r}{red}, \In{c}{compu}}{conj(compu)}
 	{
-		\State $res$ $\gets$ Significado($r.vecinosEInterfaces$, $c.ip$)$.compusVecinas$
+		\State $res$ $\gets$ Significado($r.directasEInterfaces$, $c.ip$)$.compusDirectas$
 	}
 	{}
 	{}
@@ -271,11 +269,11 @@
 	
 	\begin{Algoritmo}{iUsaInterfaz}{\In{r}{red}, \In{c}{compu}, \In{i}{interfaz}}{bool}
 	{
-		\State var $tupVecinos$:tupla $\gets$ Significado($r.vecinosEInterfaces$, $c.ip$) \ComplejidadDer{1}
-		\State var $itCompusVecinas$:itConj(compu) $\gets$ CrearIt($tupVecinos.compusVecinas$) \ComplejidadDer{1}
+		\State var $tupVecinos$:tupla $\gets$ Significado($r.directasEInterfaces$, $c.ip$) \ComplejidadDer{1}
+		\State var $itcompusDirectas$:itConj(compu) $\gets$ CrearIt($tupVecinos.compusDirectas$) \ComplejidadDer{1}
 		\State $res$:bool $\gets$ $false$ \ComplejidadDer{1}
-		\While{HaySiguiente($itCompusVecinas$) AND $¬res$} \ComplejidadDer{1}
-		\If {Significado($tupVecinos.interfaces$, Siguiente($itCompusVecinas$)$.ip$) $==$ $i$} \ComplejidadDer{1}
+		\While{HaySiguiente($itcompusDirectas$) AND $¬res$} \ComplejidadDer{1}
+		\If {Significado($tupVecinos.directas$, Siguiente($itcompusDirectas$)$.ip$) $==$ $i$} \ComplejidadDer{1}
 			\State $res$ $\gets$ $true$  \ComplejidadDer{1}
 		\EndIf
 		\State Avanzar($it$) \ComplejidadDer{1}

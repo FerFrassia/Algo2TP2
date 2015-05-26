@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.5.16)  26 MAY 2015 19:55
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.5.16)  26 MAY 2015 20:33
 entering extended mode
 **main.tex
 
@@ -964,7 +964,8 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \IntFuncionLengthC=\skip159
 \lenTupla=\skip160
 
-No file main.aux.
+("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
+bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\main.aux")
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 203.
 LaTeX Font Info:    ... okay on input line 203.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 203.
@@ -977,6 +978,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 203.
 LaTeX Font Info:    ... okay on input line 203.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 203.
 LaTeX Font Info:    ... okay on input line 203.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1038,16 +1040,17 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 243.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-
-LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 271.
-
-[1
+) [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
-No file main.toc.
+("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
+bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\main.toc"
+
+LaTeX Warning: Command \textless invalid in math mode on input line 6.
+
+)
 \tf@toc=\write4
-[2]
+ [2]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\tadext.tex"
 Overfull \hbox (13.89026pt too wide) in paragraph at lines 13--13
@@ -1165,28 +1168,48 @@ n/10 ) $\OMS/cmsy/m/n/10 ^$ $:$ \T1/cmr/m/n/10 usaInterfaz?($\OML/cmm/m/it/10 r
  []
 
 [5]
-Overfull \hbox (15.0pt too wide) in paragraph at lines 158--158
+Underfull \hbox (badness 1776) in paragraph at lines 123--132
+\T1/cmr/m/n/10 , \T1/cmr/m/it/10 deO-ri-ge-nA-Des-tino\T1/cmr/m/n/10 : \T1/cmtt
+/m/n/10 diccString$\OT1/cmr/m/n/10 ($\T1/cmr/m/it/10 compu\T1/cmr/m/n/10 : \T1/
+cmtt/m/n/10 string\T1/cmr/m/n/10 , \T1/cmr/m/it/10 in-di-rec-tas\T1/cmr/m/n/10 
+: \T1/cmtt/m/n/10 diccString $\OT1/cmr/m/n/10 ($\T1/cmr/m/it/10 compu\T1/cmr/m/
+n/10 :
+ []
+
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 156--156
 [][]| $\OMS/cmsy/m/n/10 $| [] 
  []
 
-[6]
-Overfull \hbox (11.16393pt too wide) in paragraph at lines 163--163
+
+Overfull \hbox (11.16393pt too wide) in paragraph at lines 161--161
 []\T1/cmr/m/n/10 #sendasPorDos 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--163
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
 []\T1/cmr/m/n/10 conj($\OML/cmm/m/it/10 $\T1/cmr/m/n/10 ) c $\OMS/cmsy/m/n/10 
 $
  []
 
-Package mdframed Info: Not enough space on this page on input line 220.
+[6]
+
+Package mdframed Warning: You got a bad break
+(mdframed)                because the last box will be empty
+(mdframed)                you have to change it manually
+(mdframed)                by changing the text, the space
+(mdframed)                or something else on input line 229.
+
+Package mdframed Info: You first box width is to small
+ mdframed fixed it
+(mdframed)              on input line 229.
 [7]
-Package mdframed Info: Not enough space on this page on input line 220.
-Package mdframed Info: Not enough space on this page on input line 293.
- [8]
-Package mdframed Info: Not enough space on this page on input line 293.
-) [9]
+
+Package mdframed Warning: You got a bad break
+(mdframed)                because the last split box is empty
+(mdframed)                You have to change the settings on input line 229.
+
+[8]) [9]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\dcnet.tex"
 Overfull \hbox (10.43942pt too wide) in paragraph at lines 58--58
@@ -1358,50 +1381,41 @@ bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\listaext.tex")
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\conjuntoext.tex")
 
-Package lastpage Warning: Rerun to get the references right on input line 308.
-
-
 AED: lastpage setting LastPage
 [31]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
-bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\main.aux")
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\main.aux") ) 
 Here is how much of TeX's memory you used:
- 22903 strings out of 493921
- 443195 string characters out of 3144924
- 538105 words of memory out of 3000000
- 25772 multiletter control sequences out of 15000+200000
+ 22906 strings out of 493921
+ 443778 string characters out of 3144924
+ 539419 words of memory out of 3000000
+ 25771 multiletter control sequences out of 15000+200000
  20127 words of font info for 58 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 67i,11n,83p,10417b,921s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dp
-i600\ecrm0800.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour
-\jknappen\ec\dpi600\ecti1000.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\
-fonts\pk\ljfour\jknappen\ec\dpi600\ectt1000.pk> <C:\Users\Sebastián\AppData\Lo
-cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1000.pk> <C:\Users\Sebast
-ián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <
-C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600
-\ecbx1440.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jkn
-appen\ec\dpi600\ecbx1000.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\font
-s\pk\ljfour\jknappen\ec\dpi600\ecrm1440.pk> <C:\Users\Sebastián\AppData\Local\
-MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\Sebastián
-\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1728.pk> <C:\U
-sers\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecr
-m2488.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi
-10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12
-.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pf
-b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Pr
-ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on main.pdf (31 pages, 276189 bytes).
+ 67i,11n,83p,10417b,923s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\User
+s\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm08
+00.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\e
+c\dpi600\ecti1000.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\lj
+four\jknappen\ec\dpi600\ectt1000.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\
+2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1000.pk> <C:\Users\Sebastián\AppDat
+a\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users\Se
+bastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1000.p
+k> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dp
+i600\ecbx1440.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour
+\jknappen\ec\dpi600\ecrm1440.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\
+fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\Sebastián\AppData\Lo
+cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1728.pk> <C:\Users\Sebast
+ián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm2488.pk><C
+:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/
+Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Pr
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Progr
+am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program F
+iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on main.pdf (31 pages, 280251 bytes).
 PDF statistics:
- 546 PDF objects out of 1000 (max. 8388607)
+ 557 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

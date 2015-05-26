@@ -15,25 +15,12 @@
   {$res \igobs$ def?($clv, d$)}
   [$\Complejidad{|clv|}$]
   [Revisa si la clave ingresada se encuentra definida en el Diccionario.]
-  
-  \InterfazFuncion{Obtener}{\In{clv}{string}, \In{d}{diccString($\alpha$)}}{$\alpha$}
-  [def?($clv, d$)]
-  {$res \igobs$ obtener($clv, d$)}
-  [$\Complejidad{|clv|}$]
-  [Devuelve el significado de la clave.]
 
   \InterfazFuncion{Vacío}{}{diccString($\alpha$)}
   [true]
   {$res \igobs$ vacío()}
   [\Complejidad{1}]
   [Crea nuevo diccionario vacio.]
-	
-<<<<<<< HEAD
-  \InterfazFuncion{Definir}{\Inout{d}{diccString($\alpha$)}, \In{clv}{string}, \In{def}{$\alpha$}}{}
-  [$d_0 \igobs d$]
-  {$d \igobs$ definir($clv, def, d_0$)}
-  [$\Complejidad{|clv|}$]
-  [Agrega un nueva definicion.]
 	
   \InterfazFuncion{Def?}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{bool}
   %[ACA VA EL PRE (SI LO HUBIERA)]
@@ -44,7 +31,9 @@
   \InterfazFuncion{Obtener}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{diccString($\alpha$)}
   [def?($d, clv$)]
   {$res \igobs$ obtener($clv, d$)}
-=======
+  [$\Complejidad{|clv|}$]
+  [Devuelve la definicion correspondiente a la clave.]
+
   \InterfazFuncion{Definir}{\In{clv}{string}, \In{def}{$\alpha$}, \Inout{d}{diccString($\alpha$)}}{}
   [$d$ $\igobs$ $d_0$]
   {$d$ $\igobs$ definir($clv, def, d_0$)}
@@ -52,10 +41,9 @@
   [Agrega un nueva definicion.]
 	
   \InterfazFuncion{Borrar}{\In{clv}{string}, \Inout{d}{diccString($\alpha$)}}{}
-  [$d$ $\igobs$ $d_0$ $\wedge$ def?(clv, d)]
+  [$d$ $\igobs$ $d_0$ $\wedge$ def?($clv, d_0$)]
   {$res$ $\igobs$ borrar($k, d_0$)}
->>>>>>> 6a8b227b980cf43c591bb3166b24fd34968fec9a
   [$\Complejidad{|clv|}$]
-  [Devuelve la definicion correspondiente a la clave.]
+  [Borra la definición.]
 	
 \end{Interfaz}
