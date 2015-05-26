@@ -23,19 +23,19 @@
   [\Complejidad{1}]
   [Crea nuevo diccionario vacio.]
 	
-  \InterfazFuncion{Definir}{\Inout{d}{diccString($\alpha$)}, \In{clv}{string}, \In{def}{$\alpha$}}{}
+  \InterfazFuncion{Definir}{\In{clv}{string}, \In{def}{$\alpha$}, \Inout{d}{diccString($\alpha$)}}{}
   [$d_0 \igobs d$]
   {$d \igobs$ definir($clv, def, d$)}
   [$\Complejidad{|clv|}$]
   [Agrega un nueva definicion.]
 	
-	\InterfazFuncion{Definido?}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{bool}
+	\InterfazFuncion{Definido?}{\In{clv}{string}, \In{d}{diccString($\alpha$)}}{bool}
   %[ACA VA EL PRE (SI LO HUBIERA)]
   {$res \igobs$ def?($clv, d$)}
   [$\Complejidad{|clv|}$]
   [Revisa si la clave ingresada se encuentra definida en el Diccionario.]
 	
-	\InterfazFuncion{Significado}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{diccString($\alpha$)}
+	\InterfazFuncion{Significado}{\In{clv}{string}, \In{d}{diccString($\alpha$)}}{diccString($\alpha$)}
   [def?($d, clv$)]
   {$res \igobs$ obtener($clv, d$)}
   [$\Complejidad{|clv|}$]

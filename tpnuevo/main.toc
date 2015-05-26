@@ -8,14 +8,15 @@
 \contentsline {subsection}{\numberline {2.3}InvRep y Abs}{5}
 \contentsline {subsection}{\numberline {2.4}Algoritmos}{6}
 \contentsline {section}{\numberline {3}DCNet}{9}
-\contentsline {subsection}{\numberline {3.1}Representacion}{10}
-\contentsline {subsection}{\numberline {3.2}InvRep y Abs}{10}
-\contentsline {subsection}{\numberline {3.3}Algoritmos}{12}
+\contentsline {subsection}{\numberline {3.1}Interfaz}{9}
+\contentsline {subsection}{\numberline {3.2}Representacion}{10}
+\contentsline {subsection}{\numberline {3.3}InvRep y Abs}{10}
+\contentsline {subsection}{\numberline {3.4}Algoritmos}{11}
 \contentsline {section}{\numberline {4}Diccionario String($\alpha $)}{15}
 \contentsline {subsection}{\numberline {4.1}Representacion}{15}
 \contentsline {subsection}{\numberline {4.2}InvRep y Abs}{16}
 \contentsline {subsection}{\numberline {4.3}Algoritmos}{16}
 \contentsline {section}{\numberline {5}DiccRapido}{18}
-\contentsline {subsection}{\numberline {5.1}Representacion}{18}
+\contentsline {subsection}{\numberline {5.1}Representacion}{19}
 \contentsline {subsection}{\numberline {5.2}InvRep y Abs}{19}
 \contentsline {subsection}{\numberline {5.3}Algoritmos}{19}
