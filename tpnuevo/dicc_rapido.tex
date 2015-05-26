@@ -1,58 +1,152 @@
-\section{DiccRapido}
+\section{Diccionario Rápido}
+
+\subsection{Interfaz}
 
 \begin{Interfaz}
   
   \textbf{se explica con}: \tadNombre{Diccionario(clave, significado)}.
 
-  \textbf{géneros}: \TipoVariable{diccRapido}.
+  \textbf{géneros}: \TipoVariable{diccRapido($\alpha$,$\beta$)}.
 
-  \Titulo{Operaciones básicas de DICCRAPIDO}
+  \Titulo{Operaciones básicas de Diccionario Rápido($\alpha$,$\beta$)}
 
-  \InterfazFuncion{Def?}{\In{c}{clave}, \In{d}{diccRapido}}{bool}
+  \InterfazFuncion{Def?}{\In{c}{$\alpha$}, \In{d}{diccRapido($\alpha$,$\beta$)}}{bool}
   [true]
   {$res$ $\igobs$ def?($c, d$)}
   [\Complejidad{log_2\ n}, siendo n la cantidad de claves]
   [Verifica si una clave está definida.]
   
- \InterfazFuncion{Obtener}{\In{c}{clave}, \In{d}{diccRapido}}{significado}
+ \InterfazFuncion{Obtener}{\In{c}{$\alpha$}, \In{d}{diccRapido($\alpha$,$\beta$)}}{$\beta$}
  [def?($c, d$)]
  {$res$ $\igobs$ obtener($c, d$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
  [Devuelve el significado asociado a una clave]
   
- \InterfazFuncion{Vacío}{}{diccRapido}
+ \InterfazFuncion{Vacío}{}{diccRapido($\alpha$,$\beta$)}
  [true]
  {$res$ $\igobs$ vacío()}
  [$\Complejidad{1}$]
  [Crea un nuevo diccionario vacío]  
   
- \InterfazFuncion{Definir}{\In{c}{clave}, \In{s}{significado}, \Inout{d}{diccRapido}}{}
+ \InterfazFuncion{Definir}{\In{c}{$\alpha$}, \In{s}{$\beta$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}
  [$d$ $\igobs$ $d_0$]
  {$d$ $\igobs$ definir($c, s, d_0$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
  [Define la clave, asociando su significado, al diccionario]
   
- \InterfazFuncion{Borrar}{\In{c}{clave}, \Inout{d}{diccRapido}}{}
+ \InterfazFuncion{Borrar}{\In{c}{$\alpha$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}
  [$d$ $\igobs$ $d_0$ $\wedge$ def?($c, d_0$)]
  {$d$ $\igobs$ borrar($c, d_0$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
  [Borra la clave del diccionario]
- 
- \InterfazFuncion{Claves}{\In{d}{diccRapido}}{itPaquete}
+  
+ \InterfazFuncion{Vacío?}{\In{d}{diccRapido($\alpha$,$\beta$)}}{bool}
  [true]
- {$res$ $\igobs$ claves($d$)}
+ {$res$ $\igobs$ vacío?($d$)}
+ [$\Complejidad{1}$]
+ [Verifica si el diccionario vacío]
+ 
+ \InterfazFuncion{ClaveMax}{\In{d}{diccRapido($\alpha$,$\beta$)}}{$\alpha$}
+ [$\neg$vacío?(d)]
+ {$res$ $\igobs$ claveMax($d$)}
+ [$\Complejidad{log_2\ n}$]
+ [Devuelve la mayor clave]
+  
+ \InterfazFuncion{Claves}{\In{d}{diccRapido($\alpha$,$\beta$)}}{itClave}
+ [true]
+ {$res$ $\igobs$ CrearIt(claves($d$))}
  [$\Complejidad{1}$]
  [Devuelve un iterador de paquete]  
+ 
+ \Titulo{Operaciones del Iterador}
+ 
+ \InterfazFuncion{CrearIt}{\In{d}{diccRapido($\alpha$,$\beta$)}}{itClave}
+ [true]
+ {$res$ $\igobs$ crearItUni(secuClaves(d))}
+ [$\Complejidad{1}$]
+ [Crea el iterador de claves]
+ 
+ \InterfazFuncion{HayMas?}{\In{it}{itClave}}{bool}
+ [true]
+ {$res$ $\igobs$ HayMas?($it$)}
+ [$\Complejidad{1}$]
+ [Verifica si hay más elementos a iterar]
+ 
+ \InterfazFuncion{Actual}{\In{it}{itClave}}{$\alpha$}
+ [HayMas?($it$)]
+ {$res$ Actual($it$)}
+ [$\Complejidad{1}$]
+ [Devuelve el actual del iterador]
+ 
+ \InterfazFuncion{Avanzar}{\Inout{it}{itClave}}{}
+ [$it$ $\igobs$ $it_0$ $\wedge$ HayMas?($it_0$)]
+ {$it$ $\igobs$ Avanzar($it_0$)} 
+ [$\Complejidad{n}$]
+ [Avanza el iterador]
   
+  \subsection{Auxiliares}
+	%\Begin{Auxiliares}
+  \Titulo{Operaciones auxiliares}
+
+	
+ \InterfazFuncion{DameNodos}{\In{p}{puntero(nodo)}, \In{actual}{nat}, \In{destino}{nat}}{conj(nodo)}
+ [true]
+ {$res$ $\igobs$ nodosNivel($p, actual, destino$)}
+ [$\Complejidad{n}$]
+ [Crea un conjunto de nodos con todos los nodos pertenecientes al nivel destino]
+ 
+ \InterfazFuncion{Rotar}{\Inout{p}{puntero(nodo)}}{}
+ [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ (\\ *(p).der != NULL $\vee$ \\ *(p).izq != NULL $\vee$ \\ (*(p).der !=NULL $\yluego$ *(*(p).der).izq != NULL) $\vee$ \\ (*(p).izq != NULL $\yluego$ *(*(p).izq).der != NULL))]
+ {$p$ $\igobs$ rotar($p_0$)}
+ [$\Complejidad{1}$]
+ [Realiza la rotación pertinente de p, de ser necesario]
+ 
+ \InterfazFuncion{RotarSimpleIzq}{\Inout{p}{puntero(nodo)}}{}
+ [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ *(p).der != NULL]
+ {$p$ $\igobs$ rotarSimpleIzq($p_0$)}
+ [$\Complejidad{1}$]
+ [Realiza una rotación simple izquierda del nodo p, y los nodos involucrados] 
+
+ \InterfazFuncion{RotarSimpleDer}{\Inout{p}{puntero(nodo)}}{}
+ [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ *(p).izq != NULL]
+ {$p$ $\igobs$ rotarSimpleDer($p_0$)}
+ [$\Complejidad{1}$]
+ [Realiza una rotación simple derecha del nodo p, y los nodos involucrados]
+ 
+ \InterfazFuncion{RotarDobleIzq}{\Inout{p}{puntero(nodo)}}{}
+ [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ *(p).der !=NULL $\yluego$ *(*(p).der).izq != NULL]
+ {$p$ $\igobs$ rotarDobleIzq($p_0$)}
+ [$\Complejidad{1}$]
+ [Realiza una rotación doble izquierda del nodo p, y los nodos involucrados]
+ 
+ \InterfazFuncion{RotarDobleDer}{\Inout{p}{puntero(nodo)}}{}
+ [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ *(p).izq != NULL $\yluego$ *(*(p).izq).der != NULL]
+ {$p$ $\igobs$ rotarDobleDer($p_0$)}
+ [$\Complejidad{1}$]
+ [Realiza una rotación doble derecha del nodo p, y los nodos involucrados]
+ 
+ \InterfazFuncion{Altura}{\In{p}{puntero(nodo)}}{nat}
+ [p != NULL]
+ {$res$ $\igobs$ altura(p)}
+ [$\Complejidad{1}$]
+ [Calcula y devuelve la altura actual de p]
+ 
+ \InterfazFuncion{FactorDesbalance}{\In{p}{puntero(nodo)}}{nat}
+ [p != NULL]
+ {$res$ $\igobs$ factorDesbalance(p)}
+ [$\Complejidad{1}$]
+ [Calcula y devuelve el factor de desbalance actual de p]
+
+
 \end{Interfaz}
 
-\subsection{Representacion}
+\subsection{Representación}
 
 \begin{Representacion}
 
 Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la cantidad de claves no está acotada, este AVL estará representado con nodos y punteros. Cabe destacar, que las claves del diccionario deben contener una relación de orden. Las claves y los significados se pasan por referencia.
 
-\begin{Estructura}{diccRapido}[estr]
+\begin{Estructura}{diccRapido($\alpha$,$\beta$)}[estr]
 	\begin{Tupla}[estr]
 		\tupTupItem{raiz}{\TipoVariable{puntero}(nodo)}
 		\tupItem{tam}{nat}
@@ -60,8 +154,8 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 	\end{Tupla}
 	
 	\begin{Tupla}[nodo]
-		\tupItem{clave}{clave}
-		\tupItem{significado}{significado}
+		\tupItem{clave}{$\alpha$}
+		\tupItem{significado}{$\beta$}
 		\tupTupItem{padre}{\TipoVariable{puntero}(nodo)}
 		\tupTupItem{izq}{\TipoVariable{puntero}(nodo)}
 		\tupTupItem{der}{\TipoVariable{puntero}(nodo)}
@@ -72,13 +166,42 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 
 \subsection{InvRep y Abs}
 
+\textbf{InvRep en lenguaje coloquial:}
+
+\begin{enumerate}
+	\item{La componente ''tam'' es igual a la cantidad de nodos del árbol.}
+	\item{Todo nodo del árbol tiene padre, con excepción de la raíz, que no tiene padre. Y de tener padre, como máximo, puede existir otro nodo que tenga el mismo padre.}
+	\item{No hay dos nodos con el mismo hijo izquierdo, ni hay dos nodos con el mismo hijo derecho.}
+	\item{Un nodo (n1) tiene a otro nodo (n2) como hijo (ya sea izquierdo, o derecho), si y solo si n2 tiene a n1 como padre.}
+	\item{Un nodo no puede tener al mismo hijo izquierdo y derecho. Tampoco puede tenerse a sí mismo como padre, o hijo izquierdo, o derecho.}
+	\item{La relación de orden es total.}
+	\item{Un nodo es mayor a otro si la componente ''clave'' del primero es mayor que la del segundo.}
+	\item{Un nodo es menor a otro si la componente ''clave'' del primero es menor que la del segundo.}
+	\item{No hay dos nodos con la misma componente ''clave''.}
+	\item{Para todo nodo, todos los nodos de su subárbol derecho son mayores a él.}
+	\item{Para todo nodo, todos los nodos del su subárbol izquierdo son menores que él.}
+	\item{La componente ''alt'' de cada nodo es igual a la cantidad de nodos que hay que ''bajar'' para llegar a su hoja mas lejana + 1. 		Vale aclarar que el nodo hoja tiene la componente ''alt'' igual a 1.}
+	\item{Para todo nodo, la diferencia,  en módulo,  de la altura entre sus subárboles es menor o igual a 1.}
+\end{enumerate}
+
+\textbf{Abs:}
+
+\vspace{1em}
+
+\Abs[estr]{Diccionario(Clave, Significado)}[e]{d}{
+		\\ ($\forall$c: clave) 
+		\\ def?(c, d) = Def?(c, e) $\yluego$  
+		\\ obtener(c, d) = Obtener(c, e)
+}
+
+
 \end{Representacion}
 
 \subsection{Algoritmos}
 
 \begin{Algoritmos}
 
-\Algoritmo{IDef?}{\In{c}{clave}, \In{d}{diccRapido}}{bool}{
+\Algoritmo{IDef?}{\In{c}{$\alpha$}, \In{d}{diccRapido($\alpha$,$\beta$)}}{bool}{
 	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
 	\While{*(pNodo) != NULL} \ComplejidadDer{log_2\ n}
 		\If{*(pNodo).clave == c} \ComplejidadDer{1}
@@ -93,10 +216,10 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 		\EndIf		
 	\EndWhile
 	\State $res$ $\gets$ false \ComplejidadDer{1}
-	}{\Complejidad{log_2\ n}}{
+	}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. \\ Vamos a ignorar los condicionales y las asignaciones, dado que éstas siempre ocurren en tiempo constante. Para analizar la complejidad del ciclo, es necesario tomar en cuenta cuantas iteraciones (como máximo) haría éste antes de romper su guarda. Como se trata de buscar un nodo en un AVL, sabemos que la búsqueda es $log_2\ n$, dado que el árbol está balanceado, es decir, en el peor caso estaremos buscando un nodo que puede pertenecer (o no) al último nivel y por esto se debe descender (como máximo) $log_2\ n$ veces. Luego, la complejidad del ciclo es la que define la complejidad del algoritmo.
 }
 
-\Algoritmo{IObtener}{\In{c}{clave}, \In{d}{diccRapido}}{significado}{
+\Algoritmo{IObtener}{\In{c}{$\alpha$}, \In{d}{diccRapido($\alpha$,$\beta$)}}{$\beta$}{
 	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
 	\While{*(pNodo).clave != c} \ComplejidadDer{log_2\ n}
 		\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
@@ -106,15 +229,15 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 		\EndIf			
 	\EndWhile
 	\State $res$ $\gets$ *(pNodo).significado \ComplejidadDer{1}
-	}{\Complejidad{log_2\ n}}{
+	}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. \\ Es un algoritmo muy parecido al de \NombreFuncion{Def?}. Nuevamente ignoraremos los condicionales y las asignaciones, dado que éstas siempre ocurren en tiempo constante. Para analizar la complejidad del ciclo, es necesario tomar en cuenta cuantas iteraciones (como máximo) haría éste antes de romper su guarda. Como se trata de buscar un nodo en un AVL, sabemos que la búsqueda es $log_2\ n$, dado que el árbol está balanceado, es decir, en el peor caso estaremos buscando un nodo que puede pertenecer (o no) al último nivel y por esto se debe descender (como máximo) $log_2\ n$ veces. Luego, la complejidad del ciclo es la que define la complejidad del algoritmo.
 }
 	
-\Algoritmo{IVacío}{}{diccRapido}{
-	\State var $res$: diccRapido $\gets$ tupla(NULL, 0) \ComplejidadDer{1}
+\Algoritmo{IVacío}{}{diccRapido($\alpha$,$\beta$)}{
+	\State var $res$: diccRapido($\alpha$,$\beta$) $\gets$ tupla(NULL, 0) \ComplejidadDer{1}
 }{\Complejidad{1}}{
 }	
 
-\Algoritmo{IDefinir}{\In{c}{clave}, \In{s}{significado}, \Inout{d}{diccRapido}}{}{
+\Algoritmo{IDefinir}{\In{c}{$\alpha$}, \In{s}{$\beta$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}{
 	\State \If{d.raiz == NULL} \ComplejidadDer{1}
 			\State d.raiz $\gets$ $\&$tupla(c, s, NULL, NULL, NULL, 1) \ComplejidadDer{1}
 		  	\State d.tam $\gets$ 1 \ComplejidadDer{1}
@@ -132,7 +255,7 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 			\Else
 		  		\State var	seguir: bool $\gets$ true \ComplejidadDer{1}
 				\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
-				\State var camino: arreglo[$\lfloor log_2\ (d.tam) \rfloor+ 1$] de puntero(nodo) \ComplejidadDer{\lfloor log_2\ (d.tam) \rfloor+ 1}
+				\State var camino: arreglo[$\lfloor log_2\ (d.tam) \rfloor+ 1$] de puntero(nodo) \ComplejidadDer{log_2\ n}
  				\State var nroCamino: nat $\gets$ 0 \ComplejidadDer{1}
 				\State camino[nroCamino] $\gets$ pNodo \ComplejidadDer{1}
 				\While{seguir == true} \ComplejidadDer{log2\ n}
@@ -190,14 +313,17 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
  				\EndWhile
 			\EndIf			
 		  \EndIf
-			
-			 
-}{\Complejidad{log_2\ n}}{
+}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. \\ En este algoritmo, tomaremos en cuenta las complejidades de tres casos e ignoraremos los condicionales y asignaciones (dado que son constantes). 
+\\ -El primer caso es cuando se quiera definir en un diccionario vacío, esto es \Complejidad{1}+\Complejidad{1}+\Complejidad{1} = 3 * \Complejidad{1} = \Complejidad{1} 
+\\ -El segundo caso es cuando se quiera definir una clave que ya estaba definida previamente, aquí ignoraremos las asignaciones y condicionales (cuyas complejidades son \Complejidad{1}), y nos centraremos en el uso de \NombreFuncion{Def?} y el ciclo. \NombreFuncion{Def?} sabemos que toma tiempo logarítmico, y en cuanto al ciclo, sabemos que tomará tiempo logarítmico también, porque iterará hasta buscar el nodo buscado. Esto es: \Complejidad{log_2\ n} + \Complejidad{log_2\ n} = 2 * \Complejidad{log_2\ n} = \Complejidad{log_2\ n}
+\\ -El tercer caso es cuando se quiera definir una clave que no estaba definida anteriormente. Nuevamente ignoraremos las asignaciones y condicionales, y nos centraremos en la creación del arreglo ''camino'', y los siguientes dos ciclos. Dado que se quiere crear un arreglo donde se guarden los punteros a nodos recorridos, como máximo en éste se guardaran $log_2\ n + 1$ nodos (porque en peor caso tendríamos que descender hasta la hoja más lejana para insertar). Por eso, basta con crear el arreglo con $log_2\ n + 1$ posiciones, y esto cuesta \Complejidad{log_2\ n}. Luego, el primer ciclo consiste en iterar hasta llegar a la posición donde queremos insertar el nuevo nodo, nuevamente esto es \Complejidad{log_2\ n} porque en peor caso tendríamos que descender hasta la hoja más lejana. Por último, el último ciclo recorre el arreglo ''camino'' de atrás hacia adelante (en realidad no todo el arreglo, sino desde el último elemento insertado en él), y dado que éste tiene (a lo sumo) $log_2\ n$ elementos, esto es \Complejidad{log_2\ n}. Finalmente, dado que este caso tiene éstas tres complejidades no anidadas: \Complejidad{log_2\ n}+\Complejidad{log_2\ n}+\Complejidad{log_2\ n} = 3 * \Complejidad{log_2\ n} = \Complejidad{log_2\ n}.
+\\ -Ahora, como teníamos tres casos, la complejidad es el máximo de ellos: max(\Complejidad{1},\Complejidad{log_2\ n},\Complejidad{log_2\ n}) = \Complejidad{log_2\ n}
+
 }
 
-\Algoritmo{IBorrar}{\In{c}{clave}, \Inout{d}{diccRapido}}{}{
+\Algoritmo{IBorrar}{\In{c}{$\alpha$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}{
 	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
-	\State var camino: arreglo[$\lfloor log_2\ (d.tam) \rfloor+ 1$] de puntero(nodo) \ComplejidadDer{\lfloor log_2\ (d.tam) \rfloor+ 1}
+	\State var camino: arreglo[$\lfloor log_2\ (d.tam) \rfloor+ 1$] de puntero(nodo) \ComplejidadDer{log_2\ n}
  	\State var nroCamino: nat $\gets$ 0 \ComplejidadDer{1}
 	\State camino[nroCamino] $\gets$ pNodo \ComplejidadDer{1}	
 	\While{c != *(pNodo).clave} \ComplejidadDer{log_2\ n}
@@ -233,15 +359,6 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 				\State *(*(pNodo).padre).der $\gets$ NULL \ComplejidadDer{1}
 			\EndIf
 			\State delete pNodo \Complejidad{1}
-			\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-			\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
-				\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
-				\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
-					\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
-				\Else
-				\EndIf
-				\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-			\EndWhile
 		\EndIf
 	\Else
 		\If{*(pNodo).izq == NULL $\wedge$ *(pNodo).der != NULL} \ComplejidadDer{1}
@@ -258,15 +375,6 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 				\EndIf
 				\State *(*(pNodo).der).padre $\gets$ *(pNodo).padre \ComplejidadDer{1}
 				\State delete pNodo \ComplejidadDer{1}
-				\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-				\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
-					\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
-					\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
-						\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
-					\Else
-					\EndIf
-					\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-				\EndWhile
 			\EndIf
 		\Else
 			\If{*(pNodo).izq != NULL $\wedge$ *(pNodo).der == NULL}
@@ -283,24 +391,143 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 					\EndIf
 					\State *(*(pNodo).izq).padre $\gets$ *(pNodo).padre \ComplejidadDer{1}
 					\State delete pNodo \ComplejidadDer{1}
-					\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-					\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
-						\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
-						\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
-							\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
-						\Else
-						\EndIf
-						\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-					\EndWhile
 				\EndIf 
 			\Else
 				%EL NODO TIENE DOS HOJAS
-				%ATENCIONNN VOY POR ACA!!!
+				\If{*(pNodo).padre == NULL} \ComplejidadDer{1}
+					\State var nuevoPNodo: puntero(nodo) $\gets$ *(pNodo).der \ComplejidadDer{1}
+					\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+					\State camino[nroCamino] $\gets$ nuevoPNodo \ComplejidadDer{1}
+					\While{*(nuevoPNodo).izq != NULL} \ComplejidadDer{log_2\ n}
+						\If{*(nuevoPNodo).der == NULL} \ComplejidadDer{1}
+							\State *(nuevoPNodo).alt $\gets$ *(nuevoPNodo).alt - 1 \ComplejidadDer{1}
+						\Else
+							\State *(nuevoPNodo).alt $\gets$ max(*(*(nuevoPNodo).izq).alt - 1, *(*(nuevoPNodo).der).alt) \ComplejidadDer{1}
+						\EndIf
+						\State nuevoPNodo $\gets$ *(nuevoPNodo).izq \ComplejidadDer{1}
+						\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+						\State camino[nroCamino] $\gets$ nuevoPNodo \ComplejidadDer{1}
+					\EndWhile
+					\State *(pNodo).clave $\gets$ *(nuevoPNodo).clave \ComplejidadDer{1}
+					\State *(pNodo).significado $\gets$ *(nuevoPNodo).significado \ComplejidadDer{1}
+					\If{*(nuevoPNodo).der != NULL} \ComplejidadDer{1}
+						\If{*(*(*(nuevoPNodo).padre).izq).clave == *(nuevoPNodo).clave} \ComplejidadDer{1}
+							\State *(*(nuevoPNodo).padre).izq $\gets$ *(nuevoPNodo).der \ComplejidadDer{1}
+						\Else
+							\State *(*(nuevoPNodo).padre).der $\gets$ *(nuevoPNodo).der \ComplejidadDer{1}
+						\EndIf
+						\State *(*(nuevoPNodo).der).padre $\gets$ *(nuevoPNodo).padre \ComplejidadDer{1}
+					\Else
+						\If{*(*(*(nuevoPNodo).padre).izq).clave == *(nuevoPNodo).clave} \ComplejidadDer{1}
+							\State *(*(nuevoPNodo).padre).izq $\gets$ NULL \ComplejidadDer{1}
+						\Else
+							\State *(*(nuevoPNodo).padre).der $\gets$ NULL \ComplejidadDer{1}
+						\EndIf
+					\EndIf
+					\State delete nuevoPNodo \ComplejidadDer{1}
+				\Else
+				\EndIf
 			\EndIf
 		\EndIf
 	\EndIf
-}{\Complejidad{log_2\ n}}{
+	\State d.tam $\gets$ d.tam - 1 \ComplejidadDer{1}
+	\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+	\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
+		\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
+		\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
+			\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
+		\Else
+		\EndIf
+		\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+	\EndWhile		
+}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. 
+\\ Nuevamente ignoraremos los condicionales y asignaciones (dado que son constantes), y nos centraremos en la creación de ''camino''
+, y los posteriores tres ciclos. 
+\\ -La creación de ''camino'', como hemos visto toma \Complejidad{log_2\ n}, dado que es crear un array con (a lo sumo) $log_2\ n + 1$ posiciones (esto es el camino recorrido, a rebalancear). 
+\\ -El primer ciclo consiste en buscar el elemento a borrar, dado que es una búsqueda en un AVL, esto es \Complejidad{log_2\ n}.
+\\ -El segundo ciclo sucede sólo cuando el elemento a borrar tiene dos subárboles hijos distintos de NULL, esto consiste en buscar el sucesor in-order (es decir, bajar un nodo a la derecha, y luego bajar lo máximo posible hacia la izquierda. Así se encuentra el siguiente ''inmediato''). Dado que es una búsqueda, y se empieza a descender desde el nodo a borrar (en peor caso, se empieza desde la raíz), esto toma \Complejidad{log_2\ n}. Cabe aclarar que éste ciclo no siempre se ejecuta, pero dado que en los demás casos la complejidad es de \Complejidad{1}, podemos asumir que dado el caso que haya sido, estará acotado por la complejidad del peor, osea éste.
+\\ -El tercer ciclo consiste en recorrer los elementos de ''camino'' de atrás hacia adelante (e ir rotando según corresponda), esto toma \Complejidad{log_2\ n}.
+\\ -Finalmente, la complejidad total es la suma de todos estas complejidades parciales: \Complejidad{log_2\ n}+\Complejidad{log_2\ n}+\Complejidad{log_2\ n}+\Complejidad{log_2\ n} = 4 * \Complejidad{log_2\ n} = \Complejidad{log_2\ n}
 }
+
+\Algoritmo{IVacío?}{\In{d}{diccRapido($\alpha$,$\beta$)}}{bool}{
+	\If{d.raiz == NULL} \ComplejidadDer{1}
+		\State $res$ $\gets$ true \ComplejidadDer{1}
+	\Else
+		\State $res$ $\gets$ false \ComplejidadDer{1}
+	\EndIf	
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{IClaveMax}{\In{d}{diccRapido($\alpha$,$\beta$)}}{$\alpha$}{
+	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
+	\While{*(pNodo).der != NULL} \ComplejidadDer{log_2\ n}
+		\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
+	\EndWhile
+	\State $res$ $\gets$ *(pNodo).clave \ComplejidadDer{1}
+}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. Ignorando las asignaciones, vemos que lo único a calcular es la cantidad de iteraciones del ciclo. Dado que el ciclo es una búsqueda en un AVL (en particular, se busca el elemento más grande), éste tomará a lo sumo $log_2\ n$ iteraciones.
+}
+
+\Algoritmo{IClaves}{\In{d}{diccRapido($\alpha$,$\beta$)}}{itClave}{
+	\State $res$ $\gets$ \NombreFuncion{CrearIt}(d) \ComplejidadDer{1}
+}{\Complejidad{1}}{
+}
+
+%% la tupla es (0: nivel, 1: numero de nodo, 2: total de nodos, 3: actual, 4: raiz)
+\Algoritmo{ICrearIt}{\In{d}{diccRapido($\alpha$,$\beta$)}}{itClave}{
+	\State $res$ $\gets$ tupla(1, 0, d.tam, d.raiz, d.raiz) \ComplejidadDer{1}
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{IHayMas?}{\In{it}{itClave}}{bool}{
+	\If{it.1, $\textless$ it.2 - 1} \ComplejidadDer{1}
+		\State $res$ $\gets$ true \ComplejidadDer{1}
+	\Else
+		\State $res$ $\gets$ false \ComplejidadDer{1}
+	\EndIf
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{IActual}{\In{it}{itClave}}{$\alpha$}{
+	\State $res$ $\gets$ *(it.3).clave \ComplejidadDer{1}
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{IAvanzar}{\Inout{it}{itClave}}{}{
+	\State it.1 $\gets$ it.1 + 1 \ComplejidadDer{1}
+	\State var itNodosNivelActual $\gets$ \NombreFuncion{crearIt}(\NombreFuncion{DameNodos}(it.4, 1, it.0)) \ComplejidadDer{n}
+	\State var bAvanzar:bool $\gets$ true \ComplejidadDer{1}
+	\While{bAvanzar} \ComplejidadDer{n}
+		\State \NombreFuncion{Avanzar}(itNodosNivelActual) \ComplejidadDer{1}
+		\If{\NombreFuncion{Anterior}(itNodosNivelActual) == \NombreFuncion{Actual}(it)} \ComplejidadDer{1}
+			\State bAvanzar $\gets$ false \ComplejidadDer{1}
+		\Else
+		\EndIf
+	\EndWhile
+	\If{\NombreFuncion{HaySiguiente?}(itNodosNivelActual)} \ComplejidadDer{1}
+		\State it.3 $\gets$ \NombreFuncion{Siguiente}(itNodosNivelActual) \ComplejidadDer{1}
+	\Else
+	\State it.0 $\gets$ it.0 + 1 \ComplejidadDer{1}
+	\State it.3 $\gets$ \NombreFuncion{Siguiente}(\NombreFuncion{crearIt}(DameNodos(it.4, 1, it.0))) \ComplejidadDer{n}
+	\EndIf
+}{\Complejidad{n2}}{Siendo n la cantidad de nodos. 
+\\ el ciclo busca encontrar el nodo en donde se encuentra el iterador, para eso avanza el nuevo iterador creado, que itera un conjunto de nodos -estos nodos son todos los del nivel al que pertence el iterador buscado-. En el peor caso este conjunto es de n / 2 elementos, porque sería el nivel más bajo. Por eso tiene complejidad \Complejidad{n}. Además se le agrega a la complejidad total, la complejidad de llamar a \NombreFuncion{DameNodos} dos veces.
+\\ La complejidad total sería: \Complejidad{n}+\Complejidad{n}+\Complejidad{n} = 3 * \Complejidad{n} = \Complejidad{n}
+}
+
+\Algoritmo{IDameNodos}{\In{p}{puntero(nodo)}, \In{actual}{nat}, \In{destino}{nat}}{Conj(nodo)}{
+	\State $res$ $\gets$ \NombreFuncion{Vacío}() \ComplejidadDer{1}
+	\If{p == NULL} \ComplejidadDer{1}
+	\Else
+		\If{actual == destino} \ComplejidadDer{1}
+			\State \NombreFuncion{AgregarAtrás}($res$ , p) \ComplejidadDer{1}
+		\Else
+			\State \NombreFuncion{Union}(\NombreFuncion{DameNodos}(*(p).izq, actual + 1, destino), \NombreFuncion{DameNodos}(*(p).der, actual + 1, destino)) \ComplejidadDer{n}
+		\EndIf
+	\EndIf
+}{\Complejidad{n}}{
+}	
+
 
 \Algoritmo{IRotar}{\Inout{p}{puntero(nodo)}}{}{
 	\If{\NombreFuncion{FactorDesbalance}(p) $<$ 1} \ComplejidadDer{1}
@@ -375,7 +602,7 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 }{\Complejidad{1}}{
 }	
 
-\Algoritmo{IRotarDobleIzq}{\Inout{p}{puntero(nodo)}, \Inout{d}{diccRapido}}{}{
+\Algoritmo{IRotarDobleIzq}{\Inout{p}{puntero(nodo)}}{}{
 	\State \NombreFuncion{RotarSimpleDer}(*(p).der) \ComplejidadDer{1}
 	\State \NombreFuncion{RotarSimpleIzq}(p) \ComplejidadDer{1}
 }{\Complejidad{1}}{
@@ -394,7 +621,7 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 		\If{*(p).izq != NULL $\wedge$ *(p).der == NULL} \ComplejidadDer{1}
 			\State $\res$ $\gets$ *(*(p).izq).alt + 1 \ComplejidadDer{1}
 		\Else
-			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{2}
+			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{1}
 				\State $res$ $\gets$ *(*(p).der).alt + 1 \ComplejidadDer{1}
 			\Else
 				\State $res$ $\gets$ max(*(*(p).izq).alt, *(*(p).der).alt) + 1 \ComplejidadDer{1}
@@ -411,7 +638,7 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 		\If{*(p).izq != NULL $\wedge$ *(p).der == NULL} \ComplejidadDer{1}
 			\State $\res$ $\gets$ *(*(p).izq).alt \ComplejidadDer{1}
 		\Else
-			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{2}
+			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{1}
 				\State $res$ $\gets$ - *(*(p).der).alt \ComplejidadDer{1}
 			\Else
 				\State $res$ $\gets$ *(*(p).izq).alt - *(*(p).der).alt \ComplejidadDer{1}
@@ -420,7 +647,6 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 	\EndIf
 }{\Complejidad{1}}{
 }
-
 
 \end{Algoritmos}
 

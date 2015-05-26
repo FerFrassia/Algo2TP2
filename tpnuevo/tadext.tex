@@ -2,7 +2,7 @@
 
 \subsection{Secu($\alpha$)}
 
-\vspace{2em}
+\vspace{1em}
 
 \tadOtrasOperaciones
 \tadOperacion{elemDeSecu}{Secu($\alpha$)/s,Nat/n}{RUR}{n $<$ long($s$)}
@@ -12,11 +12,11 @@
 \tadAxiomas
 \tadAxioma{elemDeSecu(s, n)}{\IF $n =$ 0 THEN prim($s$) ELSE elemDeSecu(fin(s), n-1) FI}
 
-\vspace{2em}
+\vspace{1em}
 
 \subsection{Mapa}
 
-\vspace{2em}
+\vspace{1em}
 
 \tadObservadores
 \tadOperacion{restricciones}{Mapa/m}{secu(restriccion)}{}
@@ -33,4 +33,44 @@
 }
 \tadAxioma{nroConexion($e_1, e_2, $agregar($e, m$))}{nroConexion($e_1, e_2, m$)}
 
-\vspace{2em}
+\vspace{1em}
+
+\subsection{Diccionario(Clave, Significado)}
+
+\vspace{1em}
+
+\tadOtrasOperaciones
+\tadAlinearFunciones{claveMax}{Diccionario/d}
+\tadOperacion{vacío?}{Diccionario}{Bool}{}
+\tadOperacion{claveMax}{Diccionario/d}{Clave}{$\neg$vacío(d)}
+\tadOperacion{secuClaves}{Diccionario}{Secu(clave)}{}
+
+\vspace{1em}
+
+\tadAxiomas
+\tadAlinearAxiomas{secuClaves(definir(c, s, d))}
+\tadAxioma{vacío?(vacío)}{true}
+\tadAxioma{vacío?(definir(c, s, d))}{false}
+\tadAxioma{claveMax(d)}{elemMax(claves(d))}
+\tadAxioma{secuClaves(vacío)}{$\textless$$\textgreater$}
+\tadAxioma{secuClaves(definir(c, s, d))}{secuClaves(d) $\circ$ c }
+
+\vspace{1em}
+
+\subsection{Conjunto($\alpha$$\textless$)}
+
+\vspace{1em}
+
+\tadOtrasOperaciones
+\tadAlinearFunciones{auxMaxElem}{$\alpha$/e, Conj($\alpha$)/c}
+\tadOperacion{elemMax}{Conj($\alpha$)/c}{$\alpha$}{$\neg$$\emptyset$?(c)}
+\tadOperacion{auxElemMax}{$\alpha$, Conj($\alpha$)}{$\alpha$}{}
+
+\vspace{1em}
+
+\tadAxiomas
+\tadAlinearAxiomas{auxMaxElem(e, c)}
+\tadAxioma{elemMax(c)}{auxMaxElem(dameUno(c), c)}
+\tadAxioma{auxElemMax(e, c)}{\IF $\emptyset?$(c) THEN e ELSE {\IF e $\textgreater$ dameUno(c) THEN auxElemMax(e, sinUno(c)) ELSE auxElemMax(dameUno(c), sinUno(c)) FI} FI}
+
+

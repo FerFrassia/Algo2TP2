@@ -1,28 +1,34 @@
-\section{Diccionario String($\alpha$)}
+\section{Diccionario String}
+
+\subsection{Interfaz}
 
 \begin{Interfaz}
-  
-  \textbf{parámetros formales}\hangindent=2\parindent\\
-	\parbox{1.7cm}{\textbf{géneros}} \\
-  \parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
-    \InterfazFuncion{Copia}{\In{d}{$\alpha$}}{$\alpha$}
-    {$res \igobs a$}
-    [$\Theta(copy(a))$]
-    [función de copia de $\alpha$'s]
-  }
 
   \textbf{se explica con}: \tadNombre{Diccionario(String, $\alpha$)}.
 
   \textbf{géneros}: \TipoVariable{diccString($\alpha$)}.
 
-  \Titulo{Operaciones básicas de Restricción}
+  \Titulo{Operaciones básicas de Diccionario String($\alpha$)}
+  
+  \InterfazFuncion{Def?}{\In{clv}{string}, \In{d}{diccString($\alpha$)}}{bool}
+  [true]
+  {$res \igobs$ def?($clv, d$)}
+  [$\Complejidad{|clv|}$]
+  [Revisa si la clave ingresada se encuentra definida en el Diccionario.]
+  
+  \InterfazFuncion{Obtener}{\In{clv}{string}, \In{d}{diccString($\alpha$)}}{$\alpha$}
+  [def?($clv, d$)]
+  {$res \igobs$ obtener($clv, d$)}
+  [$\Complejidad{|clv|}$]
+  [Devuelve el significado de la clave.]
 
   \InterfazFuncion{Vacío}{}{diccString($\alpha$)}
-  %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ vacio()}
+  [true]
+  {$res \igobs$ vacío()}
   [\Complejidad{1}]
   [Crea nuevo diccionario vacio.]
 	
+<<<<<<< HEAD
   \InterfazFuncion{Definir}{\Inout{d}{diccString($\alpha$)}, \In{clv}{string}, \In{def}{$\alpha$}}{}
   [$d_0 \igobs d$]
   {$d \igobs$ definir($clv, def, d_0$)}
@@ -38,6 +44,17 @@
   \InterfazFuncion{Obtener}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{diccString($\alpha$)}
   [def?($d, clv$)]
   {$res \igobs$ obtener($clv, d$)}
+=======
+  \InterfazFuncion{Definir}{\In{clv}{string}, \In{def}{$\alpha$}, \Inout{d}{diccString($\alpha$)}}{}
+  [$d$ $\igobs$ $d_0$]
+  {$d$ $\igobs$ definir($clv, def, d_0$)}
+  [$\Complejidad{|clv|}$]
+  [Agrega un nueva definicion.]
+	
+  \InterfazFuncion{Borrar}{\In{clv}{string}, \Inout{d}{diccString($\alpha$)}}{}
+  [$d$ $\igobs$ $d_0$ $\wedge$ def?(clv, d)]
+  {$res$ $\igobs$ borrar($k, d_0$)}
+>>>>>>> 6a8b227b980cf43c591bb3166b24fd34968fec9a
   [$\Complejidad{|clv|}$]
   [Devuelve la definicion correspondiente a la clave.]
 	
