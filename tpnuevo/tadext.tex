@@ -43,14 +43,17 @@
 \tadAlinearFunciones{claveMax}{Diccionario/d}
 \tadOperacion{vacío?}{Diccionario}{Bool}{}
 \tadOperacion{claveMax}{Diccionario/d}{Clave}{$\neg$vacío(d)}
+\tadOperacion{secuClaves}{Diccionario}{Secu(clave)}{}
 
 \vspace{1em}
 
 \tadAxiomas
-\tadAlinearAxiomas{vacío?(definir(c, s, d))}
+\tadAlinearAxiomas{secuClaves(definir(c, s, d))}
 \tadAxioma{vacío?(vacío)}{true}
 \tadAxioma{vacío?(definir(c, s, d))}{false}
 \tadAxioma{claveMax(d)}{elemMax(claves(d))}
+\tadAxioma{secuClaves(vacío)}{$\textless$$\textgreater$}
+\tadAxioma{secuClaves(definir(c, s, d))}{secuClaves(d) $\circ$ c }
 
 \vspace{1em}
 

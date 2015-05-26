@@ -14,7 +14,8 @@
 \contentsline {subsection}{\numberline {3.2}Representacion}{11}
 \contentsline {subsection}{\numberline {3.3}InvRep y Abs}{11}
 \contentsline {subsection}{\numberline {3.4}Algoritmos}{13}
-\contentsline {section}{\numberline {4}Diccionario String($\alpha $)}{16}
+\contentsline {section}{\numberline {4}Diccionario String}{16}
+\contentsline {subsection}{\numberline {4.1}Interfaz}{16}
 \contentsline {section}{\numberline {5}Diccionario R\'apido}{17}
 \contentsline {subsection}{\numberline {5.1}Interfaz}{17}
 \contentsline {subsection}{\numberline {5.2}Auxiliares}{18}
