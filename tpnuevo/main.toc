@@ -2,21 +2,22 @@
 \contentsline {section}{\numberline {1}Tad Extendidos}{3}
 \contentsline {subsection}{\numberline {1.1}Secu($\alpha $)}{3}
 \contentsline {subsection}{\numberline {1.2}Mapa}{3}
-\contentsline {section}{\numberline {2}Red}{4}
-\contentsline {subsection}{\numberline {2.1}Auxiliares}{5}
-\contentsline {subsection}{\numberline {2.2}Representacion}{5}
-\contentsline {subsection}{\numberline {2.3}InvRep y Abs}{5}
-\contentsline {subsection}{\numberline {2.4}Algoritmos}{6}
-\contentsline {section}{\numberline {3}DCNet}{9}
-\contentsline {subsection}{\numberline {3.1}Interfaz}{9}
-\contentsline {subsection}{\numberline {3.2}Representacion}{10}
-\contentsline {subsection}{\numberline {3.3}InvRep y Abs}{10}
-\contentsline {subsection}{\numberline {3.4}Algoritmos}{11}
-\contentsline {section}{\numberline {4}Diccionario String($\alpha $)}{15}
-\contentsline {subsection}{\numberline {4.1}Representacion}{15}
-\contentsline {subsection}{\numberline {4.2}InvRep y Abs}{16}
-\contentsline {subsection}{\numberline {4.3}Algoritmos}{16}
-\contentsline {section}{\numberline {5}DiccRapido}{18}
-\contentsline {subsection}{\numberline {5.1}Representacion}{19}
-\contentsline {subsection}{\numberline {5.2}InvRep y Abs}{19}
-\contentsline {subsection}{\numberline {5.3}Algoritmos}{19}
+\contentsline {subsection}{\numberline {1.3}Diccionario(Clave, Significado)}{3}
+\contentsline {subsection}{\numberline {1.4}Conjunto($\alpha $$\textless $)}{3}
+\contentsline {section}{\numberline {2}Red}{5}
+\contentsline {subsection}{\numberline {2.1}Auxiliares}{6}
+\contentsline {subsection}{\numberline {2.2}Representacion}{6}
+\contentsline {subsection}{\numberline {2.3}InvRep y Abs}{6}
+\contentsline {subsection}{\numberline {2.4}Algoritmos}{7}
+\contentsline {section}{\numberline {3}DCNet}{10}
+\contentsline {subsection}{\numberline {3.1}Interfaz}{10}
+\contentsline {subsection}{\numberline {3.2}Representacion}{11}
+\contentsline {subsection}{\numberline {3.3}InvRep y Abs}{11}
+\contentsline {subsection}{\numberline {3.4}Algoritmos}{13}
+\contentsline {section}{\numberline {4}Diccionario String($\alpha $)}{16}
+\contentsline {section}{\numberline {5}Diccionario R\'apido}{17}
+\contentsline {subsection}{\numberline {5.1}Interfaz}{17}
+\contentsline {subsection}{\numberline {5.2}Auxiliares}{18}
+\contentsline {subsection}{\numberline {5.3}Representaci\'on}{19}
+\contentsline {subsection}{\numberline {5.4}InvRep y Abs}{19}
+\contentsline {subsection}{\numberline {5.5}Algoritmos}{20}
