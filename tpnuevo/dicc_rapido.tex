@@ -44,6 +44,44 @@
  [$\Complejidad{1}$]
  [Devuelve un iterador de paquete]  
   
+ \InterfazFuncion{Vacío?}{\In{d}{diccRapido}}{bool}
+ [true]
+ {$res$ $\igobs$ vacío?($d$)}
+ [$\Complejidad{1}$]
+ [Verifica si el diccionario vacío]
+ 
+ \InterfazFuncion{DameMax}{\In{d}{diccRapido}}{clave}
+ [$\neg$vacío?(d)]
+ {$res$ $\igobs$ dameMax($d$)}
+ [$\Complejidad{log_2\ n}$]
+ [Devuelve la mayor clave]
+ 
+ \Titulo{Operaciones del Iterador}
+ 
+ \InterfazFuncion{CrearIt}{\In{d}{diccRapido}}{itClaves}
+ [true]
+ {$res$ $\igobs$ crearItUni(secuClaves(d))}
+ [$\Complejidad{1}$]
+ [Crea el iterador de claves]
+ 
+ \InterfazFuncion{HayMas?}{\In{it}{itClaves}}{bool}
+ [true]
+ {$res$ $\igobs$ HayMas?($it$)}
+ [$\Complejidad{1}$]
+ [Verifica si hay más elementos a iterar]
+ 
+ \InterfazFuncion{Actual}{\In{it}{itClaves}}{clave}
+ [HayMas?($it$)]
+ {$res$ Actual($it$)}
+ [$\Complejidad{1}$]
+ [Devuelve el actual del iterador]
+ 
+ \InterfazFuncion{Avanzar}{\Inout{it}{itClaves}}{}
+ [$it$ $\igobs$ $it_0$ $\wedge$ HayMas?($it_0$)]
+ {$it$ $\igobs$ Avanzar($it_0$)} 
+ [$\Complejidad{NO SE}$]
+ [Avanza el iterador]
+  
 \end{Interfaz}
 
 \subsection{Representacion}
@@ -233,15 +271,6 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 				\State *(*(pNodo).padre).der $\gets$ NULL \ComplejidadDer{1}
 			\EndIf
 			\State delete pNodo \Complejidad{1}
-			\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-			\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
-				\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
-				\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
-					\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
-				\Else
-				\EndIf
-				\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-			\EndWhile
 		\EndIf
 	\Else
 		\If{*(pNodo).izq == NULL $\wedge$ *(pNodo).der != NULL} \ComplejidadDer{1}
@@ -258,15 +287,6 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 				\EndIf
 				\State *(*(pNodo).der).padre $\gets$ *(pNodo).padre \ComplejidadDer{1}
 				\State delete pNodo \ComplejidadDer{1}
-				\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-				\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
-					\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
-					\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
-						\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
-					\Else
-					\EndIf
-					\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-				\EndWhile
 			\EndIf
 		\Else
 			\If{*(pNodo).izq != NULL $\wedge$ *(pNodo).der == NULL}
@@ -283,22 +303,55 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 					\EndIf
 					\State *(*(pNodo).izq).padre $\gets$ *(pNodo).padre \ComplejidadDer{1}
 					\State delete pNodo \ComplejidadDer{1}
-					\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-					\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
-						\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
-						\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
-							\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
-						\Else
-						\EndIf
-						\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
-					\EndWhile
 				\EndIf 
 			\Else
 				%EL NODO TIENE DOS HOJAS
-				%ATENCIONNN VOY POR ACA!!!
+				\If{*(pNodo).padre == NULL} \ComplejidadDer{1}
+					\State var nuevoPNodo: puntero(nodo) $\gets$ *(pNodo).der \ComplejidadDer{1}
+					\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+					\State camino[nroCamino] $\gets$ nuevoPNodo \ComplejidadDer{1}
+					\While{*(nuevoPNodo).izq != NULL} \ComplejidadDer{log_2\ n}
+						\If{*(nuevoPNodo).der == NULL} \ComplejidadDer{1}
+							\State *(nuevoPNodo).alt $\gets$ *(nuevoPNodo).alt - 1 \ComplejidadDer{1}
+						\Else
+							\State *(nuevoPNodo).alt $\gets$ max(*(*(nuevoPNodo).izq).alt - 1, *(*(nuevoPNodo).der).alt) \ComplejidadDer{1}
+						\EndIf
+						\State nuevoPNodo $\gets$ *(nuevoPNodo).izq \ComplejidadDer{1}
+						\State nroCamino $\gets$ nroCamino + 1 \ComplejidadDer{1}
+						\State camino[nroCamino] $\gets$ nuevoPNodo \ComplejidadDer{1}
+					\EndWhile
+					\State *(pNodo).clave $\gets$ *(nuevoPNodo).clave \ComplejidadDer{1}
+					\State *(pNodo).significado $\gets$ *(nuevoPNodo).significado \ComplejidadDer{1}
+					\If{*(nuevoPNodo).der != NULL} \ComplejidadDer{1}
+						\If{*(*(*(nuevoPNodo).padre).izq).clave == *(nuevoPNodo).clave} \ComplejidadDer{1}
+							\State *(*(nuevoPNodo).padre).izq $\gets$ *(nuevoPNodo).der \ComplejidadDer{1}
+						\Else
+							\State *(*(nuevoPNodo).padre).der $\gets$ *(nuevoPNodo).der \ComplejidadDer{1}
+						\EndIf
+						\State *(*(nuevoPNodo).der).padre $\gets$ *(nuevoPNodo).padre \ComplejidadDer{1}
+					\Else
+						\If{*(*(*(nuevoPNodo).padre).izq).clave == *(nuevoPNodo).clave} \ComplejidadDer{1}
+							\State *(*(nuevoPNodo).padre).izq $\gets$ NULL \ComplejidadDer{1}
+						\Else
+							\State *(*(nuevoPNodo).padre).der $\gets$ NULL \ComplejidadDer{1}
+						\EndIf
+					\EndIf
+					\State delete nuevoPNodo \ComplejidadDer{1}
+				\Else
+				\EndIf
 			\EndIf
 		\EndIf
 	\EndIf
+	\State d.tam $\gets$ d.tam - 1 \ComplejidadDer{1}
+	\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+	\While{nroCamino $\geq$ 0} \ComplejidadDer{log_2\ n}
+		\State pNodo $\gets$ camino[nroCamino] \ComplejidadDer{1}
+		\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
+			\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
+		\Else
+		\EndIf
+		\State nroCamino $\gets$ nroCamino - 1 \ComplejidadDer{1}
+	\EndWhile		
 }{\Complejidad{log_2\ n}}{
 }
 
@@ -394,7 +447,7 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 		\If{*(p).izq != NULL $\wedge$ *(p).der == NULL} \ComplejidadDer{1}
 			\State $\res$ $\gets$ *(*(p).izq).alt + 1 \ComplejidadDer{1}
 		\Else
-			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{2}
+			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{1}
 				\State $res$ $\gets$ *(*(p).der).alt + 1 \ComplejidadDer{1}
 			\Else
 				\State $res$ $\gets$ max(*(*(p).izq).alt, *(*(p).der).alt) + 1 \ComplejidadDer{1}
@@ -411,7 +464,7 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 		\If{*(p).izq != NULL $\wedge$ *(p).der == NULL} \ComplejidadDer{1}
 			\State $\res$ $\gets$ *(*(p).izq).alt \ComplejidadDer{1}
 		\Else
-			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{2}
+			\If{*(p).izq == NULL $\wedge$ *(p).der != NULL} \ComplejidadDer{1}
 				\State $res$ $\gets$ - *(*(p).der).alt \ComplejidadDer{1}
 			\Else
 				\State $res$ $\gets$ *(*(p).izq).alt - *(*(p).der).alt \ComplejidadDer{1}
@@ -420,6 +473,77 @@ Para representar el diccionario, elegimos hacerlo sobre AVL. Sabiendo que la can
 	\EndIf
 }{\Complejidad{1}}{
 }
+
+\Algoritmo{IVacío?}{\In{d}{diccRapido}}{bool}{
+	\If{d.raiz == NULL} \ComplejidadDer{1}
+		\State $res$ $\gets$ true \ComplejidadDer{1}
+	\Else
+		\State $res$ $\gets$ false \ComplejidadDer{1}
+	\EndIf	
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{IDameMax}{\In{d}{diccRapido}}{clave}{
+	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
+	\While{*(pNodo).der != NULL} \ComplejidadDer{log_2\ n}
+		\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
+	\EndWhile
+	\State $res$ $\gets$ *(pNodo).clave \ComplejidadDer{1}
+}{\Complejidad{log_2\ n}}{
+}
+%% la tupla es (0: nivel, 1: numero de nodo, 2: total de nodos, 3: actual, 4: raiz)
+\Algoritmo{ICrearIt}{\In{d}{diccRapido}}{itClaves}{
+	\State $res$ $\gets$ tupla(1, 0, d.tam, d.raiz, d.raiz) \ComplejidadDer{1}
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{IHayMas?}{\In{it}{itClaves}}{bool}{
+	\If{it.1, $\textless$ it.2 - 1} \ComplejidadDer{1}
+		\State $res$ $\gets$ true \ComplejidadDer{1}
+	\Else
+		\State $res$ $\gets$ false \ComplejidadDer{1}
+	\EndIf
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{Actual}{\In{it}{itClaves}}{clave}{
+	\State $res$ $\gets$ it.3 \ComplejidadDer{1}
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{Avanzar}{\Inout{it}{itClaves}}{}{
+	\State it.1 $\gets$ it.1 + 1 \ComplejidadDer{1}
+	\State var itNodosNivelActual $\gets$ \NombreFuncion{crearIt}(\NombreFuncion{DameNodos}(it.4, 1, it.0)) \ComplejidadDer{1}
+	\State var bAvanzar:bool $\gets$ true 
+	\While{\NombreFuncion{HaySiguiente?}(itNodosNivelActual) $\wedge$ bAvanzar}
+		\State \NombreFuncion{Avanzar}(itNodosNivelActual) \ComplejidadDer{1}
+		\If{\NombreFuncion{Anterior}(itNodosNivelActual) == \NombreFuncion{Actual}(it)} \ComplejidadDer{1}
+			\If{\NombreFuncion{HaySiguiente?}(itNodosNivelActual)} \ComplejidadDer{1}
+				\State it.3 $\gets$ \NombreFuncion{Siguiente}(itNodosNivelActual) \ComplejidadDer{1}
+				\State bAvanzar $\gets$ false \ComplejidadDer{1}
+			\Else
+				\State it.0 $\gets$ it.0 + 1 \ComplejidadDer{1}
+				\State it.3 $\gets$ \NombreFuncion{Siguiente}(\NombreFuncion{crearIt}(DameNodos(it.4, 1, it.0))) \ComplejidadDer{1}
+			\EndIf
+		\Else
+		\EndIf
+	\EndWhile
+}{\Complejidad{1}}{
+}
+
+\Algoritmo{DameNodos}{\In{p}{puntero(nodo)}, \In{actual}{nat}, \In{destino}{nat}}{Conj(nodo)}{
+	\State $res$ $\gets$ \NombreFuncion{Vacío}() \ComplejidadDer{1}
+	\If{p == NULL} \ComplejidadDer{1}
+	\Else
+		\If{actual == destino} \ComplejidadDer{1}
+			\State \NombreFuncion{AgregarAtrás}($res$ , p) \ComplejidadDer{1}
+		\Else
+			\State \NombreFuncion{Union}(\NombreFuncion{DameNodos}(*(p).izq, actual + 1, destino), \NombreFuncion{DameNodos}(*(p).der, actual + 1, destino)) \ComplejidadDer{1}
+		\EndIf
+	\EndIf
+}{\Complejidad{1}}{
+}	
+
 
 
 \end{Algoritmos}
