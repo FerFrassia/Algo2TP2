@@ -1,0 +1,55 @@
+\section{Extensión de Lista Enlazada($\alpha$)}
+
+\subsection{Interfaz}
+
+\begin{Interfaz}
+  
+  %\textbf{parámetros formales}\hangindent=2\parindent\\
+  %\parbox{1.7cm}{\textbf{géneros}} \\
+  %\parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
+    %\InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{$\alpha$}
+    %{$res \igobs a$}
+    %[$\Theta(copy(a))$]
+    %[función de copia de $\alpha$'s]
+  %}
+
+  \textbf{se explica con}: \tadNombre{Secu($\alpha$), Iterador Bidireccional($\alpha$)}.
+
+  \textbf{géneros}: \TipoVariable{lista, itLista($\alpha$)}.
+
+  \Titulo{Operaciones básicas de lista}
+
+  %\InterfazFuncion{NOMBRE}{INPUTS}{TIPO RES}%
+  %[ACA VA EL PRE (SI LO HAY)]
+  %{ACA VA EL POST}%
+  %[$\Theta(COMPLEJIDAD)$]
+  %[DESCRIPCION]
+
+  \InterfazFuncion{Pertenece?}{\In{l}{lista}, \In{e}{$\alpha$}}{bool}
+  [true]
+  {$res \igobs$ está?($l, e$)}
+  [$\Complejidad{1}$]
+  [Devuelve true o false según si el elemento pertenece o no a la lista]
+	
+ \end{Interfaz}
+
+\subsection{Algoritmos}
+
+\begin{Algoritmos}
+	
+	%Algoritmos / Inputs / TSalida / Codigo / Complejidad Final / Justificacion
+	\begin{Algoritmo}{Pertenece?}{\In{l}{lista($\alpha$)}, \In{e}{lista}}{bool}
+	{
+		\State var $itLista$ $\gets$ CrearIt(l) \ComplejidadDer{1}
+		\State $res$ $\gets$ false \ComplejidadDer{1}
+		\While{HaySiguiente($itLista$) AND $¬res$} \ComplejidadDer{1}
+		\If {Siguiente($itLista$) $==$ $e$} \ComplejidadDer{1}
+			\State $res$ $\gets$ $true$  \ComplejidadDer{1}
+		\EndIf
+		\State Avanzar($itLista$) \ComplejidadDer{1}
+		\EndWhile
+	} 
+	{$\Complejidad{1}$}{}
+	\end{Algoritmo}
+
+\end{Algoritmos}

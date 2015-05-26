@@ -1,5 +1,7 @@
 \section{Red}
 
+\subsection{Interfaz}
+
 \begin{Interfaz}
   
   %\textbf{parámetros formales}\hangindent=2\parindent\\
@@ -59,9 +61,9 @@
   [$\Complejidad{|c_1| + |c_2|}$]
   [Conecta dos computadoras y les añade la interfaz correspondiente.]
 
-  \InterfazFuncion{Vecinos}{\In{r}{red}, \In{c}{compu}}{itConj(compu)}
+  \InterfazFuncion{Vecinos}{\In{r}{red}, \In{c}{compu}}{conj(compu)}
   [$c$ $\in$ computadoras($r$)]
-  {$res$ $\igobs$ crearIt(vecinos(r, c))}
+  {$res$ $\igobs$ vecinos(r, c)}
   []
   [Devuelve todas las computadoras que están conectadas directamente con c]
 
@@ -71,9 +73,9 @@
   []
   [Verifica que una computadora use una interfaz]
 
-  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista(compu))}
+  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{itConj($\alpha$)}
   [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
-  {$res$ $\igobs$ caminosMinimos(r, $c_1$, $c_2$)}
+  {$res$ $\igobs$ crearItBi(caminosMinimos(r, $c_1$, $c_2$))}
   []
   [Devuelve todos los caminos minimos de conexiones entre una computadora y otra]
 
@@ -88,14 +90,18 @@
 \subsection{Auxiliares}
 	%\Begin{Auxiliares}
   \Titulo{Operaciones auxiliares}
-
 	
-  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista)}
+  \InterfazFuncion{CalcularCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista)}
   [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
   {$res$ $\igobs$ caminosMinimos(r, $c_1$, $c_2$)}
   [$\Complejidad{ALGO}$]
   [Devuelve los caminos minimos entre $c_1$ y $c_2$]
   
+  \InterfazFuncion{CaminosImportantes}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}, \In{parcial}{lista}}{conj(lista)}
+  [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
+  {$res$ $\igobs$ caminosMinimos(r, $c_1$, $c_2$)}
+  [$\Complejidad{ALGO}$]
+  [Devuelve los caminos suficientes (no todos) para calcular los caminos mínimos entre $c_1$ y $c_2$]
 
 	%\End{Auxiliares}
 \subsection{Representacion}
@@ -245,9 +251,9 @@
 		%Armo la segunda componente de e_red
 				
 		%Guardo los caminos minimos de c_1 a c_2
-		\State Definir(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$, ArmarCaminosMinimos($r, c_1, c_2$)) \ComplejidadDer{1}
+		\State Definir(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$, CalcularCaminosMinimos($r, c_1, c_2$)) \ComplejidadDer{1}
 		%Guardo los caminos minimos de c_2 a c_1
-		\State Definir(Significado($r.deOrigenADestino$, $c_2.ip$), $c_1.ip$, ArmarCaminosMinimos($r, c_2, c_1$)) \ComplejidadDer{1}		
+		\State Definir(Significado($r.deOrigenADestino$, $c_2.ip$), $c_1.ip$, CalcularCaminosMinimos($r, c_2, c_1$)) \ComplejidadDer{1}		
 	}
 	{$\Complejidad{|e_1| + |e_2|}$}
 	{$\Complejidad{|e_1| + |e_2|} + \Complejidad{|e_1| + |e_2|} + \Complejidad{1} + \Complejidad{1} = \newline
@@ -255,9 +261,9 @@
 		2 * \Complejidad{|e_1| + |e_2|} = \Complejidad{|e_1| + |e_2|}$}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iVecinos}{\In{r}{red}, \In{c}{compu}}{itConj(compu)}
+	\begin{Algoritmo}{iVecinos}{\In{r}{red}, \In{c}{compu}}{conj(compu)}
 	{
-		\State $res$ $\gets$ crearIt((Significado($r.vecinosEInterfaces$, $c.ip$))$.compusVecinas$)
+		\State $res$ $\gets$ Significado($r.vecinosEInterfaces$, $c.ip$)$.compusVecinas$
 	}
 	{}
 	{}
@@ -279,9 +285,9 @@
 	{}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista(compu))}
+	\begin{Algoritmo}{iCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{itConj($\alpha$)}
 	{
-		\State $res$ $\gets$ Significado(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$)	\ComplejidadDer{|c_1| + |c_2|}
+		\State $res$ $\gets$ CrearIt(Significado(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$))	\ComplejidadDer{1}
 	}
 	{}
 	{}
@@ -296,17 +302,32 @@
 	{}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iArmarCaminos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista)}
+	\begin{Algoritmo}{iCalcularCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista)}
 	{
+		\State $res$ $\gets$ Vacio() \ComplejidadDer{1}
+		\State var $conjCaminosImportantes$:conj(lista) $=$ Vacio() \ComplejidadDer{1}
 		\State var $pacial$:lista $\gets$ Vacia() \ComplejidadDer{1}
 		\State AgregarAtras($parcial$, $c_1$) \ComplejidadDer{1}
-		\State $res$ $\gets$ \NombreFuncion{TodosLosCaminos}($r$, $c_1$, $c_2$, $parcial$) \ComplejidadDer{1}
+		\State $conjCaminosImportantes$ $\gets$ \NombreFuncion{CaminosImportantes}($r$, $c_1$, $c_2$, $parcial$) \ComplejidadDer{1}
+		
+		%Ahora que tengo los caminos calculo los mínimos
+		\State var $itCaminosImportantes$:itConj $\gets$ CrearIt($conjCaminosImportantes$) \ComplejidadDer{1}
+		\While {HaySiguiente?($itCaminosImportantes$)} \ComplejidadDer{1}
+			\If {EsVacio?($res$) $\vee$ Longitud(DameUno($res$)) $=$ Longitud(Siguiente($itCaminosImportantes$))} \ComplejidadDer{1}
+				\State Agregar($res$, Siguiente($itCaminosImportantes$)) \ComplejidadDer{1}
+			\Else
+				\If {Longitud(DameUno($res$)) $<$ Longitud(Siguiente($itCaminosImportantes$))} \ComplejidadDer{1}
+					\State $res$ $\gets$ Vacio() \ComplejidadDer{1}
+					\State Agregar($res$, Siguiente($itCaminosImportantes$)) \ComplejidadDer{1}
+				\EndIf
+			\EndIf
+		\EndWhile	
 	}
 	{}
 	{}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iTodosLosCaminos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}, \In{pacial}{lista(compu)}}{conj(lista)}
+	\begin{Algoritmo}{iCaminosImportantes}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}, \In{pacial}{lista(compu)}}{conj(lista)}
 	{
 		\State $res$ $\gets$ Vacio() \ComplejidadDer{1}
 		
@@ -319,7 +340,7 @@
 				\If {$¬$Pertenece?($parcial$, Siguiente($itVecinos$))} \ComplejidadDer{1}
 					\State var $auxParcial$:lista $\gets$ parcial \ComplejidadDer{1}
 					\State AgregarAtras($auxParcial$, Siguiente($itVecinos$)) \ComplejidadDer{1}
-					\State Unir($res$, TodosLosCaminos($r$, Siguiente($itVecinos$), $c_2$, $auxParcial$)) \ComplejidadDer{1}
+					\State Unir($res$, CaminosImportantes($r$, Siguiente($itVecinos$), $c_2$, $auxParcial$)) \ComplejidadDer{1}
 				\EndIf	
 				\State Avanzar($itVecinos$) \ComplejidadDer{1}
 			\EndWhile			

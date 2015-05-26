@@ -1,0 +1,69 @@
+\section{Extensión de Conjunto Lineal($\alpha$)}
+
+\subsection{Interfaz}
+
+\begin{Interfaz}
+  
+  %\textbf{parámetros formales}\hangindent=2\parindent\\
+  %\parbox{1.7cm}{\textbf{géneros}} \\
+  %\parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
+    %\InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{$\alpha$}
+    %{$res \igobs a$}
+    %[$\Theta(copy(a))$]
+    %[función de copia de $\alpha$'s]
+  %}
+
+  \textbf{se explica con}: \tadNombre{conj($\alpha$), Iterador Bidireccional Modificable($\alpha$)}.
+
+  \textbf{géneros}: \TipoVariable{conj, itConj($\alpha$)}.
+
+  \Titulo{Operaciones básicas de Conjunto}
+
+  %\InterfazFuncion{NOMBRE}{INPUTS}{TIPO RES}%
+  %[ACA VA EL PRE (SI LO HAY)]
+  %{ACA VA EL POST}%
+  %[$\Theta(COMPLEJIDAD)$]
+  %[DESCRIPCION]
+
+  \InterfazFuncion{Union}{\Inout{c}{conj($\alpha$)}, \In{d}{conj($\alpha$)}}{itConj($\alpha$)}
+  [$c \igobs c_0$]
+  {$res \igobs crearItBi(c \cup d)$}
+  [$\Complejidad{1}$]
+  [Modifica el $c$ para que contenga la unión de los dos conjuntos pasados como parámetro]
+  [Los elementos de $c$ se copian a $d$]
+  
+  \InterfazFuncion{DameUno}{\In{c}{conj($\alpha$)}}{$\alpha$}
+  [$\# (c) > 0$]
+  {$res \igobs$ $DameUno$($c$)}
+  [$\Complejidad{1}$]
+  [Devuelve un elemento cualquiera del conjunto]
+	
+ \end{Interfaz}
+
+\subsection{Algoritmos}
+
+\begin{Algoritmos}
+	
+	%Algoritmos / Inputs / TSalida / Codigo / Complejidad Final / Justificacion
+	\begin{Algoritmo}{Union}{\Inout{c}{conj($\alpha$)}, \In{d}{conj($\alpha$)}}{itConj($\alpha$)}
+	{
+		\State var $itConj$ $\gets$ CrearIt($d$) \ComplejidadDer{1}
+		\While{HaySiguiente($itConj$)} \ComplejidadDer{1}
+		\State Agregar($c$, Siguiente($itConj$)) \ComplejidadDer{1}
+		\State Avanzar($itConj$) \ComplejidadDer{1}
+		\EndWhile
+		
+		\State var $res$ $\gets$ CrearIt($c$) \ComplejidadDer{1}
+	} 
+	{$\Complejidad{1}$}{}
+	\end{Algoritmo}
+	
+	\begin{Algoritmo}{DameUno}{\In{c}{conj($\alpha$)}}{}
+	{
+		\State var $itConj$ $\gets$ CrearIt($c$) \ComplejidadDer{1}
+		\State $res$ $\gets$ Siguiente($itConj$)) \ComplejidadDer{1}
+	} 
+	{$\Complejidad{1}$}{}
+	\end{Algoritmo}
+
+\end{Algoritmos}

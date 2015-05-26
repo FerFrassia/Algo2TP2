@@ -25,177 +25,20 @@
 	
   \InterfazFuncion{Definir}{\Inout{d}{diccString($\alpha$)}, \In{clv}{string}, \In{def}{$\alpha$}}{}
   [$d_0 \igobs d$]
-  {$d \igobs$ definir($clv, def, d$)}
+  {$d \igobs$ definir($clv, def, d_0$)}
   [$\Complejidad{|clv|}$]
   [Agrega un nueva definicion.]
 	
-	\InterfazFuncion{Definido?}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{bool}
+  \InterfazFuncion{Def?}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{bool}
   %[ACA VA EL PRE (SI LO HUBIERA)]
   {$res \igobs$ def?($clv, d$)}
   [$\Complejidad{|clv|}$]
   [Revisa si la clave ingresada se encuentra definida en el Diccionario.]
 	
-	\InterfazFuncion{Significado}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{diccString($\alpha$)}
+  \InterfazFuncion{Obtener}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{diccString($\alpha$)}
   [def?($d, clv$)]
   {$res \igobs$ obtener($clv, d$)}
   [$\Complejidad{|clv|}$]
   [Devuelve la definicion correspondiente a la clave.]
 	
-	%\InterfazFuncion{Borrar}{\Inout{d}{diccString($\alpha$), \In{clv}{string}}}{}
-  %[d = d0 $\wedge$ $true \igobs def?(clv, d)$]
-  %{$res \igobs$ borrar(d0, k)}
-  %[$\Theta(COMPLEJIDAD)$]
-  %[Devuelve la definicion correspondiente a la clave.]
-	
 \end{Interfaz}
-
-\subsection{Representacion}
-
-\begin{Representacion}
-
-Esta no es la version posta de la descripcion, es solo un boceto.
-
-\smallskip
-Para representar el diccionario de Trie vamos a utilizar una estructura que 
-contiene el primer Nodo y la cantidad de Claves en el diccionario. 
-Para los nodos se utilizo una estructura formada por una tupla, el primer elemento
-es el significado de la clave y el segundo es un arreglo de 256 elementos que contiene 
-punteros a los hijos del nodo (por todos los posibles caracteres ASCII).
-
-\smallskip
-Para conseguir el numero de orden de un char tengo las funciones ord.
-
-\bigskip
-\begin{Estructura}{diccString($\alpha$)}[e\_nodo]
-	\begin{Tupla}[e\_nodo]
-		\tupItem{definicion}{puntero($\alpha$)}
-		\tupItem{hijos}{arreglo[256] de puntero(e\_nodo)}
-	\end{Tupla}
-\end{Estructura}
-
-\subsection{InvRep y Abs}
-
-\begin{enumerate}
-	\item{Para cada nodo del arbol, cada uno de sus hijos que apunta a otro nodo no nulo, apunta a un nodo diferente de los apuntados por sus hermanos}
-	\item{A donde apunta el significado de cada nodo es distinto de a donde apunta el significado del resto de los nodos, con la excepcion que el significado apunta a ''null''}
-	\item{No puden haber ciclos, es decir, que todos lo nodos son apuntados por un unico nodo del arbol, con la excepcion de la raiz, este no es apuntado por ninguno de los nodos del arbol}
-	\item{Debe existir aunque sea un nodo en el ultimo nivel, tal que su significado no apunta a ''null''}
-\end{enumerate}
-
-\Abs[e\_nodo]{diccString}[d]{n}{
-	\\ ($\forall$ n:e\_nodo) Abs(n) $\igobs$ d: diccString | ($\forall$ s:string) (def?(s, d) $\impluego$ ((obtenerDelArbol(s, n) $\neq$ NULL $\yluego$ *(obtenerDelArbol(s, n) = obtener(s, d))))) $\yluego$
-}
-
-\vspace{2em}
-	
-\tadOperacion{obtenerDelArbol}{string $s$, e\_nodo $n$}{puntero($\alpha$)}{}
-
-\vspace{1em}
-
-\tadAxioma{obtenerDelArbol(s, n)}{\IF Vacia?(s) THEN n.significado
-												ELSE {\IF n.hijos[ord(prim(s)] = NULL THEN NULL ELSE obtenerDelArbol(fin(s), n.hijos[ord(prim(s))]) FI} 
-												FI}
-
-\vspace{2em}
-
-
-\end{Representacion}
-
-\subsection{Algoritmos}
-
-\begin{Algoritmos}
-
-	\begin{Algoritmo}{iVacío}{}{diccString($\alpha$)}
-	{
-		\State $res$ $\gets$ iNodoVacío() \ComplejidadDer{1}
-	}
-	{$\Complejidad{1}$}{}
-	\end{Algoritmo}
-	
-	\begin{Algoritmo}{iNodoVacío}{}{e\_nodo)}
-	{
-		\State $res$ $\gets$ tupla($definición$: NULL, $hijos$:arreglo[256] de puntero(e\_nodo)) \ComplejidadDer{1}
-		\For{var $i$:nat $\gets$ 0 to 255} \ComplejidadDer{1}
-			\State $res.hijos[i]$ $\gets$ NULL; \ComplejidadDer{1}
-		\EndFor
-	}
-	{$\Complejidad{1}$}
-	{$\Complejidad{1} + \sum_{i = 1}^{255} * \Complejidad{1} = \newline
-	  \Complejidad{1} + 255 * \Complejidad{1} = \newline
-		256 * \Complejidad{1} = \Complejidad{1}
-	$}
-	\end{Algoritmo}
-
-	\begin{Algoritmo}{iDefinir}{\Inout{d}{diccString($\alpha$)}, \In{clv}{string}, \In{def}{$\alpha$}}{}
-	{
-		\State var $actual$:puntero($e\_nodo$) $\gets$ \&($d$) \ComplejidadDer{1}
-		\For{var $i$:nat $\gets$ 0 to LONGITUD($clv$)} \ComplejidadDer{1}
-			\If{$actual$ $\rightarrow$ $hijos$[ord($clv[i]$)] $\igobs$ NULL} \ComplejidadDer{1}
-				\State $actual$ $\rightarrow$ ($hijos$[ord($clv[i]$)] $\gets$ \&(iNodoVacío())) \ComplejidadDer{1}
-			\EndIf
-			\State $actual$ $\gets$ ($actual$ $\rightarrow$ $hijos$[ord($clv[i]$)]) \ComplejidadDer{1}
-		\EndFor
-		\State ($actual$ $\rightarrow$ $definicion$) $\gets$ \&(Copiar($def$)) \ComplejidadDer{1}
-	}
-	{|clv|}
-	{$\Complejidad{1} + \sum_{i = 1}^{|clv|} max(\sum_{i = 1}^{2} \Complejidad{1}, \sum_{i = 1}^{3} \Complejidad{1}) + \Complejidad{1} = \newline
-	  2 * \Complejidad{1} + |clv| * max(2 * \Complejidad{1}, 3 * \Complejidad{1}) = \newline
-		2 * \Complejidad{1} + |clv| * 3 * \Complejidad{1} = \newline
-		2 * \Complejidad{1} + 3 * \Complejidad{|clv|} = \newline
-		3 * \Complejidad{|clv|} = \Complejidad{|clv|}
-	$}
-	\end{Algoritmo}
-
-	\begin{Algoritmo}{iDefinido?}{\In{d}{diccString($\alpha$)}, \In{def}{$\alpha$}}{bool}
-	{
-		\State var $actual$:puntero($e\_nodo$) $\gets$ \&($d$) \ComplejidadDer{1}
-		\State var $i$:nat $\gets$ 0 \ComplejidadDer{1}
-		\State $res$ $\gets$ $true$ \ComplejidadDer{1}
-		\While{$i$ $<$ LONGITUD($clv$) $\wedge$ $res$ $\igobs$ $true$} \ComplejidadDer{1}
-			\If{$actual$ $\rightarrow$ $hijos$[ord($clv[i]$)] $\igobs$ NULL} \ComplejidadDer{1}
-				\State $res$ $\gets$ $false$ \ComplejidadDer{1}
-			\Else $actual$ $\gets$ ($actual$ $\rightarrow$ $hijos$[ord($clv[i]$)]) \ComplejidadDer{1}
-			\EndIf
-		\EndWhile
-		\If{$actual$ $\rightarrow$ $definicion$ $\igobs$ NULL} \ComplejidadDer{1}
-			\State $res$ $\gets$ $false$ \ComplejidadDer{1}
-		\EndIf
-	}
-	{|clv|}
-	{$\Complejidad{1} + \Complejidad{1} + \Complejidad{1} + \sum_{i = 1}^{|clv|} (\Complejidad{1} + max(\Complejidad{1}, \Complejidad{1})) + \Complejidad{1} + max(\Complejidad{1}, 0) = \newline
-	  4 * \Complejidad{1} + \sum_{i = 1}^{|clv|} (\Complejidad{1} + \Complejidad{1}) + \Complejidad{1} = \newline
-	  5 * \Complejidad{1} + |clv| * 2 * \Complejidad{1} = \newline
-	  5 * \Complejidad{1} + 2 * \Complejidad{|clv|} = \newline
-	  2 * \Complejidad{|clv|} = \Complejidad{|clv|}
-	$}
-	\end{Algoritmo}
-
-	\begin{Algoritmo}{iSignificado}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{diccString($\alpha$)}
-	{
-		\State var $actual$:puntero($e\_nodo$) $\gets$ \&(d) \ComplejidadDer{1}
-		\For{var $i$:nat $\gets$ 0 to LONGITUD($clv$)} \ComplejidadDer{1}
-		\State $actual$ $\gets$ ($actual$ $\rightarrow$ $hijos$[ord($clv[i]$)]) \ComplejidadDer{1}
-		\EndFor
-		\State $res$ $\gets$ ($actual$ $\rightarrow$ $definicion$) \ComplejidadDer{1}
-	}
-	{|clv|}
-	{$\Complejidad{1} + \Complejidad{1} + \sum_{i = 1}^{|clv|} \Complejidad{1} + \Complejidad{1} = \newline
-	  3 * \Complejidad{1} + |clv| * \Complejidad{1} = \newline
-	  3 * \Complejidad{1} + \Complejidad{|clv|} = \Complejidad{|clv|}
-	$}
-	\end{Algoritmo}
-	
-	%}
-	%{Complejidad final}
-	%{Justificacion complejidad}
-	%\end{Algoritmo}
-	%
-	%\begin{Algoritmo}{}{}{}
-	%{\State
-	%
-	%}
-	%{Complejidad final}
-	%{Justificacion complejidad}
-	%\end{Algoritmo}
-
-\end{Algoritmos}
