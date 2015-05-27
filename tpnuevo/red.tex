@@ -136,56 +136,38 @@
 \subsection{InvRep y Abs}
 
 \begin{enumerate}
-	\item{claves($directasEInterfaces$) es igual que claves($deOrigenADestino$) y también que el conjunto formado por las ip de $computadoras$.}
-	\item{Si def?(c, $directas$) de algún Obtener de $directasEInterfaces$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
-	\item{Para todo c, si def?(c, $directasEInterfaces$), entonces no def?(c, obtener(c, $directasEInterfaces$).$directas$).}
-	\item{El conjunto formado por las ip de $compusDirectas$ es el mismo que el formado por claves($directas$).}
-	\item{Los Obteners de $directas$ son únicos.}	
-	\item{Si def?(c, $indirectas$) de algún Obtener de $deOrigenADestino$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
-	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces no def?(c, obtener(c, $deOrigenADestino$)).}
+	\item{claves($directasEInterfaces$) es igual a claves($deOrigenADestino$), al conjunto formado por las ip de $computadoras$ y también a claves($directas$).}
+	\item{Si def?(c, $directas$) de alguna clave de $directasEInterfaces$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
+	\item{Para todo c, si def?(c, $directasEInterfaces$), entonces $\neg$def?(c, obtener(c, $directasEInterfaces$).$directas$).}
+	\item{Para todo $c_1$ def?($c_1$, $directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, $directasEInterfaces$).$directas$) $\impluego$ def?($c_2$, $directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, $directasEInterfaces$).$directas$).}
+	\item{Los significados de $directas$ son únicos.}	
+	\item{Si def?(c, $destinos$) de alguna clave de $deOrigenADestino$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
+	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces $\neg$def?(c, obtener(c, $deOrigenADestino$)).}
+	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces Claves(Obtener(c, $deOrigenADestino$)) es igual al conjunto formado por las ip de $computadoras$ menos la ip de c.}
+	\item{Si c pertenece a alguna lista de $significados$ de $destinos$ para cualquier clave, entonces c pertenece a $computadoras$.}
 	
 	
 \end{enumerate}
 
-\Rep[e\_mapa][m]{
-	\\m.estaciones = claves(m.uniones) $\wedge$ \hfill 1.
-	\\m.\#sendas = \#sendasPorDos(m.estaciones, m.uniones) / 2 $\wedge$ m.\#sendas $\leq$ long(m.sendas) $\yluego$ \hfill 2. 5.
-	\\($\forall$ e1, e2: string)(e1 $\in$ claves(m.uniones) $\yluego$ e2 
-	$\in$ claves(obtener(e1, m.uniones)) $\impluego$\\ 
-	e2 $\in$ claves(m.uniones) $\yluego$ e1 $\in$ claves(obtener(e2, m.uniones)) $\yluego$ 
-	\\ obtener(e2, obtener(e1, m.uniones)) = obtener(e1, obtener(e2, m.uniones)) $\wedge$ \hfill 3. 4.	
-	\\ obtener(e2, obtener(e1, m.uniones)) $<$ m.\#sendas) $\wedge$
-	\\($\forall$ e1, e2, e3, e4: string)((e1 $\in$ claves(m.uniones) $\yluego$
-	e2 $\in$ claves(obtener(e1, m.uniones)) $\wedge$\\ 
-	e3 $\in$ claves(m.uniones) $\yluego$ e4 $\in$ claves(obtener(e3, m.uniones))) $\impluego$
-	\\ (obtener(e2, obtener(e1, m.uniones)) $=$ obtener(e4, obtener(e3, m.uniones)) $\ssi$
-	\\ (e1 = e3 $\wedge$ e2 = e4) $\vee$ (e1 = e4 $\wedge$ e2 = e3)))) \hfill 3.
+\Rep[red][r]{
+\begin{enumerate}
+	\item{claves(e.$directasEInterfaces$) = claves(e.$deOrigenADestino$) = conjips(e.$computadoras$) $\wedge$ (($\forall$ $c$:ip) (def?($c$, e.$directasEInterfaces$) $\impluego$ Claves(Obtener($c$, e.$directasEInterfaces$).$directas$) = conjips(e.$computadoras$))) $\wedge$ (($\forall$ $c$:ip) (def?($c$, e.$deOrigenADestino$) $\impluego$ Claves(Obtener($c$, e.$deOrigenADestino$)) = conjips(e.$computadoras$))) $\yluego$}
+	\item{($\forall$ $c_1$, $c_2$:ip) (def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ $c_2$ $\in$ conjips(e.$computadoras$)) $\yluego$}
+	\item{($\forall$ $c$:ip) (def?($c$, e.$directasEInterfaces$) $\impluego$ $\neg$def?($c$, Obtener($c$, e.$directasEInterfaces$).$directas$)) $\yluego$}
+	\item{($\forall$ $c_1$, $c_2$:ip) (def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ def?($c_2$, e.$directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, e.$directasEInterfaces$).$directas$)) $\yluego$}
+	\item{($\forall$ $c_1$, $c_2$, $c_3$:ip) ($c_2$ $\neq$ $c_3$ $\wedge$ def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\wedge$ def?($c_3$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ obtener($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\neq$ obtener($c_3$, Obtener($c_1$, e.$directasEInterfaces$).$directas$)) $\yluego$}
+	\item{($\forall}$ $c$:ip) (def?($c$, e.$deOrigenADestino$) $\impluego$) Claves(Obtener($c$, e.$deOrigenADestino$)) $\subseteq$ conjips(e.$computadoras$) $\yluego$}
+	\item{($\forall$ $c$:ip)(def?($c$, e.$deOrigenADestino$) $\rightarrow$ $\neg$def?($c$, Obtener($c$, e.$deOrigenADestino$)) $\yluego$}
+	\item{($\forall$ $c_1, c_2, c_3$:compu) (def?($c_1.ip$, e.$deOrigenADestino$) $\yluego$ def?($c_2.ip$, Obtener($c_1$, e.$deOrigenADestino$)) $\yluego$ Pertenece?($c_3$, Obtener($c_2.ip$, Obtener($c_1$, e.$deOrigenADestino$)) $\impluego$ $c_3$ $\in$ e.$computadoras$ )}
+\end{enumerate}
 }
 
 \vspace{2em}
-	
-\tadOperacion{\#sendasPorDos}{conj($\alpha$)\ c, dicc($\alpha$, dicc($\alpha$, $\beta$))\ d}
-														{nat}{c $\subset$ claves(d)}
 
-\vspace{1em}
-
-\tadAxioma{\#sendasPorDos(c, d)}{\IF $\emptyset$?(c) THEN 0
-												ELSE \#claves(obtener(dameUno(c),d)) $+$ \#sendasPorDos(sinUno(c), d)
-												FI}
-
-\vspace{2em}
-
-\Abs[e\_mapa]{mapa}[m]{p}{
-	\\ m.estaciones = estaciones(p) $\yluego$
-	\\ ($\forall$ e1, e2: string)((e1 $\in$ estaciones(p) $\wedge$ e2 $\in$ estaciones(p)) $\impluego$
-	\\ (conectadas?(e1, e2, p) $\ssi$
-	\\   e1 $\in$ claves(m.uniones) $\wedge$ e2 $\in$ claves(obtener(e2, m.uniones)))) $\yluego$
-	\\ ($\forall$ e1, e2: string)((e1 $\in$ estaciones(p) $\wedge$ e2 $\in$ estaciones(p)) $\yluego$
-	\\ conectadas?(e1, e2, p) $\impluego$ 
-	\\ (restriccion(e1, e2, p) = m.sendas[obtener(e2, obtener(e1, m.uniones))] $\wedge$
-	   nroConexion(e1, e2, m) = obtener(e2, obtener(e1, m.uniones))) $\wedge$
-	   long(restricciones(p)) = m.\#sendas $\yluego$
-		 ($\forall$ n:nat) (n < m.\#sendas $\impluego$ m.sendas[n] = ElemDeSecu(restricciones(p), n)))
+\Abs[e\_red]{red}[e]{r}{
+	\\computadoras(r) = e.computadoras $\yluego$ 
+	\\($\forall$ $c_1, c_2$:compu) ($c_1$ $\in$ computadoras(r) $\wedge$ $c_2$ $\in$ computadoras(r) $\impluego$ (Def?($c_1$, e.$directasEInterfaces$) $\yluego$ Def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$ = conectadas?(r, $c_1$, $c_2$))) $\yluego$
+	\\($\forall$ $c_1, c_2$:compu) (conectadas?(r, $c_1$, $c_2$) $\impluego$ (Obtener($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) = interfazUsada(r, $c_1$, $c_2$)))
 }
 
 \end{Representacion}
