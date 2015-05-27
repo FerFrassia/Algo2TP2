@@ -123,7 +123,7 @@
 			$) )$} \\
 			\tupTupItem{deOrigenADestino}{\TipoVariable{diccString}$($\ignorespaces
 			\emph{compu}: \TipoVariable{string},
-			\emph{indirectas}: \TipoVariable{diccString}
+			\emph{destinos}: \TipoVariable{diccString}
 			$($\ignorespaces
 				\emph{compu}: \TipoVariable{string}, \ignorespaces
 				\emph{caminosMinimos}: \TipoVariable{conj(lista(compu))}\ignorespaces
@@ -136,8 +136,15 @@
 \subsection{InvRep y Abs}
 
 \begin{enumerate}
-	\item{Las claves de $directasEInterfaces$ son las mismas que las de $deOrigenADestino$ y también que el conjunto formado por las ip de $computadoras$.}
-		\item{}
+	\item{claves($directasEInterfaces$) es igual que claves($deOrigenADestino$) y también que el conjunto formado por las ip de $computadoras$.}
+	\item{Si def?(c, $directas$) de algún Obtener de $directasEInterfaces$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
+	\item{Para todo c, si def?(c, $directasEInterfaces$), entonces no def?(c, obtener(c, $directasEInterfaces$).$directas$).}
+	\item{El conjunto formado por las ip de $compusDirectas$ es el mismo que el formado por claves($directas$).}
+	\item{Los Obteners de $directas$ son únicos.}	
+	\item{Si def?(c, $indirectas$) de algún Obtener de $deOrigenADestino$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
+	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces no def?(c, obtener(c, $deOrigenADestino$)).}
+	
+	
 \end{enumerate}
 
 \Rep[e\_mapa][m]{
@@ -197,16 +204,16 @@
 	
 	\begin{Algoritmo}{iConectadas?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
 	{
-		\State $res$ $\gets$ Definido?(Significado($r.directasEInterfaces$, $c_1.ip$)$.directas$, $c_2.ip$) \ComplejidadDer{|c_1| + |c_2|}
+		\State $res$ $\gets$ Def?(Obtener($r.directasEInterfaces$, $c_1.ip$)$.directas$, $c_2.ip$) \ComplejidadDer{|c_2.ip| + |c_1.ip|}
 	}
-	{$\Complejidad{|c_1| + |c_2|}$}{}
+	{$\Complejidad{|c_1.ip| + |c_2.ip|}$}{}
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iInterfazUsada}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{interfaz}
 	{
-		\State $res$ $\gets$ Significado(Significado($r.directasEInterfaces$, $c_1.ip$)$.directas$, $c_2.ip$)\ComplejidadDer{|c_1| + |c_2|}
+		\State $res$ $\gets$ Obtener(Obtener($r.directasEInterfaces$, $c_1.ip$)$.directas$, $c_2.ip$)\ComplejidadDer{|c_1.ip| + |c_2.ip|}
 	}
-	{$\Complejidad{|c_1| + |c_2|}$}{}
+	{$\Complejidad{|c_1.ip| + |c_2.ip|}$}{}
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iIniciarRed}{}{red}
@@ -220,9 +227,25 @@
 	
 	\begin{Algoritmo}{iAgregarComputadora}{\Inout{r}{red}, \In{c}{compu}}{}
 	{
+		\State Definir($r.directasEInterfaces$, $c.ip$, tupla(Vacío(), Vacio())) \ComplejidadDer{|c.ip|}
+		
+		\State var $itComputadoras$:itConj($\alpha$) $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
+		
+		\While {HaySiguiente?($itComputadoras$)} \ComplejidadDer{1}
+			\State Definir(Obtener($r.deOrigenADestino$, Siguiente($itComputadoras$).$ip$), $c.ip$, Vacío()) \ComplejidadDer{|Siguiente($itComputadoras$).$ip$| + |c.ip|}
+			\State Avanzar($itComputadoras$) \ComplejidadDer{1}
+		\EndWhile
+		
+		\State var $dicNuevaCompu$:dicString($\alpha$) $\gets$ Vacio() \ComplejidadDer{1}
+		
+		\While {HayAnterior?($itComputadoras$)} \ComplejidadDer{1}
+			\State Definir($dicNuevaCompu$, Anterior($itComputadoras$).$ip$, Vacío()) \ComplejidadDer{1}
+			\State Retroceder($itComputadoras$) \ComplejidadDer{1}
+		\EndWhile		
+		
+		\State Definir($r.deOrigenADestino$, $c.ip$, $dicNuevaCompu$) \ComplejidadDer{1}
+		
 		\State Agregar($r.computadoras$, $c$) \ComplejidadDer{1}
-		\State Definir($r.directasEInterfaces$, $c.ip$, tupla(Vacío(), Vacio())) \ComplejidadDer{|c|}
-		\State Definir($r.deOrigenADestino$, $c.ip$, Vacío()) \ComplejidadDer{|c|}
 	}
 	{$\Complejidad{|c|}$}
 	{$\Complejidad{1} + \Complejidad{|c|} + \Complejidad{|c|} = \newline
@@ -233,13 +256,13 @@
 	{
 		%Armo la primera componente de e_red
 		
-		\State var $tupSig1$:tupla $\gets$ Significado($r.directasEInterfaces$, $c_1.ip$)
+		\State var $tupSig1$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c_1.ip$)
 		%Guardo la interfaz usada por c_1
 		\State Definir($tupSig1.directas$, $c_2.ip$, $i_1$) \ComplejidadDer{|c_1| + |c_2| + 1}
 		%Agrego c_2 a las compusDirectas de c_1
 		\State Agregar($tupSig1.compusDirectas$, $c_2$) \ComplejidadDer{1}
 
-		\State var $tupSig2$:tupla $\gets$ Significado($r.directasEInterfaces$, $c_2.ip$)
+		\State var $tupSig2$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c_2.ip$)
 		%Guardo la interfaz usada por c_2		
 		\State Definir($tupSig2.directas$, $c_1.ip$, $i_2$) \ComplejidadDer{|c_1| + |c_2| + 1}
 		%Agrego c_2 a las compusDirectas de c_1
@@ -249,9 +272,28 @@
 		%Armo la segunda componente de e_red
 				
 		%Guardo los caminos minimos de c_1 a c_2
-		\State Definir(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$, CalcularCaminosMinimos($r, c_1, c_2$)) \ComplejidadDer{1}
+		%\State Definir(Obtener($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$, CalcularCaminosMinimos($r, c_1, c_2$)) \ComplejidadDer{1}
 		%Guardo los caminos minimos de c_2 a c_1
-		\State Definir(Significado($r.deOrigenADestino$, $c_2.ip$), $c_1.ip$, CalcularCaminosMinimos($r, c_2, c_1$)) \ComplejidadDer{1}		
+		%\State Definir(Obtener($r.deOrigenADestino$, $c_2.ip$), $c_1.ip$, CalcularCaminosMinimos($r, c_2, c_1$)) \ComplejidadDer{1}
+		
+		
+		\State var $itOrigenes$:itConj($\alpha$) $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
+		\While {HaySiguiente?($itOrigenes$)} \ComplejidadDer{1}
+			\State var $dicCompu$:dicString($\alpha$) $\gets$ Obtener($r.deOrigenADestino$, Siguiente($itOrigenes$).$ip$) \ComplejidadDer{1}
+			\State var $itDestinos$:itConj($\alpha$) $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
+			\While {HaySiguiente?($itDestinos$)} \ComplejidadDer{1}
+				\If {Siguiente($itOrigenes$) $<>$ Siguiente($itDestinos$))} \ComplejidadDer{1}
+					\State Definir($dicCompu$, Siguiente($itDestinos$).$ip$), CalcularCaminosMinimos($r$, Siguiente($itOrigenes$), Siguiente($itDestinos$))) \ComplejidadDer{1} 
+				\EndIf
+				\State Avanzar($itDestinos$) \ComplejidadDer{1}
+			\EndWhile
+			\State Avanzar($itOrigenes$) \ComplejidadDer{1}
+		\EndWhile		
+		
+		
+		
+		
+				
 	}
 	{$\Complejidad{|e_1| + |e_2|}$}
 	{$\Complejidad{|e_1| + |e_2|} + \Complejidad{|e_1| + |e_2|} + \Complejidad{1} + \Complejidad{1} = \newline
@@ -261,7 +303,7 @@
 	
 	\begin{Algoritmo}{iVecinos}{\In{r}{red}, \In{c}{compu}}{conj(compu)}
 	{
-		\State $res$ $\gets$ Significado($r.directasEInterfaces$, $c.ip$)$.compusDirectas$
+		\State $res$ $\gets$ Obtener($r.directasEInterfaces$, $c.ip$)$.compusDirectas$
 	}
 	{}
 	{}
@@ -269,11 +311,11 @@
 	
 	\begin{Algoritmo}{iUsaInterfaz}{\In{r}{red}, \In{c}{compu}, \In{i}{interfaz}}{bool}
 	{
-		\State var $tupVecinos$:tupla $\gets$ Significado($r.directasEInterfaces$, $c.ip$) \ComplejidadDer{1}
+		\State var $tupVecinos$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c.ip$) \ComplejidadDer{1}
 		\State var $itcompusDirectas$:itConj(compu) $\gets$ CrearIt($tupVecinos.compusDirectas$) \ComplejidadDer{1}
 		\State $res$:bool $\gets$ $false$ \ComplejidadDer{1}
 		\While{HaySiguiente($itcompusDirectas$) AND $¬res$} \ComplejidadDer{1}
-		\If {Significado($tupVecinos.directas$, Siguiente($itcompusDirectas$)$.ip$) $==$ $i$} \ComplejidadDer{1}
+		\If {Obtener($tupVecinos.directas$, Siguiente($itcompusDirectas$)$.ip$) $==$ $i$} \ComplejidadDer{1}
 			\State $res$ $\gets$ $true$  \ComplejidadDer{1}
 		\EndIf
 		\State Avanzar($it$) \ComplejidadDer{1}
@@ -285,7 +327,7 @@
 	
 	\begin{Algoritmo}{iCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{itConj($\alpha$)}
 	{
-		\State $res$ $\gets$ CrearIt(Significado(Significado($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$))	\ComplejidadDer{1}
+		\State $res$ $\gets$ CrearIt(Obtener(Obtener($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$))	\ComplejidadDer{1}
 	}
 	{}
 	{}
@@ -350,7 +392,7 @@
 		
 	%\begin{Algoritmo}{iNroConexion}{\In{e1}{estación}, \In{e2}{estación}, \In{m}{mapa}}{nat}
 	%{
-	%	\State $res$ $\gets$ Significado(Significado($m.uniones$, $e1$), $e2$) \ComplejidadDer{|e_1| + |e_2|}
+	%	\State $res$ $\gets$ Obtener(Obtener($m.uniones$, $e1$), $e2$) \ComplejidadDer{|e_1| + |e_2|}
 	%}
 	%{$\Complejidad{|e_1| + |e_2|}$}{}
 	%\end{Algoritmo}
