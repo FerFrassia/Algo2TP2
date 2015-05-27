@@ -139,7 +139,7 @@
 	\item{claves($directasEInterfaces$) es igual a claves($deOrigenADestino$), al conjunto formado por las ip de $computadoras$ y también a claves($directas$).}
 	\item{Si def?(c, $directas$) de alguna clave de $directasEInterfaces$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
 	\item{Para todo c, si def?(c, $directasEInterfaces$), entonces $\neg$def?(c, obtener(c, $directasEInterfaces$).$directas$).}
-	\item{Para todo $c_1$ def?($c_1$, $directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, $directasEInterfaces$).$directas$) $\impluego$ def?($c_2$, $directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, $directasEInterfaces$).$directas$).}
+	\item{Para todo $c_1$ def?($c_1$, $directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, $directasEInterfaces$).$directas$) $\Leftrightarrow$ def?($c_2$, $directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, $directasEInterfaces$).$directas$).}
 	\item{Los significados de $directas$ son únicos.}	
 	\item{Si def?(c, $destinos$) de alguna clave de $deOrigenADestino$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
 	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces $\neg$def?(c, obtener(c, $deOrigenADestino$)).}
@@ -154,9 +154,9 @@
 	\item{claves(e.$directasEInterfaces$) = claves(e.$deOrigenADestino$) = conjips(e.$computadoras$) $\wedge$ (($\forall$ $c$:ip) (def?($c$, e.$directasEInterfaces$) $\impluego$ Claves(Obtener($c$, e.$directasEInterfaces$).$directas$) = conjips(e.$computadoras$))) $\wedge$ (($\forall$ $c$:ip) (def?($c$, e.$deOrigenADestino$) $\impluego$ Claves(Obtener($c$, e.$deOrigenADestino$)) = conjips(e.$computadoras$))) $\yluego$}
 	\item{($\forall$ $c_1$, $c_2$:ip) (def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ $c_2$ $\in$ conjips(e.$computadoras$)) $\yluego$}
 	\item{($\forall$ $c$:ip) (def?($c$, e.$directasEInterfaces$) $\impluego$ $\neg$def?($c$, Obtener($c$, e.$directasEInterfaces$).$directas$)) $\yluego$}
-	\item{($\forall$ $c_1$, $c_2$:ip) (def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ def?($c_2$, e.$directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, e.$directasEInterfaces$).$directas$)) $\yluego$}
+	\item{($\forall$ $c_1$, $c_2$:ip) (def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\Leftrightarrow$ def?($c_2$, e.$directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, e.$directasEInterfaces$).$directas$)) $\yluego$}
 	\item{($\forall$ $c_1$, $c_2$, $c_3$:ip) ($c_2$ $\neq$ $c_3$ $\wedge$ def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\wedge$ def?($c_3$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ obtener($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\neq$ obtener($c_3$, Obtener($c_1$, e.$directasEInterfaces$).$directas$)) $\yluego$}
-	\item{($\forall}$ $c$:ip) (def?($c$, e.$deOrigenADestino$) $\impluego$) Claves(Obtener($c$, e.$deOrigenADestino$)) $\subseteq$ conjips(e.$computadoras$) $\yluego$}
+	\item{($\forall$ $c$:ip) (def?($c$, e.$deOrigenADestino$) $\impluego$ Claves(Obtener($c$, e.$deOrigenADestino$)) $\subseteq$ conjips(e.$computadoras$)) $\yluego$}
 	\item{($\forall$ $c$:ip)(def?($c$, e.$deOrigenADestino$) $\rightarrow$ $\neg$def?($c$, Obtener($c$, e.$deOrigenADestino$)) $\yluego$}
 	\item{($\forall$ $c_1, c_2, c_3$:compu) (def?($c_1.ip$, e.$deOrigenADestino$) $\yluego$ def?($c_2.ip$, Obtener($c_1$, e.$deOrigenADestino$)) $\yluego$ Pertenece?($c_3$, Obtener($c_2.ip$, Obtener($c_1$, e.$deOrigenADestino$)) $\impluego$ $c_3$ $\in$ e.$computadoras$ )}
 \end{enumerate}

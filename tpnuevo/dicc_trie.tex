@@ -22,13 +22,7 @@
   [\Complejidad{1}]
   [Crea nuevo diccionario vacio.]
 	
-  \InterfazFuncion{Def?}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{bool}
-  %[ACA VA EL PRE (SI LO HUBIERA)]
-  {$res \igobs$ def?($clv, d$)}
-  [$\Complejidad{|clv|}$]
-  [Revisa si la clave ingresada se encuentra definida en el Diccionario.]
-	
-  \InterfazFuncion{Obtener}{\In{d}{diccString($\alpha$)}, \In{clv}{string}}{diccString($\alpha$)}
+  \InterfazFuncion{Obtener}{\In{clv}{string}, \In{d}{diccString($\alpha$)}}{diccString($\alpha$)}
   [def?($d, clv$)]
   {$res \igobs$ obtener($clv, d$)}
   [$\Complejidad{|clv|}$]

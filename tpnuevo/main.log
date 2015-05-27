@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.5.16)  26 MAY 2015 20:33
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.5.16)  26 MAY 2015 23:55
 entering extended mode
 **main.tex
 
@@ -1168,48 +1168,172 @@ n/10 ) $\OMS/cmsy/m/n/10 ^$ $:$ \T1/cmr/m/n/10 usaInterfaz?($\OML/cmm/m/it/10 r
  []
 
 [5]
-Underfull \hbox (badness 1776) in paragraph at lines 123--132
-\T1/cmr/m/n/10 , \T1/cmr/m/it/10 deO-ri-ge-nA-Des-tino\T1/cmr/m/n/10 : \T1/cmtt
-/m/n/10 diccString$\OT1/cmr/m/n/10 ($\T1/cmr/m/it/10 compu\T1/cmr/m/n/10 : \T1/
-cmtt/m/n/10 string\T1/cmr/m/n/10 , \T1/cmr/m/it/10 in-di-rec-tas\T1/cmr/m/n/10 
-: \T1/cmtt/m/n/10 diccString $\OT1/cmr/m/n/10 ($\T1/cmr/m/it/10 compu\T1/cmr/m/
-n/10 :
+Overfull \hbox (9.83034pt too wide) in paragraph at lines 139--140
+[]\T1/cmr/m/n/10 claves($\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m/n/10 ) 
+es igual a claves($\OML/cmm/m/it/10 deOrigenADestino$\T1/cmr/m/n/10 ), al con-j
+un-to for-ma-do por las ip de $\OML/cmm/m/it/10 computadoras$
  []
 
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 156--156
+Overfull \hbox (7.09027pt too wide) in paragraph at lines 147--148
+[]\T1/cmr/m/n/10 Si c per-te-ne-ce a al-gu-na lis-ta de $\OML/cmm/m/it/10 signi
+ficados$ \T1/cmr/m/n/10 de $\OML/cmm/m/it/10 destinos$ \T1/cmr/m/n/10 pa-ra cua
+l-quier cla-ve, en-ton-ces c per-te-ne-ce a $\OML/cmm/m/it/10 computadoras$\T1/
+cmr/m/n/10 . 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+[]\T1/cmr/m/n/10 claves(e.$\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m/n/10 
+) = claves(e.$\OML/cmm/m/it/10 deOrigenADestino$\T1/cmr/m/n/10 ) =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+\T1/cmr/m/n/10 conjips(e.$\OML/cmm/m/it/10 computadoras$\T1/cmr/m/n/10 ) $\OMS/
+cmsy/m/n/10 ^$ \T1/cmr/m/n/10 (($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c$\T1/cm
+r/m/n/10 :ip) (def?($\OML/cmm/m/it/10 c$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it/10 di
+rectasEInterfaces$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/10 )[]$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+\T1/cmr/m/n/10 Claves(Obtener($\OML/cmm/m/it/10 c$\T1/cmr/m/n/10 , e.$\OML/cmm/
+m/it/10 directasEInterfaces$\T1/cmr/m/n/10 ).$\OML/cmm/m/it/10 directas$\T1/cmr
+/m/n/10 ) = conjips(e.$\OML/cmm/m/it/10 computadoras$\T1/cmr/m/n/10 )))
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+[]\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , $
+\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 :ip) (def?($\OML/cmm/m/it/10 c[]$\T1/cmr/m/
+n/10 , e.$\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/
+10 ^[]$ \T1/cmr/m/n/10 def?($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , Obtener($\OM
+L/cmm/m/it/10 c[]$\T1/cmr/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+[]\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c$\T1/cmr/m/n/10 :ip) 
+(def?($\OML/cmm/m/it/10 c$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it/10 directasEInterfa
+ces$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/10 )[]$ $:$\T1/cmr/m/n/10 def?($\OML/cmm/m/
+it/10 c$\T1/cmr/m/n/10 , Obtener($\OML/cmm/m/it/10 c$\T1/cmr/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+[]\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , $
+\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 :ip) (def?($\OML/cmm/m/it/10 c[]$\T1/cmr/m/
+n/10 , e.$\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/
+10 ^[]$ \T1/cmr/m/n/10 def?($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , Obtener($\OM
+L/cmm/m/it/10 c[]$\T1/cmr/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 3189) in paragraph at lines 163--163
+\T1/cmr/m/n/10 e.$\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m/n/10 ).$\OML/c
+mm/m/it/10 directas$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/10 ,$ \T1/cmr/m/n/10 def?($
+\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it/10 directasEInterfaces$\
+T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/10 ^[]$ \T1/cmr/m/n/10 def?($\OML/cmm/m/it/10 c[
+]$\T1/cmr/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+[]\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , $
+\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , $\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 :ip)
+ ($\OML/cmm/m/it/10 c[]$ $\OMS/cmsy/m/n/10 6\OT1/cmr/m/n/10 =$ $\OML/cmm/m/it/1
+0 c[]$ $\OMS/cmsy/m/n/10 ^$ \T1/cmr/m/n/10 def?($\OML/cmm/m/it/10 c[]$\T1/cmr/m
+/n/10 , e.$\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n
+/10 ^[]$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+\T1/cmr/m/n/10 def?($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , Obtener($\OML/cmm/m/
+it/10 c[]$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m/n/
+10 ).$\OML/cmm/m/it/10 directas$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/10 ^$ \T1/cmr/m
+/n/10 def?($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+\T1/cmr/m/n/10 Obtener($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it/
+10 directasEInterfaces$\T1/cmr/m/n/10 ).$\OML/cmm/m/it/10 directas$\T1/cmr/m/n/
+10 ) $\OMS/cmsy/m/n/10 )[]$ \T1/cmr/m/n/10 obtener($\OML/cmm/m/it/10 c[]$\T1/cm
+r/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+\T1/cmr/m/n/10 Obtener($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it/
+10 directasEInterfaces$\T1/cmr/m/n/10 ).$\OML/cmm/m/it/10 directas$\T1/cmr/m/n/
+10 ) $\OMS/cmsy/m/n/10 6\OT1/cmr/m/n/10 =$ \T1/cmr/m/n/10 obtener($\OML/cmm/m/i
+t/10 c[]$\T1/cmr/m/n/10 , Obtener($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+[]\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c[]; c[]; c[]$\T1/cmr/
+m/n/10 :compu) (def?($\OML/cmm/m/it/10 c[]:ip$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it
+/10 deOrigenADestino$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/10 ^[]$ \T1/cmr/m/n/10 def
+?($\OML/cmm/m/it/10 c[]:ip$\T1/cmr/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 4132) in paragraph at lines 163--163
+\T1/cmr/m/n/10 Obtener($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it/
+10 deOrigenADestino$\T1/cmr/m/n/10 )) $\OMS/cmsy/m/n/10 ^[]$ \T1/cmr/m/n/10 Per
+tenece?($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , Obtener($\OML/cmm/m/it/10 c[]:ip
+$\T1/cmr/m/n/10 , Obtener($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 ,
+ []
+
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 163--163
 [][]| $\OMS/cmsy/m/n/10 $| [] 
  []
 
-
-Overfull \hbox (11.16393pt too wide) in paragraph at lines 161--161
-[]\T1/cmr/m/n/10 #sendasPorDos 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 161--161
-[]\T1/cmr/m/n/10 conj($\OML/cmm/m/it/10 $\T1/cmr/m/n/10 ) c $\OMS/cmsy/m/n/10 
-$
- []
-
 [6]
+Overfull \hbox (26.49724pt too wide) in paragraph at lines 171--172
+\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c[]; c[]$\T1/cmr/m/n/10 
+:compu) ($\OML/cmm/m/it/10 c[]$ $\OMS/cmsy/m/n/10 2$ \T1/cmr/m/n/10 compu-tado-
+ras(r) $\OMS/cmsy/m/n/10 ^$ $\OML/cmm/m/it/10 c[]$ $\OMS/cmsy/m/n/10 2$ \T1/cmr
+/m/n/10 compu-tado-ras(r) $\OMS/cmsy/m/n/10 )[]$ \T1/cmr/m/n/10 (Def?($\OML/cmm
+/m/it/10 c[]$\T1/cmr/m/n/10 , e.$\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m
+/n/10 )
+ []
+
+
+Overfull \hbox (31.99329pt too wide) in paragraph at lines 171--172
+\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c[]; c[]$\T1/cmr/m/n/10 
+:compu) (co-nec-ta-das?(r, $\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 , $\OML/cmm/m/i
+t/10 c[]$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/10 )[]$ \T1/cmr/m/n/10 (Obtener($\OML/
+cmm/m/it/10 c[]$\T1/cmr/m/n/10 , Obtener($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 ,
+ e.$\OML/cmm/m/it/10 directasEInterfaces$\T1/cmr/m/n/10 ).$\OML/cmm/m/it/10 dir
+ectas$\T1/cmr/m/n/10 )
+ []
+
+[7]
+Package mdframed Info: Not enough space on this page on input line 198.
+
+Overfull \hbox (70.54361pt too wide) in paragraph at lines 234--234
+[] \T1/cmr/m/n/10 Definir(Obtener($\OML/cmm/m/it/10 r:deOrigenADestino$\T1/cmr/
+m/n/10 , Siguiente($\OML/cmm/m/it/10 itComputadoras$\T1/cmr/m/n/10 ).$\OML/cmm/
+m/it/10 ip$\T1/cmr/m/n/10 ), $\OML/cmm/m/it/10 c:ip$\T1/cmr/m/n/10 , Va-c�o()) 
+  $\OMS/cmsy/m/n/10 O\OT1/cmr/m/n/10 (\OMS/cmsy/m/n/10 j\OML/cmm/m/it/10 Siguie
+nte\OT1/cmr/m/n/10 ($\T1/cmr/m/n/10 itComputadoras$\OT1/cmr/m/n/10 )\OML/cmm/m/
+it/10 :$\T1/cmr/m/n/10 ip$\OMS/cmsy/m/n/10 j \OT1/cmr/m/n/10 +$
+ []
+
+[8]
 
 Package mdframed Warning: You got a bad break
 (mdframed)                because the last box will be empty
 (mdframed)                you have to change it manually
 (mdframed)                by changing the text, the space
-(mdframed)                or something else on input line 229.
+(mdframed)                or something else on input line 349.
 
-Package mdframed Info: You first box width is to small
- mdframed fixed it
-(mdframed)              on input line 229.
-[7]
-
-Package mdframed Warning: You got a bad break
-(mdframed)                because the last split box is empty
-(mdframed)                You have to change the settings on input line 229.
-
-[8]) [9]
+[9]) [10]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\dcnet.tex"
 Overfull \hbox (10.43942pt too wide) in paragraph at lines 58--58
@@ -1224,8 +1348,8 @@ n/10 origen($\OML/cmm/m/it/10 p$\T1/cmr/m/n/10 ) $\OMS/cmsy/m/n/10 2$ \T1/cmr/m
 []$
  []
 
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 92--108
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 95--111
 \T1/cmr/m/it/10 CompYPaq\T1/cmr/m/n/10 : \T1/cmtt/m/n/10 DiccString$\OT1/cmr/m/
 n/10 ($\T1/cmr/m/it/10 compu\T1/cmr/m/n/10 : \T1/cmtt/m/n/10 compu\T1/cmr/m/n/1
 0 , \T1/cmtt/m/n/10 tupla$\OT1/cmr/m/n/10 ($\T1/cmr/m/it/10 MasPriori\T1/cmr/m/
@@ -1233,7 +1357,7 @@ n/10 :DiccRapido$\OT1/cmr/m/n/10 ($\T1/cmr/m/it/10 prioridad
  []
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 92--108
+Underfull \hbox (badness 1466) in paragraph at lines 95--111
 \T1/cmr/m/n/10 :nat, \T1/cmr/m/it/10 Paq-de-Prio-ri\T1/cmr/m/n/10 :conj$\OT1/cm
 r/m/n/10 ($\T1/cmr/m/n/10 paquete$\OT1/cmr/m/n/10 )$ $)$\T1/cmr/m/n/10 , \T1/cm
 r/m/it/10 PaqY-Cam\T1/cmr/m/n/10 :DiccRapido $\OT1/cmr/m/n/10 ($\T1/cmr/m/it/10
@@ -1241,60 +1365,63 @@ r/m/it/10 PaqY-Cam\T1/cmr/m/n/10 :DiccRapido $\OT1/cmr/m/n/10 ($\T1/cmr/m/it/10
  []
 
 
-Underfull \hbox (badness 3547) in paragraph at lines 141--141
-\T1/cmr/m/n/10 (t.esta? $\OMS/cmsy/m/n/10 ,$ \T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 
-9$ \T1/cmr/m/n/10 e1: String) (e1 $\OMS/cmsy/m/n/10 2$ \T1/cmr/m/n/10 cla-ves(c
-.RUREnEst) $\OMS/cmsy/m/n/10 ^[]$ \T1/cmr/m/n/10 es-taEn-Co-laP?(obtener(e1,
+Overfull \hbox (35.25172pt too wide) in paragraph at lines 121--122
+[]\T1/cmr/m/n/10 Para to-da com-pu (c1) per-te-ne-cien-te a las cla-ves de 'Com
+pY-Paq' cu-yo sig-ni-fi-ca-do.enviados es (e1), d.MasEnviante.enviados
  []
 
 
-Underfull \hbox (badness 2662) in paragraph at lines 141--141
-\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ \T1/cmr/m/n/10 n:Nat)(estaEnColaP?(obtener
-(e1, c.RUREnEst), n) $\OMS/cmsy/m/n/10 )$ $:$ \T1/cmr/m/n/10 es-taEn-Co-laP?(ob
-tener(e2,
+Underfull \hbox (badness 10000) in paragraph at lines 144--144
+\T1/cmr/m/n/10 (obtener(c.ip,d.CompYPaq).enviados $\OMS/cmsy/m/n/10 $ \T1/cmr/
+m/n/10 (d.MasEnviante).enviados $\OMS/cmsy/m/n/10 ^$
  []
 
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 141--141
-[][]| $\OMS/cmsy/m/n/10 $| [] 
+Underfull \hbox (badness 6493) in paragraph at lines 144--144
+\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ $\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 :comp
+u, p:paquete)(esta?($\OML/cmm/m/it/10 c[]$\T1/cmr/m/n/10 ,obtener(p,obtener(c.i
+p, d.CompYPaq).PaqYCam)) $\OMS/cmsy/m/n/10 )$
  []
 
 
-Overfull \hbox (3.5269pt too wide) in paragraph at lines 145--145
-[]\T1/cmr/m/n/10 estaEnColaP? 
- []
-
-[11]
-Overfull \hbox (6.99828pt too wide) in paragraph at lines 166--166
-[]\T1/cmr/m/n/10 RURQueEstan 
+Overfull \hbox (45.27632pt too wide) in paragraph at lines 144--144
+$\OMS/cmsy/m/n/10 ^$ \T1/cmr/m/n/10 jun-tar-Sig-ni-fi-ca-dos(obtener(c.ip,d.Com
+pYPaq).MasPriori,claves(obtener(c.ip,d.CompYPaq).MasPriori)
  []
 
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 178--178
-[][]| $\OMS/cmsy/m/n/10 $| [] 
+Underfull \hbox (badness 6510) in paragraph at lines 144--144
+\T1/cmr/m/n/10 ($\OMS/cmsy/m/n/10 8$ \T1/cmr/m/n/10 p1:paquete, c2:computadora)
+ (Def?(p, Ob-te-ner(c.ip, d.CompYPaq).PaqYCam) $\OMS/cmsy/m/n/10 ^$
  []
 
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 192--192
-[][]| $\OMS/cmsy/m/n/10 $| [] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 200--200
-[]\T1/cmr/m/n/10 itUniu $\OMS/cmsy/m/n/10 $
- []
-
-
-Overfull \hbox (15.0pt too wide) in paragraph at lines 204--204
+Overfull \hbox (15.0pt too wide) in paragraph at lines 144--144
 [][]| $\OMS/cmsy/m/n/10 $| [] 
  []
 
 [12]
-Package mdframed Info: Not enough space on this page on input line 321.
- [13]
-Package mdframed Info: Not enough space on this page on input line 321.
+Overfull \hbox (20.21727pt too wide) in paragraph at lines 149--149
+[]\T1/cmr/m/n/10 juntarSignificados 
+ []
 
-Overfull \hbox (10.31732pt too wide) in paragraph at lines 381--381
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 163--163
+[][]| $\OMS/cmsy/m/n/10 $| [] 
+ []
+
+
+Overfull \hbox (7.31526pt too wide) in paragraph at lines 173--173
+\T1/cmr/m/n/10 ob-te-ner(c.ip, e.CompYPaq).PaqYCam) $\OMS/cmsy/m/n/10 )[]$ \T1/
+cmr/m/n/10 ob-te-ner(p, ob-te-ner(c.ip, e.CompYPaq).PaqYCam)
+ []
+
+[13]
+Package mdframed Info: Box was splittet wrong
+ starting loop to iterate the splitting point
+(mdframed)              on input line 288.
+ [14]
+Overfull \hbox (10.31732pt too wide) in paragraph at lines 353--353
 [] $\OML/cmm/m/it/10 d$\T1/cmr/m/n/10 .MasEnviante $\OMS/cmsy/m/n/10  $ \T1/cmr
 /m/n/10 tu-pla(\T1/cmr/m/sc/10 Siguiente\T1/cmr/m/n/10 ($\OML/cmm/m/it/10 it$\T
 1/cmr/m/n/10 ), \T1/cmr/m/sc/10 ob-te-ner\T1/cmr/m/n/10 (\T1/cmr/m/sc/10 Siguie
@@ -1304,7 +1431,7 @@ ML/cmm/m/it/10 L \OT1/cmr/m/n/10 +$
  []
 
 
-Overfull \hbox (1.72656pt too wide) in paragraph at lines 381--381
+Overfull \hbox (1.72656pt too wide) in paragraph at lines 353--353
 [] \T1/cmr/m/n/10 var $\OML/cmm/m/it/10 proxpc$\T1/cmr/m/n/10 : com-pu $\OMS/cm
 sy/m/n/10  $ \T1/cmr/m/sc/10 Pri-me-ro\T1/cmr/m/n/10 (\T1/cmr/m/sc/10 Siguiente
 \T1/cmr/m/n/10 (\T1/cmr/m/sc/10 CaminosMinimos\T1/cmr/m/n/10 ($\OML/cmm/m/it/10
@@ -1314,7 +1441,7 @@ m/m/it/10 itaux$\T1/cmr/m/n/10 .destino))   $\OMS/cmsy/m/n/10 O\OT1/cmr/m/n/10
  []
 
 
-Overfull \hbox (5.90451pt too wide) in paragraph at lines 381--381
+Overfull \hbox (20.90085pt too wide) in paragraph at lines 353--353
 [] \T1/cmr/m/n/10 var $\OML/cmm/m/it/10 mismaprio$\T1/cmr/m/n/10 : conj(paquete
 s) $\OMS/cmsy/m/n/10  $ \T1/cmr/m/sc/10 Agre-gar\T1/cmr/m/n/10 (\T1/cmr/m/sc/10
  obtener\T1/cmr/m/n/10 ($\OML/cmm/m/it/10 it\OT1/cmr/m/n/10 3$\T1/cmr/m/n/10 .p
@@ -1323,23 +1450,23 @@ aq.prioridad, $\OML/cmm/m/it/10 diccprio$\T1/cmr/m/n/10 ), $\OML/cmm/m/it/10 it
 ML/cmm/m/it/10 log[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 k\OT1/cmr/m/n/10 ))$ 
  []
 
-Package mdframed Info: Not enough space on this page on input line 398.
-[14]
-Package mdframed Info: Not enough space on this page on input line 398.
-) [15]
+Package mdframed Info: Not enough space on this page on input line 372.
+[15]
+Package mdframed Info: Not enough space on this page on input line 372.
+) [16]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\dicc_trie.tex")
-[16]
+[17]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\dicc_rapido.tex"
-[17] [18] [19]
+[18] [19] [20]
 
 LaTeX Warning: Command \textgreater invalid in math mode on input line 220.
 
 
 LaTeX Warning: Command \textgreater invalid in math mode on input line 233.
 
-[20]
+[21]
 
 LaTeX Warning: Command \textgreater invalid in math mode on input line 322.
 
@@ -1352,7 +1479,7 @@ LaTeX Warning: Command \textgreater invalid in math mode on input line 322.
 
 LaTeX Warning: Command \textless invalid in math mode on input line 322.
 
-[21]
+[22]
 
 LaTeX Warning: Command \textgreater invalid in math mode on input line 451.
 
@@ -1363,36 +1490,36 @@ Overfull \hbox (5.05455pt too wide) in paragraph at lines 451--451
 O\OT1/cmr/m/n/10 (1)$ 
  []
 
-[22]
+[23]
 Package mdframed Info: Not enough space on this page on input line 451.
- [23] [24]
+ [24] [25]
 
 LaTeX Warning: Command \textless invalid in math mode on input line 489.
 
 Package mdframed Info: Not enough space on this page on input line 489.
-[25]
+[26]
 Package mdframed Info: Not enough space on this page on input line 489.
- [26]
+ [27]
 Package mdframed Info: Not enough space on this page on input line 547.
- [27] [28]) [29]
+ [28] [29]) [30]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\listaext.tex")
-[30]
+[31]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\conjuntoext.tex")
 
 AED: lastpage setting LastPage
-[31]
+[32]
 ("C:\Users\Sebastián\Desktop\Seba\UBA\Algoritmos y Estructuras de Datos II\Tra
 bajos Prácticos\1C - 2015\TP2 - Diseño\algo2tp2\tpnuevo\main.aux") ) 
 Here is how much of TeX's memory you used:
- 22906 strings out of 493921
- 443778 string characters out of 3144924
- 539419 words of memory out of 3000000
- 25771 multiletter control sequences out of 15000+200000
+ 22902 strings out of 493921
+ 443737 string characters out of 3144924
+ 539468 words of memory out of 3000000
+ 25767 multiletter control sequences out of 15000+200000
  20127 words of font info for 58 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 67i,11n,83p,10417b,923s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 67i,11n,83p,10417b,927s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\User
 s\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm08
 00.pk> <C:\Users\Sebastián\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\e
@@ -1413,9 +1540,9 @@ ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Progr
 am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program F
 iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files
  (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on main.pdf (31 pages, 280251 bytes).
+Output written on main.pdf (32 pages, 284515 bytes).
 PDF statistics:
- 557 PDF objects out of 1000 (max. 8388607)
+ 559 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
