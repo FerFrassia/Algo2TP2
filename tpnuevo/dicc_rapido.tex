@@ -23,6 +23,7 @@
  {$res$ $\igobs$ obtener($c, d$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
  [Devuelve el significado asociado a una clave]
+ [res es modificable si y sólo si d es modificable]
   
  \InterfazFuncion{Vacío}{}{diccRapido($\alpha$,$\beta$)}
  [true]
@@ -35,6 +36,7 @@
  {$d$ $\igobs$ definir($c, s, d_0$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
  [Define la clave, asociando su significado, al diccionario]
+ [Los elementos c y s se definen por referencia. ]
   
  \InterfazFuncion{Borrar}{\In{c}{$\alpha$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}
  [$d$ $\igobs$ $d_0$ $\wedge$ def?($c, d_0$)]
@@ -53,6 +55,7 @@
  {$res$ $\igobs$ claveMax($d$)}
  [$\Complejidad{log_2\ n}$]
  [Devuelve la mayor clave]
+ [res es modificable si y sólo si d es modificable]
   
  \InterfazFuncion{Claves}{\In{d}{diccRapido($\alpha$,$\beta$)}}{itClave}
  [true]
@@ -146,6 +149,9 @@
 
 \begin{Representacion}
 
+\textbf{Representación del Diccionario}
+\vspace{1em}
+
 Como se sabe que la cantidad de claves no está acotada, este diccionario estará representado con un AVL. Cabe destacar, que las claves del diccionario deben contener una relación de orden. 
 
 \begin{Estructura}{diccRapido($\alpha$,$\beta$)}[estr]
@@ -166,6 +172,30 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	
 \end{Estructura}
 
+\textbf{Representación del Iterador}
+\vspace{1em}
+
+\begin{Estructura}{itClave}[estr]
+	\begin{Tupla}[estr]
+		\tupItem{nivel actual}{nat}
+		\tupItem{$\#$nodos recorridos}{nat}
+		\tupItem{$\#$nodos}{nat}
+		\tupTupItem{actual}{\TipoVariable{puntero}(nodo)}
+		\tupTupItem{raiz}{\TipoVariable{puntero}(nodo)}
+	\end{Tupla}	
+	
+		\begin{Tupla}[nodo]
+		\tupItem{clave}{$\alpha$}
+		\tupItem{significado}{$\beta$}
+		\tupTupItem{padre}{\TipoVariable{puntero}(nodo)}
+		\tupTupItem{izq}{\TipoVariable{puntero}(nodo)}
+		\tupTupItem{der}{\TipoVariable{puntero}(nodo)}
+		\tupTupItem{alt}{\TipoVariable{nat}}
+	\end{Tupla}
+
+\end{Estructura}
+
+
 \subsection{InvRep y Abs}
 
 \textbf{InvRep en lenguaje coloquial:}
@@ -183,7 +213,7 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\item{La componente ''alt'' de cada nodo es igual a la cantidad de nodos que hay que ''bajar'' para llegar a su hoja mas lejana + 1. 		Vale aclarar que el nodo hoja tiene la componente ''alt'' igual a 1.}
 	\item{Para todo nodo, la diferencia,  en módulo,  de la altura entre sus subárboles es menor o igual a 1.}
 	\item{Siempre existe un camino entre la raíz y cualquier otro nodo.}
-	\item{No hay ciclos. "se podría decir que el hijo no puede ser el padre, pero también se pueden formar ciclos indirectos. osea que el hijo sea un abuelo".}
+	\item{No hay ciclos. Más formalmente, partiendo de un nodo, no se puede volver a pasar por él sin utilizar la operación padre.}
 \end{enumerate}
 
 \textbf{Abs:}
@@ -205,12 +235,12 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 
 \Algoritmo{IDef?}{\In{c}{$\alpha$}, \In{d}{diccRapido($\alpha$,$\beta$)}}{bool}{
 	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
-	\While{pNodo != NULL} \ComplejidadDer{log_2\ n}
-		\If{*(pNodo).clave == c} \ComplejidadDer{1}
+	\While{pNodo != NULL} \ComplejidadDer{log_2\ n * k}
+		\If{*(pNodo).clave == c} \ComplejidadDer{k}
 			\State $res$ $\gets$ true \ComplejidadDer{1}
 			\State return $res$ \ComplejidadDer{1}
 		\Else
-			\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
+			\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{k}
 				\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
 			\Else
 				\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
@@ -218,20 +248,20 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 		\EndIf		
 	\EndWhile
 	\State $res$ $\gets$ false \ComplejidadDer{1}
-	}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. \\ Vamos a ignorar los condicionales y las asignaciones, dado que éstas siempre ocurren en tiempo constante. Para analizar la complejidad del ciclo, es necesario tomar en cuenta cuantas iteraciones (como máximo) haría éste antes de romper su guarda. Como se trata de buscar un nodo en un AVL, sabemos que la búsqueda es $log_2\ n$, dado que el árbol está balanceado, es decir, en el peor caso estaremos buscando un nodo que puede pertenecer (o no) al último nivel y por esto se debe descender (como máximo) \Complejidad{log_2\ n} veces. Luego, la complejidad del ciclo es la que define la complejidad del algoritmo.
+	}{\Complejidad{log_2\ n * k}}{Siendo n la cantidad de nodos y k el costo de comparación de $\alpha$. \\ Vamos a ignorar las asignaciones, dado que éstas siempre ocurren en tiempo constante. Para analizar la complejidad del ciclo, es necesario tomar en cuenta cuantas iteraciones (como máximo) haría éste antes de romper su guarda y cuánto cuesta cada una. Como se trata de buscar un nodo en un AVL, sabemos que la búsqueda es \Complejidad{log_2\ n * k}, dado que el árbol está balanceado, es decir, en el peor caso estaremos buscando un nodo que puede pertenecer (o no) al último nivel y por esto se debe descender \Complejidad{log_2\ n} veces. Luego, cada iteración cuesta \Complejidad{k}. Finalmente, la complejidad del ciclo es la que define la complejidad del algoritmo.
 }
 
 \Algoritmo{IObtener}{\In{c}{$\alpha$}, \In{d}{diccRapido($\alpha$,$\beta$)}}{$\beta$}{
 	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
-	\While{*(pNodo).clave != c} \ComplejidadDer{log_2\ n}
-		\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
+	\While{*(pNodo).clave != c} \ComplejidadDer{log_2\ n * k}
+		\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{k}
 			\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
 		\Else
 			\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
 		\EndIf			
 	\EndWhile
 	\State $res$ $\gets$ *(pNodo).significado \ComplejidadDer{1}
-	}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. \\ Es un algoritmo muy parecido al de \NombreFuncion{Def?}. Nuevamente ignoraremos los condicionales y las asignaciones, dado que éstas siempre ocurren en tiempo constante. Para analizar la complejidad del ciclo, es necesario tomar en cuenta cuantas iteraciones (como máximo) haría éste antes de romper su guarda. Como se trata de buscar un nodo en un AVL, sabemos que la búsqueda es $log_2\ n$, dado que el árbol está balanceado, es decir, en el peor caso estaremos buscando un nodo que puede pertenecer (o no) al último nivel y por esto se debe descender (como máximo) $log_2\ n$ veces. Luego, la complejidad del ciclo es la que define la complejidad del algoritmo.
+	}{\Complejidad{log_2\ n * k}}{Siendo n la cantidad de nodos y k el costo de comparación de $\alpha$. \\ Es un algoritmo muy parecido al de \NombreFuncion{Def?}. Nuevamente ignoraremos las asignaciones, dado que éstas siempre ocurren en tiempo constante. Para analizar la complejidad del ciclo, es necesario tomar en cuenta cuantas iteraciones (como máximo) haría éste antes de romper su guarda y cuánto cuesta cada una. Como se trata de buscar un nodo en un AVL, sabemos que la búsqueda es \Complejidad{log_2\ n * k}, dado que el árbol está balanceado, es decir, en el peor caso estaremos buscando un nodo que puede pertenecer (o no) al último nivel y por esto se debe descender \Complejidad{log_2\ n} veces. Luego, cada iteración cuesta \Complejidad{k}. Finalmente, la complejidad del ciclo es la que define la complejidad del algoritmo.
 }
 	
 \Algoritmo{IVacío}{}{diccRapido($\alpha$,$\beta$)}{
@@ -244,10 +274,10 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 			\State d.raiz $\gets$ $\&$tupla(c, s, NULL, NULL, NULL, 1) \ComplejidadDer{1}
 		  	\State d.tam $\gets$ 1 \ComplejidadDer{1}
 		  \Else
-		  	\If{\NombreFuncion{Def?}(c, d)} \ComplejidadDer{log_2\ n}
+		  	\If{\NombreFuncion{Def?}(c, d)} \ComplejidadDer{log_2\ n * k}
 				\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
-				\While{*(pNodo).clave != c} \ComplejidadDer{log_2\ n}
-					\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
+				\While{*(pNodo).clave != c} \ComplejidadDer{log_2\ n * k}
+					\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{k}
 						\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
 					\Else
 						\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
@@ -257,16 +287,16 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 			\Else
 		  		\State var	seguir: bool $\gets$ true \ComplejidadDer{1}
 				\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
-				\While{seguir == true} \ComplejidadDer{log2\ n}
-					\If{c $\textgreater$ *(pNodo).clave $\wedge$ *(pNodo).der == NULL} \ComplejidadDer{1}
+				\While{seguir == true} \ComplejidadDer{log2\ n * k}
+					\If{c $\textgreater$ *(pNodo).clave $\wedge$ *(pNodo).der == NULL} \ComplejidadDer{k}
 						 	\State *(pNodo).der $\gets$ $\&$tupla(c, s, pNodo, NULL, NULL, 1) \ComplejidadDer{1}
 							\State seguir $\gets$ false \ComplejidadDer{1}
 							
 				        \Else
-					  		\If{c $\textgreater$ *(pNodo).clave $\wedge$ *(pNodo).der != NULL} \ComplejidadDer{1}
+					  		\If{c $\textgreater$ *(pNodo).clave $\wedge$ *(pNodo).der != NULL} \ComplejidadDer{k}
 								\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}		
 							\Else
-								\If{c $\textless$ *(pNodo).clave $\wedge$ *(pNodo).izq == NULL} \ComplejidadDer{1}
+								\If{c $\textless$ *(pNodo).clave $\wedge$ *(pNodo).izq == NULL} \ComplejidadDer{k}
 									\State *(pNodo).izq $\gets$ $\&$tupla(c, s, pNodo, NULL, NULL, 1) \ComplejidadDer{1}
 									\State seguir $\gets$ false \ComplejidadDer{1}
  								\Else
@@ -276,10 +306,10 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 				        \EndIf
 				\EndWhile
 				\State d.tam $\gets$ d.tam + 1 \ComplejidadDer{1}
-				\While{pNodo != NULL} \ComplejidadDer{log2\ n}
+				\While{pNodo != NULL} \ComplejidadDer{log2\ n * k}
 					\State var padrePNodo $\gets$ *(pNodo).padre \ComplejidadDer{1}
 					\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
-						\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
+						\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{k}
 					\Else
 						\State *(pNodo).alt $\gets$ \NombreFuncion{Altura}(pNodo) \ComplejidadDer{1}
 					\EndIf
@@ -287,18 +317,18 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
  				\EndWhile
 			\EndIf			
 		  \EndIf
-}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. \\ En este algoritmo, tomaremos en cuenta las complejidades de tres casos e ignoraremos los condicionales y asignaciones (dado que son constantes). 
+}{\Complejidad{log_2\ n * k}}{Siendo n la cantidad de nodos, y k el costo de comparación de $\alpha$. \\ En este algoritmo, tomaremos en cuenta las complejidades de tres casos e ignoraremos las asignaciones (dado que son constantes). 
 \\ -El primer caso es cuando se quiera definir en un diccionario vacío, esto es \Complejidad{1}+\Complejidad{1}+\Complejidad{1} = 3 * \Complejidad{1} = \Complejidad{1} 
-\\ -El segundo caso es cuando se quiera definir una clave que ya estaba definida previamente, aquí ignoraremos las asignaciones y condicionales (cuyas complejidades son \Complejidad{1}), y nos centraremos en el uso de \NombreFuncion{Def?} y el ciclo. \NombreFuncion{Def?} sabemos que toma tiempo logarítmico, y en cuanto al ciclo, sabemos que tomará tiempo logarítmico también, porque iterará hasta buscar el nodo buscado. Esto es: \Complejidad{log_2\ n} + \Complejidad{log_2\ n} = 2 * \Complejidad{log_2\ n} = \Complejidad{log_2\ n}
-\\ -El tercer caso es cuando se quiera definir una clave que no estaba definida anteriormente. Nuevamente ignoraremos las asignaciones y condicionales, y nos centraremos en los dos ciclos. El primer ciclo consiste en iterar hasta llegar a la posición donde queremos insertar el nuevo nodo, nuevamente esto es \Complejidad{log_2\ n} porque en peor caso tendríamos que descender hasta la hoja más lejana. Por último, el segundo ciclo recorre, de abajo hacia arriba, la rama por la que acabamos de bajar, y dado que como ya mencionamos que ésta tiene (a lo sumo) $log_2\ n$ elementos, esto es \Complejidad{log_2\ n}. Finalmente, dado que este caso tiene éstas tres complejidades no anidadas: \Complejidad{log_2\ n}+\Complejidad{log_2\ n}+\Complejidad{log_2\ n} = 3 * \Complejidad{log_2\ n} = \Complejidad{log_2\ n}.
+\\ -El segundo caso es cuando se quiera definir una clave que ya estaba definida previamente, aquí ignoraremos las asignaciones (cuyas complejidades son \Complejidad{1}), y nos centraremos en el uso de \NombreFuncion{Def?} y el ciclo. \NombreFuncion{Def?} sabemos que toma \Complejidad{log_2\ n * k}, y en cuanto al ciclo, sabemos que tomará \Complejidad{log_2\ n * k} también, porque iterará hasta buscar el nodo buscado (itera \Complejidad{log_2\ n} veces) y cada iteración cuesta \Complejidad{k}. Esto es: \Complejidad{log_2\ n * k} + \Complejidad{log_2\ n * k} = 2 * \Complejidad{log_2\ n * k} = \Complejidad{log_2\ n * k}
+\\ -El tercer caso es cuando se quiera definir una clave que no estaba definida anteriormente. Nuevamente ignoraremos las asignaciones, y nos centraremos en los dos ciclos. El primer ciclo consiste en iterar hasta llegar a la posición donde queremos insertar el nuevo nodo, nuevamente esto es \Complejidad{log_2\ n * k} porque en peor caso tendríamos que descender hasta la hoja más lejana. Por último, el segundo ciclo recorre, de abajo hacia arriba, la rama por la que acabamos de bajar, y dado que como ya mencionamos que ésta tiene (a lo sumo) $log_2\ n$ elementos, esto es \Complejidad{log_2\ n}. Finalmente, dado que este caso tiene éstas tres complejidades no anidadas: \Complejidad{log_2\ n}+\Complejidad{log_2\ n}+\Complejidad{log_2\ n} = 3 * \Complejidad{log_2\ n} = \Complejidad{log_2\ n}.
 \\ -Ahora, como teníamos tres casos, la complejidad es el máximo de ellos: max(\Complejidad{1},\Complejidad{log_2\ n},\Complejidad{log_2\ n}) = \Complejidad{log_2\ n}
 
 }
 
 \Algoritmo{IBorrar}{\In{c}{$\alpha$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}{
 	\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
-	\While{c != *(pNodo).clave} \ComplejidadDer{log_2\ n}
-		\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{1}
+	\While{c != *(pNodo).clave} \ComplejidadDer{log_2\ n * k}
+		\If{c $\textgreater$ *(pNodo).clave} \ComplejidadDer{k}
 			\State pNodo $\gets$ *(pNodo).der \ComplejidadDer{1}
 		\Else
 			\State pNodo $\gets$ *(pNodo).izq \ComplejidadDer{1}
@@ -309,7 +339,7 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 		\If{*(pNodo).padre == NULL} \ComplejidadDer{1}
 			\State d.raiz $\gets$ NULL \ComplejidadDer{1}
 		\Else
-			\If{pNodo == *(*(pNodo).padre).izq} \ComplejidadDer{1}
+			\If{pNodo == *(*(pNodo).padre).izq} \ComplejidadDer{k}
 				\State *(*(pNodo).padre).izq $\gets$ NULL \ComplejidadDer{1}
 			\Else
 				\State *(*(pNodo).padre).der $\gets$ NULL \ComplejidadDer{1}
@@ -322,7 +352,7 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 				\State *(*(pNodo).der).padre $\gets$ NULL \ComplejidadDer{1}
 				\State  d.raiz $\gets$ *(pNodo).der \ComplejidadDer{1}
 			\Else
-				\If{pNodo == *(*(pNodo).padre).izq} \ComplejidadDer{1}
+				\If{pNodo == *(*(pNodo).padre).izq} \ComplejidadDer{k}
 					\State *(*(pNodo).padre).izq $\gets$ *(pNodo).der \ComplejidadDer{1}
 				\Else
 					\State *(*(pNodo).padre).der $\gets$ *(pNodo).der \ComplejidadDer{1}
@@ -330,13 +360,13 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 				\State *(*(pNodo).der).padre $\gets$ *(pNodo).padre \ComplejidadDer{1}
 			\EndIf
 		\Else
-			\If{*(pNodo).izq != NULL $\wedge$ *(pNodo).der == NULL}
+			\If{*(pNodo).izq != NULL $\wedge$ *(pNodo).der == NULL} \ComplejidadDer{1}
 				%EL NODO TIENE UNA HOJA IZQ
 				\If{*(pNodo).padre == NULL} \ComplejidadDer{1}
 					\State *(*(pNodo).izq).padre $\gets$ NULL \ComplejidadDer{1}
 					\State d.raiz $\gets$ *(pNodo).izq \ComplejidadDer{1}
 				\Else
-					\If{pNodo == *(*(pNodo).padre).izq} \ComplejidadDer{1}
+					\If{pNodo == *(*(pNodo).padre).izq} \ComplejidadDer{k}
 						\State *(*(pNodo).padre).izq $\gets$ *(pNodo).izq \ComplejidadDer{1}
 					\Else
 						\State *(*(pNodo).padre).der $\gets$ *(pNodo).izq \ComplejidadDer{1}
@@ -346,20 +376,20 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 			\Else
 				%EL NODO TIENE DOS HOJAS
 				\State var nuevoPNodo: puntero(nodo) $\gets$ *(pNodo).der \ComplejidadDer{1}
-				\While{*(nuevoPNodo).izq != NULL} \ComplejidadDer{log_2\ n}
+				\While{*(nuevoPNodo).izq != NULL} \ComplejidadDer{log_2\ n * k}
 					\State nuevoPNodo $\gets$ *(nuevoPNodo).izq \ComplejidadDer{1}
 				\EndWhile
 				\State *(pNodo).clave $\gets$ *(nuevoPNodo).clave \ComplejidadDer{1}
 				\State *(pNodo).significado $\gets$ *(nuevoPNodo).significado \ComplejidadDer{1}
 				\If{*(nuevoPNodo).der != NULL} \ComplejidadDer{1}
-					\If{*(*(nuevoPNodo).padre).izq == nuevoPNodo} \ComplejidadDer{1}
+					\If{*(*(nuevoPNodo).padre).izq == nuevoPNodo} \ComplejidadDer{k}
 						\State *(*(nuevoPNodo).padre).izq $\gets$ *(nuevoPNodo).der \ComplejidadDer{1}
 					\Else
 						\State *(*(nuevoPNodo).padre).der $\gets$ *(nuevoPNodo).der \ComplejidadDer{1}
 					\EndIf
 					\State *(*(nuevoPNodo).der).padre $\gets$ *(nuevoPNodo).padre \ComplejidadDer{1}
 				\Else
-					\If{*(*(nuevoPNodo).padre).izq == nuevoPNodo} \ComplejidadDer{1}
+					\If{*(*(nuevoPNodo).padre).izq == nuevoPNodo} \ComplejidadDer{k}
 						\State *(*(nuevoPNodo).padre).izq $\gets$ NULL \ComplejidadDer{1}
 					\Else
 						\State *(*(nuevoPNodo).padre).der $\gets$ NULL \ComplejidadDer{1}
@@ -370,16 +400,16 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\EndIf
 	\State d.tam $\gets$ d.tam - 1 \ComplejidadDer{1}
 	\State pNodo $\gets$ *(nuevoPNodo).padre \ComplejidadDer{1}
-	\While{pNodo != NULL} \ComplejidadDer{log_2\ n}
+	\While{pNodo != NULL} \ComplejidadDer{log_2\ n * k}
 		\State var padrePNodo $\gets$ *(pNodo).padre \ComplejidadDer{1}
 		\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
-			\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{1}
+			\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{k}
 		\Else
 			\State *(pNodo).alt $\gets$ \NombreFuncion{Altura}(pNodo) \ComplejidadDer{1}
 		\EndIf
 		\State pNodo $\gets$ padrePNodo \ComplejidadDer{1}
 	\EndWhile		
-}{\Complejidad{log_2\ n}}{Siendo n la cantidad de nodos. 
+}{\Complejidad{log_2\ n * k}}{Siendo n la cantidad de nodos. 
 \\ Nuevamente ignoraremos los condicionales y asignaciones (dado que son constantes), y nos centraremos en los tres ciclos. 
 \\ -El primer ciclo consiste en buscar el elemento a borrar, dado que es una búsqueda en un AVL, esto es \Complejidad{log_2\ n}.
 \\ -El segundo ciclo sucede sólo cuando el elemento a borrar tiene dos subárboles hijos distintos de NULL, esto consiste en buscar el sucesor in-order (es decir, bajar un nodo a la derecha, y luego bajar lo máximo posible hacia la izquierda. Así se encuentra el siguiente ''inmediato''). Dado que es una búsqueda, y se empieza a descender desde el nodo a borrar (en peor caso, se empieza desde la raíz), esto toma \Complejidad{log_2\ n}. Cabe aclarar que éste ciclo no siempre se ejecuta, pero dado que en los demás casos la complejidad es de \Complejidad{1}, podemos asumir que dado el caso que haya sido, estará acotado por la complejidad del peor, osea éste.
@@ -469,18 +499,18 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 \Algoritmo{IRotar}{\Inout{p}{puntero(nodo)}}{}{
 	\If{\NombreFuncion{FactorDesbalance}(p) $<$ 1} \ComplejidadDer{1}
 		\If{\NombreFuncion{FactorDesbalance}(*(p).der) $>$ 1} \ComplejidadDer{1}
-			\State $res$ $\gets$ \NombreFuncion{RotarDobleIzq}($p$) \ComplejidadDer{1}
+			\State $res$ $\gets$ \NombreFuncion{RotarDobleIzq}($p$) \ComplejidadDer{k}
 		\Else 
-			\State $res$ $\gets$ \NombreFuncion{RotarSimpleIzq}($p$) \ComplejidadDer{1}
+			\State $res$ $\gets$ \NombreFuncion{RotarSimpleIzq}($p$) \ComplejidadDer{k}
 		\EndIf
 	\Else
 		\If{\NombreFuncion{FactorDesbalance}(*(p).izq) $<$ 1} \ComplejidadDer{1}
-			\State $res$ $\gets$\NombreFuncion{RotarDobleDer}($p$) \ComplejidadDer{1}
+			\State $res$ $\gets$\NombreFuncion{RotarDobleDer}($p$) \ComplejidadDer{k}
 		\Else
-			\State $res$ $\gets$ \NombreFuncion{RotarSimpleDer}($p$) \ComplejidadDer{1}
+			\State $res$ $\gets$ \NombreFuncion{RotarSimpleDer}($p$) \ComplejidadDer{k}
 		\EndIf
 	\EndIf
-}{\Complejidad{1}}{
+}{\Complejidad{k}}{
 }
 
 \Algoritmo{IRotarSimpleIzq}{\Inout{p}{puntero(nodo)}}{}{
@@ -490,8 +520,8 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\State var i2: puntero(nodo) $\gets$ *(r2).izq \ComplejidadDer{1}
 	\State var d2: puntero(nodo) $\gets$ *(r2).der \ComplejidadDer{1}
 	\State var padre: puntero(nodo) $\gets$ *(r).padre \ComplejidadDer{1}
-	\If{padre != NULL}
-		\If{*(r).clave == *(*(padre).izq).clave} \ComplejidadDer{1}
+	\If{padre != NULL} \ComplejidadDer{1}
+		\If{r == *(padre).izq} \ComplejidadDer{k}
 			\State  *(padre).izq $\gets$ r2 \ComplejidadDer{1}
 		\Else
 			\State *(padre).der $\gets$ r2 \ComplejidadDer{1}
@@ -502,13 +532,13 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\State *(r2).izq $\gets$ r \ComplejidadDer{1}
 	\State *(r).padre $\gets$ r2 \ComplejidadDer{1}
 	\State *(r).der $\gets$ i2 \ComplejidadDer{1}
-	\If{i2 != NULL}
+	\If{i2 != NULL} \ComplejidadDer{1}
 		\State *(i2).padre $\gets$ r \ComplejidadDer{1}
 	\Else
 	\EndIf
 	\State *(r).alt $\gets$ \NombreFuncion{Altura}(r) \ComplejidadDer{1}
 	\State *(r2).alt $\gets$ \NombreFuncion{Altura}(r2) \ComplejidadDer{1}
- }{\Complejidad{1}}{
+ }{\Complejidad{k}}{
 }	
 
 \Algoritmo{IRotarSimpleDer}{\Inout{p}{puntero(nodo)}}{}{
@@ -518,8 +548,8 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\State var i2: puntero(nodo) $\gets$  *(r2).izq \ComplejidadDer{1}
 	\State var d2: puntero(nodo) $\gets$ *(r2).der \ComplejidadDer{1}
 	\State var padre: puntero(nodo) $\gets$ *(r).padre \ComplejidadDer{1}
-	\If{padre != NULL}
-		\If{*(r).clave == *(*(padre).izq).clave} \ComplejidadDer{1}
+	\If{padre != NULL} \ComplejidadDer{1}
+		\If{r == *(padre).izq} \ComplejidadDer{k}
 			\State  *(padre).izq $\gets$ r2 \ComplejidadDer{1}
 		\Else
 			\State *(padre).der $\gets$ r2 \ComplejidadDer{1}
@@ -530,25 +560,25 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\State *(r2).der $\gets$ r \ComplejidadDer{1}
 	\State *(r).padre $\gets$ r2 \ComplejidadDer{1}
 	\State *(r).izq $\gets$ d2 \ComplejidadDer{1}
-	\If{d2 != NULL}
+	\If{d2 != NULL} \ComplejidadDer{1}
 		\State *(d2).padre $\gets$ r \ComplejidadDer{1}
  	\Else
 	\EndIf
 	\State *(r).alt $\gets$ \NombreFuncion{Altura}(r) \ComplejidadDer{1}
 	\State *(r2).alt $\gets$ \NombreFuncion{Altura}(r2) \ComplejidadDer{1}
-}{\Complejidad{1}}{
+}{\Complejidad{k}}{
 }	
 
 \Algoritmo{IRotarDobleIzq}{\Inout{p}{puntero(nodo)}}{}{
-	\State \NombreFuncion{RotarSimpleDer}(*(p).der) \ComplejidadDer{1}
-	\State \NombreFuncion{RotarSimpleIzq}(p) \ComplejidadDer{1}
-}{\Complejidad{1}}{
+	\State \NombreFuncion{RotarSimpleDer}(*(p).der) \ComplejidadDer{k}
+	\State \NombreFuncion{RotarSimpleIzq}(p) \ComplejidadDer{k}
+}{\Complejidad{k}}{
 }	
 
 \Algoritmo{IRotarDobleDer}{\Inout{p}{puntero(nodo)}}{}{
-	\State \NombreFuncion{RotarSimpleIzq}(*(p).izq) \ComplejidadDer{1}
-	\State \NombreFuncion{RotarSimpleDer}(p) \ComplejidadDer{1}
-}{\Complejidad{1}}{
+	\State \NombreFuncion{RotarSimpleIzq}(*(p).izq) \ComplejidadDer{k}
+	\State \NombreFuncion{RotarSimpleDer}(p) \ComplejidadDer{k}
+}{\Complejidad{k}}{
 }	
 
 \Algoritmo{IAltura}{\In{p}{puntero(nodo)}}{nat}{
