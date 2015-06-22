@@ -247,7 +247,7 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 	
 	\begin{Algoritmo}{iIniciarDCNet}{\In {r}{red}, \Inout {d}{dcnet}}{}
 	{
-		\State $d$.red $\gets$ r \ComplejidadDer{NOSE}
+		\State $d$.red $\gets$ r \ComplejidadDer{1}
 		\State  var $it$ $\gets$ \NombreFuncion {computadoras}(red) \ComplejidadDer{1}
 		\State $d$.MasEnviante $\gets$ tupla(\NombreFuncion {Siguiente}($it$),0) \ComplejidadDer{1}
 		\State $d$.CompyPaq $\gets$ Vacio() \ComplejidadDer{1}
