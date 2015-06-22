@@ -26,7 +26,7 @@
   [\Complejidad{1}]
   [Devuelve la red del dcnet.]
   
-  \InterfazFuncion{CaminoRecorrido}{\In {d}{dcnet}, \In{p}{paquete} }{secu(compu)}
+  \InterfazFuncion{CaminoRecorrido}{\In {d}{dcnet}, \In{p}{paquete} }{lista(compu)}
   [$p$ $\in$ paqueteEnTransito?($d,p$)]
   {$res \igobs$ caminoRecorrido($d,p$))}
   [\Complejidad{n*log_2(k)}, donde n = $\#$computadoras(red(d)), y k la cantidad maxima de paquetes que hay en una computadora.]
@@ -85,7 +85,7 @@
 \begin{Representacion}
 
 %DESCRIPCION
-El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d.red) con la que se inicia el dcnet(pasada por referencia), una tupla que tiene la computadora que mas paquetes envio y cuantos ha enviado (en d.MasEnviante). Luego, un diccionario String (d.CompYPaq) cuyas claves son las computadoras de la red  y su significado es una tupla. Esta tupla tiene tres componentes: un Diccionario Rapido (MasPriori) cuya clave es un natural (prioridad, osea la prioridad del paquete) y su significado es un conj(paquete) (PaqdePriori), luego otro Diccionario Rapido (PaqYCam) cuya clave es el paquete (habiendo establecido previamente que la relacion de orden entre paquetes es por id) y su significado es una secu(compu) (CamRecorrido), finalmente un natural (Enviados) que representa la cantidad de paquetes enviados por la computadora.
+El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d.red) con la que se inicia el dcnet(pasada por referencia), una tupla que tiene la computadora que mas paquetes envio y cuantos ha enviado (en d.MasEnviante). Luego, un diccionario String (d.CompYPaq) cuyas claves son las computadoras de la red  y su significado es una tupla. Esta tupla tiene tres componentes: un Diccionario Rapido (MasPriori) cuya clave es un natural (prioridad, osea la prioridad del paquete) y su significado es un conj(paquete) (PaqdePriori), luego otro Diccionario Rapido (PaqYCam) cuya clave es el paquete (habiendo establecido previamente que la relacion de orden entre paquetes es por id) y su significado es una lista enlazada de compu (CamRecorrido), finalmente un natural (Enviados) que representa la cantidad de paquetes enviados por la computadora.
 
 
 
@@ -101,11 +101,11 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 			\TipoVariable{tupla}$($\ignorespaces
 			\emph{MasPriori}:{DiccRapido}$($\ignorespaces
 			\emph{prioridad} :{nat},
-			\emph{PaqdePriori}:{conj$($paquete$)$}
+			\emph{PaqdePriori}:{ConjLineal$($paquete$)$}
 			 $)$,
 			\emph{PaqYCam}:{DiccRapido} $($\ignorespaces
 			\emph{paq}:{paquete},
-			\emph{CamRecorrido}:{secu($compu$)}$)$, 
+			\emph{CamRecorrido}:{ListaEnlazada($compu$)}$)$, 
 			\emph{Enviados}:{nat})
 		
 			}
@@ -167,7 +167,7 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 	
 	\Abs[e\_dc]{dcnet}[e]{d}{
 		\\ red(d) = e.red $\yluego$
-		\\($\forall$ p:paquete, c:compu) (paqueteEnTransito?(d, p) $\impluego$ (def?(c.ip, e.CompYPaq $\yluego$ def?(p, obtener(c.ip, e.CompYPaq).PaqYCam) $\impluego$ obtener(p, obtener(c.ip, e.CompYPaq).PaqYCam) = caminoRecorrido(d, p)))
+		\\($\forall$ p:paquete, c:compu)(c $\in$ computadoras(red(d)) $\wedge$ (paqueteEnTransito?(d, p) $\impluego$ (def?(c.ip, e.CompYPaq $\yluego$ def?(p, obtener(c.ip, e.CompYPaq).PaqYCam) $\impluego$ obtener(p, obtener(c.ip, e.CompYPaq).PaqYCam) = caminoRecorrido(d, p)))
 		\\($\forall$ c:compu) (c $\in$ computadoras(red(d)) $\impluego$ ((def?(c.ip, e.CompYPaq) $\impluego$ obtener(c.ip, e.CompYPaq).Enviados = cantidadEnviados(d, c)) $\wedge$ (def?(c.ip, e.CompYPaq) $\impluego$ claves(obtener(c.ip, e.CompYPaq).PaqYCam) = enEspera(d, c))))
 		
 		 }
@@ -197,7 +197,7 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 	
 	
 	
-	\begin{Algoritmo}{iCaminoRecorrido}{\In {d}{dcnet},\In {p}{paquete}}{secu(compu)}
+	\begin{Algoritmo}{iCaminoRecorrido}{\In {d}{dcnet},\In {p}{paquete}}{lista(compu)}
 	{
 		\State var $it$ $\gets$ \NombreFuncion {creaIt}(d.CompYPaq) \ComplejidadDer{n}
 		\State var $esta$: bool $\gets$ false \ComplejidadDer{1}
