@@ -23,7 +23,7 @@
  {$res$ $\igobs$ obtener($c, d$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
  [Devuelve el significado asociado a una clave]
- [res es modificable si y sólo si d es modificable]
+ [Res es modificable si y sólo si d es modificable]
   
  \InterfazFuncion{Vacío}{}{diccRapido($\alpha$,$\beta$)}
  [true]
@@ -36,13 +36,13 @@
  {$d$ $\igobs$ definir($c, s, d_0$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
  [Define la clave, asociando su significado, al diccionario]
- [Los elementos c y s se definen por referencia. ]
+ [Los elementos c y s se pasan por referencia. ]
   
  \InterfazFuncion{Borrar}{\In{c}{$\alpha$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}
  [$d$ $\igobs$ $d_0$ $\wedge$ def?($c, d_0$)]
  {$d$ $\igobs$ borrar($c, d_0$)}
  [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
- [Borra la clave del diccionario]
+ [Borra la clave (y su significado) del diccionario]
   
  \InterfazFuncion{Vacío?}{\In{d}{diccRapido($\alpha$,$\beta$)}}{bool}
  [true]
@@ -55,7 +55,7 @@
  {$res$ $\igobs$ claveMax($d$)}
  [$\Complejidad{log_2\ n}$]
  [Devuelve la mayor clave]
- [res es modificable si y sólo si d es modificable]
+ [Res es modificable si y sólo si d es modificable]
   
  \InterfazFuncion{Claves}{\In{d}{diccRapido($\alpha$,$\beta$)}}{itClave}
  [true]
@@ -70,6 +70,7 @@
  {$res$ $\igobs$ crearItUni(secuClaves(d))}
  [$\Complejidad{1}$]
  [Crea el iterador de claves]
+ [Res es devuelto por referencia]
  
  \InterfazFuncion{HayMas?}{\In{it}{itClave}}{bool}
  [true]
@@ -79,9 +80,10 @@
  
  \InterfazFuncion{Actual}{\In{it}{itClave}}{$\alpha$}
  [HayMas?($it$)]
- {$res$ Actual($it$)}
+ {$res$ $\igobs$ Actual($it$)}
  [$\Complejidad{1}$]
  [Devuelve el actual del iterador]
+ [Res es modificable si y sólo si el Diccionario es modificable]
  
  \InterfazFuncion{Avanzar}{\Inout{it}{itClave}}{}
  [$it$ $\igobs$ $it_0$ $\wedge$ HayMas?($it_0$)]
@@ -91,7 +93,7 @@
   
   \subsection{Auxiliares}
 	%\Begin{Auxiliares}
-  \Titulo{Operaciones auxiliares}
+  \Titulo{Operaciones auxiliares de Diccionario}
 
 	
  \InterfazFuncion{DameNodos}{\In{p}{puntero(nodo)}, \In{actual}{nat}, \In{destino}{nat}}{conjLineal(nodo)}
@@ -141,6 +143,15 @@
  {$res$ $\igobs$ factorDesbalance(p)}
  [$\Complejidad{1}$]
  [Calcula y devuelve el factor de desbalance actual de p]
+ 
+  \Titulo{Operaciones auxiliares del Iterador}
+  
+  \InterfazFuncion{Siguientes}{\In{it}{itClave}}{Lista Enlazada}
+  [true]
+  {$res$ $\igobs$ siguientes(it)}
+  [$\Complejidad{it.tam^{2}}$]
+  [Devuelve la lista de nodos no iterados hasta el momento. Están ordenados por orden de aparición.]
+  [Los nodos de la lista se pasan por referencia]
 
 
 \end{Interfaz}
@@ -175,12 +186,14 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 \textbf{Representación del Iterador}
 \vspace{1em}
 
+El iterador es una tupla con varias componentes, entre ellas, un puntero al nodo actual. Este puntero (it.nodoActual) apunta a NULL cuando ya no quedan nodos por iterar en el último nivel del AVL. El iterador recorre los nodos por nivel.
+
 \begin{Estructura}{itClave}[estr]
 	\begin{Tupla}[estr]
-		\tupItem{nivel actual}{nat}
-		\tupItem{$\#$nodos recorridos}{nat}
-		\tupItem{$\#$nodos}{nat}
-		\tupTupItem{actual}{\TipoVariable{puntero}(nodo)}
+		\tupItem{nivelActual}{nat}
+		\tupItem{$\#$nodosRecorridos}{nat}
+		\tupItem{tam}{nat}
+		\tupTupItem{nodoActual}{\TipoVariable{puntero}(nodo)}
 		\tupTupItem{raiz}{\TipoVariable{puntero}(nodo)}
 	\end{Tupla}	
 	
@@ -198,6 +211,9 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 
 \subsection{InvRep y Abs}
 
+\textbf{InvRep y Abs del Diccionario:}
+\\
+\\
 \textbf{InvRep en lenguaje coloquial:}
 
 \begin{enumerate}
@@ -210,10 +226,10 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\item{No hay dos nodos con la misma componente ''clave''.}
 	\item{Para todo nodo, todos los nodos de su subárbol derecho son mayores a él.}
 	\item{Para todo nodo, todos los nodos del su subárbol izquierdo son menores que él.}
-	\item{La componente ''alt'' de cada nodo es igual a la cantidad de nodos que hay que ''bajar'' para llegar a su hoja mas lejana + 1. 		Vale aclarar que el nodo hoja tiene la componente ''alt'' igual a 1.}
+	\item{La componente ''alt'' de cada nodo es igual a la cantidad de nodos que hay que ''bajar'' para llegar a su hoja mas lejana + 1. Vale aclarar que el nodo hoja tiene la componente ''alt'' igual a 1.}
 	\item{Para todo nodo, la diferencia,  en módulo,  de la altura entre sus subárboles es menor o igual a 1.}
 	\item{Siempre existe un camino entre la raíz y cualquier otro nodo.}
-	\item{No hay ciclos. Más formalmente, partiendo de un nodo, no se puede volver a pasar por él sin utilizar la operación padre.}
+	\item{No hay ciclos. Más formalmente, partiendo de un nodo, no se puede volver a pasar por él sin recurrir a la componente padre.}
 \end{enumerate}
 
 \textbf{Abs:}
@@ -224,6 +240,27 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 		\\ ($\forall$c: clave) 
 		\\ def?(c, d) = Def?(c, e) $\yluego$  
 		\\ obtener(c, d) = Obtener(c, e)
+}
+
+\textbf{InvRep y Abs del Iterador:}
+\\
+\\
+\textbf{InvRep en lenguaje coloquial:}
+\begin{enumerate}
+	\item{it.tam es igual a la cantidad de nodos del AVL que itera.}
+	\item{it.raiz apunta a la raíz del AVL que itera, o es NULL si el AVL es vacío.}
+	\item{it.nodoActual apunta a un nodo cualquiera del AVL que itera, o es NULL si el AVL es vacío.}
+	\item{it.$\#$nodosRecorridos está entre 0 (inclusive) y it.tam (inclusive).}
+	\item{it.nivelActual está entre 1 (inclusive) y $log_2\ it.tam$ + 1 (inclusive).}
+	\item{El invariante de nodo es el mismo que el invariante de nodo del Diccionario.}
+\end{enumerate}
+
+\textbf{Abs:}
+
+\vspace{1em}
+
+\Abs[estr]{Iterador Unidireccional($\alpha$)}[e]{i}{
+		\\ siguientes(i) = Siguientes(e)
 }
 
 
@@ -287,7 +324,7 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 			\Else
 		  		\State var	seguir: bool $\gets$ true \ComplejidadDer{1}
 				\State var pNodo: puntero(nodo) $\gets$ d.raiz \ComplejidadDer{1}
-				\While{seguir == true} \ComplejidadDer{log2\ n * k}
+				\While{seguir == true} \ComplejidadDer{log_2\ n * k}
 					\If{c $\textgreater$ *(pNodo).clave $\wedge$ *(pNodo).der == NULL} \ComplejidadDer{k}
 						 	\State *(pNodo).der $\gets$ $\&$tupla(c, s, pNodo, NULL, NULL, 1) \ComplejidadDer{1}
 							\State seguir $\gets$ false \ComplejidadDer{1}
@@ -306,7 +343,7 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 				        \EndIf
 				\EndWhile
 				\State d.tam $\gets$ d.tam + 1 \ComplejidadDer{1}
-				\While{pNodo != NULL} \ComplejidadDer{log2\ n * k}
+				\While{pNodo != NULL} \ComplejidadDer{log_2\ n * k}
 					\State var padrePNodo $\gets$ *(pNodo).padre \ComplejidadDer{1}
 					\If{|\NombreFuncion{FactorDesbalance}(pNodo)| $>$ 1} \ComplejidadDer{1}
 						\State \NombreFuncion{Rotar}(pNodo) \ComplejidadDer{k}
@@ -320,9 +357,8 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 }{\Complejidad{log_2\ n * k}}{Siendo n la cantidad de nodos, y k el costo de comparación de $\alpha$. \\ En este algoritmo, tomaremos en cuenta las complejidades de tres casos e ignoraremos las asignaciones (dado que son constantes). 
 \\ -El primer caso es cuando se quiera definir en un diccionario vacío, esto es \Complejidad{1}+\Complejidad{1}+\Complejidad{1} = 3 * \Complejidad{1} = \Complejidad{1} 
 \\ -El segundo caso es cuando se quiera definir una clave que ya estaba definida previamente, aquí ignoraremos las asignaciones (cuyas complejidades son \Complejidad{1}), y nos centraremos en el uso de \NombreFuncion{Def?} y el ciclo. \NombreFuncion{Def?} sabemos que toma \Complejidad{log_2\ n * k}, y en cuanto al ciclo, sabemos que tomará \Complejidad{log_2\ n * k} también, porque iterará hasta buscar el nodo buscado (itera \Complejidad{log_2\ n} veces) y cada iteración cuesta \Complejidad{k}. Esto es: \Complejidad{log_2\ n * k} + \Complejidad{log_2\ n * k} = 2 * \Complejidad{log_2\ n * k} = \Complejidad{log_2\ n * k}
-\\ -El tercer caso es cuando se quiera definir una clave que no estaba definida anteriormente. Nuevamente ignoraremos las asignaciones, y nos centraremos en los dos ciclos. El primer ciclo consiste en iterar hasta llegar a la posición donde queremos insertar el nuevo nodo, nuevamente esto es \Complejidad{log_2\ n * k} porque en peor caso tendríamos que descender hasta la hoja más lejana. Por último, el segundo ciclo recorre, de abajo hacia arriba, la rama por la que acabamos de bajar, y dado que como ya mencionamos que ésta tiene (a lo sumo) $log_2\ n$ elementos, esto es \Complejidad{log_2\ n}. Finalmente, dado que este caso tiene éstas tres complejidades no anidadas: \Complejidad{log_2\ n}+\Complejidad{log_2\ n}+\Complejidad{log_2\ n} = 3 * \Complejidad{log_2\ n} = \Complejidad{log_2\ n}.
-\\ -Ahora, como teníamos tres casos, la complejidad es el máximo de ellos: max(\Complejidad{1},\Complejidad{log_2\ n},\Complejidad{log_2\ n}) = \Complejidad{log_2\ n}
-
+\\ -El tercer caso es cuando se quiera definir una clave que no estaba definida anteriormente. Nuevamente ignoraremos las asignaciones, y nos centraremos en los dos ciclos. El primer ciclo consiste en iterar hasta llegar a la posición donde queremos insertar el nuevo nodo, nuevamente esto es \Complejidad{log_2\ n * k} porque en peor caso tendríamos que descender hasta la hoja más lejana (\Complejidad{log_2\ n} iteraciones, y cada iteración cuesta \Complejidad{k}). Por último, el segundo ciclo recorre, de abajo hacia arriba, la rama por la que acabamos de bajar, y dado que como ya mencionamos que ésta tiene \Complejidad{log_2\ n} elementos, esto es \Complejidad{log_2\ n * k}. Finalmente, dado que este caso tiene éstas tres complejidades no anidadas: \Complejidad{log_2\ n * k}+\Complejidad{log_2\ n * k}+\Complejidad{log_2\ n * k} = 3 * \Complejidad{log_2\ n * k} = \Complejidad{log_2\ n * k}.
+\\ -Ahora, como teníamos tres casos, la complejidad es el máximo de ellos: max(\Complejidad{1},\Complejidad{log_2\ n * k},\Complejidad{log_2\ n * k}) = \Complejidad{log_2\ n * k}
 }
 
 \Algoritmo{IBorrar}{\In{c}{$\alpha$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}{
@@ -376,7 +412,7 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 			\Else
 				%EL NODO TIENE DOS HOJAS
 				\State var nuevoPNodo: puntero(nodo) $\gets$ *(pNodo).der \ComplejidadDer{1}
-				\While{*(nuevoPNodo).izq != NULL} \ComplejidadDer{log_2\ n * k}
+				\While{*(nuevoPNodo).izq != NULL} \ComplejidadDer{log_2\ n}
 					\State nuevoPNodo $\gets$ *(nuevoPNodo).izq \ComplejidadDer{1}
 				\EndWhile
 				\State *(pNodo).clave $\gets$ *(nuevoPNodo).clave \ComplejidadDer{1}
@@ -409,12 +445,12 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 		\EndIf
 		\State pNodo $\gets$ padrePNodo \ComplejidadDer{1}
 	\EndWhile		
-}{\Complejidad{log_2\ n * k}}{Siendo n la cantidad de nodos. 
-\\ Nuevamente ignoraremos los condicionales y asignaciones (dado que son constantes), y nos centraremos en los tres ciclos. 
-\\ -El primer ciclo consiste en buscar el elemento a borrar, dado que es una búsqueda en un AVL, esto es \Complejidad{log_2\ n}.
-\\ -El segundo ciclo sucede sólo cuando el elemento a borrar tiene dos subárboles hijos distintos de NULL, esto consiste en buscar el sucesor in-order (es decir, bajar un nodo a la derecha, y luego bajar lo máximo posible hacia la izquierda. Así se encuentra el siguiente ''inmediato''). Dado que es una búsqueda, y se empieza a descender desde el nodo a borrar (en peor caso, se empieza desde la raíz), esto toma \Complejidad{log_2\ n}. Cabe aclarar que éste ciclo no siempre se ejecuta, pero dado que en los demás casos la complejidad es de \Complejidad{1}, podemos asumir que dado el caso que haya sido, estará acotado por la complejidad del peor, osea éste.
-\\ -El tercer ciclo consiste en recorrer, de abajo hacia arriba, la rama en la cual se borró el nodo auxiliar buscado (e ir rotando según corresponda), esto toma \Complejidad{log_2\ n}.
-\\ -Finalmente, la complejidad total es la suma de todos estas complejidades parciales: \Complejidad{log_2\ n}+\Complejidad{log_2\ n}+\Complejidad{log_2\ n} = 3 * \Complejidad{log_2\ n} = \Complejidad{log_2\ n}
+}{\Complejidad{log_2\ n * k}}{Siendo n la cantidad de nodos y k el costo de comparación de $\alpha$. 
+\\ Nuevamente ignoraremos los condicionales -fuera de ciclos- (dado que la complejidad de éstos pertenecen a la complejidad de los ciclos) y asignaciones (dado que son constantes), y nos centraremos en los tres ciclos. 
+\\ -El primer ciclo consiste en buscar el elemento a borrar, dado que es una búsqueda en un AVL, esto es \Complejidad{log_2\ n * k}.
+\\ -El segundo ciclo sucede sólo cuando el elemento a borrar tiene dos subárboles hijos distintos de NULL, esto consiste en buscar el sucesor in-order (es decir, bajar un nodo a la derecha, y luego bajar lo máximo posible hacia la izquierda. Así se encuentra el siguiente ''inmediato''). Dado que es una búsqueda, y se empieza a descender desde el nodo a borrar (en peor caso, se empieza desde la raíz), esto toma \Complejidad{log_2\ n} (porque sólo se baja hacia la izquierda, y no hay comparaciones de tipo $\alpha$). Cabe aclarar que éste ciclo no siempre se ejecuta, pero dado que en los demás casos la complejidad es de \Complejidad{k}, podemos asumir que dado el caso que haya sido, estará acotado por la complejidad del peor, osea éste.
+\\ -El tercer ciclo consiste en recorrer, de abajo hacia arriba, la rama en la cual se borró el nodo auxiliar buscado (e ir rotando según corresponda), esto toma \Complejidad{log_2\ n * k}, porque se itera \Complejidad{log_2\ n}veces y cada iteración cuesta \Complejidad{k}.
+\\ -Finalmente, la complejidad total es la suma de todos estas complejidades parciales: \Complejidad{log_2\ n * k}+\Complejidad{log_2\ n}+\Complejidad{log_2\ n * k} = \Complejidad{log_2\ n * k}+\Complejidad{log_2\ n * k}+\Complejidad{log_2\ n * k} = 3 * \Complejidad{log_2\ n * k} = \Complejidad{log_2\ n * k}
 }
 
 \Algoritmo{IVacío?}{\In{d}{diccRapido($\alpha$,$\beta$)}}{bool}{
@@ -447,7 +483,7 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 }
 
 \Algoritmo{IHayMas?}{\In{it}{itClave}}{bool}{
-	\If{it.1, $\textless$ it.2 - 1} \ComplejidadDer{1}
+	\If{it.$\#$nodosRecorridos, $\textless$ it.tam - 1} \ComplejidadDer{1}
 		\State $res$ $\gets$ true \ComplejidadDer{1}
 	\Else
 		\State $res$ $\gets$ false \ComplejidadDer{1}
@@ -456,14 +492,14 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 }
 
 \Algoritmo{IActual}{\In{it}{itClave}}{$\alpha$}{
-	\State $res$ $\gets$ *(it.3).clave \ComplejidadDer{1}
+	\State $res$ $\gets$ *(it.nodoActual).clave \ComplejidadDer{1}
 }{\Complejidad{1}}{
 }
 
 \Algoritmo{IAvanzar}{\Inout{it}{itClave}}{}{
-	\State it.1 $\gets$ it.1 + 1 \ComplejidadDer{1}
-	\State var itNodosNivelActual $\gets$ \NombreFuncion{crearIt}(\NombreFuncion{DameNodos}(it.4, 1, it.0)) \ComplejidadDer{n}
-	\State var bAvanzar:bool $\gets$ true \ComplejidadDer{1}
+	\State it.$\#$nodosRecorridos $\gets$ it.$\#$nodosRecorridos + 1 \ComplejidadDer{1}
+	\State var itNodosNivelActual: itClave $\gets$ \NombreFuncion{crearIt}(\NombreFuncion{DameNodos}(it.raiz, 1, it.nivelActual)) \ComplejidadDer{n}
+	\State var bAvanzar: bool $\gets$ true \ComplejidadDer{1}
 	\While{bAvanzar} \ComplejidadDer{n}
 		\State \NombreFuncion{Avanzar}(itNodosNivelActual) \ComplejidadDer{1}
 		\If{\NombreFuncion{Anterior}(itNodosNivelActual) == \NombreFuncion{Actual}(it)} \ComplejidadDer{1}
@@ -472,10 +508,10 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 		\EndIf
 	\EndWhile
 	\If{\NombreFuncion{HaySiguiente?}(itNodosNivelActual)} \ComplejidadDer{1}
-		\State it.3 $\gets$ \NombreFuncion{Siguiente}(itNodosNivelActual) \ComplejidadDer{1}
+		\State it.nodoActual $\gets$ \NombreFuncion{Siguiente}(itNodosNivelActual) \ComplejidadDer{1}
 	\Else
-	\State it.0 $\gets$ it.0 + 1 \ComplejidadDer{1}
-	\State it.3 $\gets$ \NombreFuncion{Siguiente}(\NombreFuncion{crearIt}(DameNodos(it.4, 1, it.0))) \ComplejidadDer{n}
+	\State it.nivelActual $\gets$ it.nivelActual + 1 \ComplejidadDer{1}
+	\State it.nodoActual $\gets$ \NombreFuncion{Siguiente}(\NombreFuncion{crearIt}(DameNodos(it.raiz, 1, it.nivelActual))) \ComplejidadDer{n}
 	\EndIf
 }{\Complejidad{n}}{Siendo n la cantidad de nodos. 
 \\ el ciclo busca encontrar el nodo en donde se encuentra el iterador, para eso avanza el nuevo iterador creado, que itera un conjunto de nodos -estos nodos son todos los del nivel al que pertence el iterador buscado-. En el peor caso este conjunto es de n / 2 elementos, porque sería el nivel más bajo. Por eso tiene complejidad \Complejidad{n}. Además se le agrega a la complejidad total, la complejidad de llamar a \NombreFuncion{DameNodos} dos veces.
@@ -492,25 +528,25 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 			\State \NombreFuncion{Union}(\NombreFuncion{DameNodos}(*(p).izq, actual + 1, destino), \NombreFuncion{DameNodos}(*(p).der, actual + 1, destino)) \ComplejidadDer{n}
 		\EndIf
 	\EndIf
-}{\Complejidad{n}}{
+}{\Complejidad{n}}{Siendo n la cantidad de nodos. Vamos a ignorar las asignaciones y condicionales, porque tienen complejidad constante. Luego para justificar la complejidad de la recursión, se podría utilizar el \NombreFuncion{Teorema Maestro}, si fuese que el árbol está completamente lleno. De esta forma, siempre se divide en dos subproblemas y siempre se hace recursión sobre esos dos subproblemas. Aplicando el teorema maestro se tiene que: se divide en dos subproblemas (c = 2), se hace recursión sobre dos subproblemas (a = 2) y el costo de las funciones auxiliares es $\theta$(n) (f(n) = $\theta$(n)), y luego se tiene que $log_c\ a$ = $log_2\ 2$ = 1). Finalmente se tiene que se cumple el segundo caso del \NombreFuncion {Teorema Maestro}, porque $\theta$(n) $\in$ $\theta$($n^{1}$), entonces la complejidad es $\theta$($n log_2\ n$). 
 }	
 
 
 \Algoritmo{IRotar}{\Inout{p}{puntero(nodo)}}{}{
-	\If{\NombreFuncion{FactorDesbalance}(p) $<$ 1} \ComplejidadDer{1}
-		\If{\NombreFuncion{FactorDesbalance}(*(p).der) $>$ 1} \ComplejidadDer{1}
+	\If{\NombreFuncion{FactorDesbalance}(p) $<$ -1} \ComplejidadDer{1}
+		\If{\NombreFuncion{FactorDesbalance}(*(p).der) $>$ 0} \ComplejidadDer{1}
 			\State $res$ $\gets$ \NombreFuncion{RotarDobleIzq}($p$) \ComplejidadDer{k}
 		\Else 
 			\State $res$ $\gets$ \NombreFuncion{RotarSimpleIzq}($p$) \ComplejidadDer{k}
 		\EndIf
 	\Else
-		\If{\NombreFuncion{FactorDesbalance}(*(p).izq) $<$ 1} \ComplejidadDer{1}
+		\If{\NombreFuncion{FactorDesbalance}(*(p).izq) $<$ 0} \ComplejidadDer{1}
 			\State $res$ $\gets$\NombreFuncion{RotarDobleDer}($p$) \ComplejidadDer{k}
 		\Else
 			\State $res$ $\gets$ \NombreFuncion{RotarSimpleDer}($p$) \ComplejidadDer{k}
 		\EndIf
 	\EndIf
-}{\Complejidad{k}}{
+}{\Complejidad{k}}{Siendo k el costo de comparación de $\alpha$
 }
 
 \Algoritmo{IRotarSimpleIzq}{\Inout{p}{puntero(nodo)}}{}{
@@ -538,7 +574,7 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\EndIf
 	\State *(r).alt $\gets$ \NombreFuncion{Altura}(r) \ComplejidadDer{1}
 	\State *(r2).alt $\gets$ \NombreFuncion{Altura}(r2) \ComplejidadDer{1}
- }{\Complejidad{k}}{
+ }{\Complejidad{k}}{Siendo k el costo de comparación de $\alpha$
 }	
 
 \Algoritmo{IRotarSimpleDer}{\Inout{p}{puntero(nodo)}}{}{
@@ -566,19 +602,19 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\EndIf
 	\State *(r).alt $\gets$ \NombreFuncion{Altura}(r) \ComplejidadDer{1}
 	\State *(r2).alt $\gets$ \NombreFuncion{Altura}(r2) \ComplejidadDer{1}
-}{\Complejidad{k}}{
+}{\Complejidad{k}}{Siendo k el costo de comparación de $\alpha$
 }	
 
 \Algoritmo{IRotarDobleIzq}{\Inout{p}{puntero(nodo)}}{}{
 	\State \NombreFuncion{RotarSimpleDer}(*(p).der) \ComplejidadDer{k}
 	\State \NombreFuncion{RotarSimpleIzq}(p) \ComplejidadDer{k}
-}{\Complejidad{k}}{
+}{\Complejidad{k}}{Siendo k el costo de comparación de $\alpha$
 }	
 
 \Algoritmo{IRotarDobleDer}{\Inout{p}{puntero(nodo)}}{}{
 	\State \NombreFuncion{RotarSimpleIzq}(*(p).izq) \ComplejidadDer{k}
 	\State \NombreFuncion{RotarSimpleDer}(p) \ComplejidadDer{k}
-}{\Complejidad{k}}{
+}{\Complejidad{k}}{Siendo k el costo de comparación de $\alpha$
 }	
 
 \Algoritmo{IAltura}{\In{p}{puntero(nodo)}}{nat}{
@@ -614,6 +650,25 @@ Como se sabe que la cantidad de claves no está acotada, este diccionario estará 
 	\EndIf
 }{\Complejidad{1}}{
 }
+
+\Algoritmo{ISiguientes}{\In{it}{itClave}}{Lista Enlazada}{
+	\State var itVar: itClave $\gets$ it \ComplejidadDer{1}
+	\State var siguientes: Lista Enlazada $\gets$ \NombreFuncion{Vacia}() \ComplejidadDer{1}
+	\While{\NombreFuncion{HayMas?}(itVar)} \ComplejidadDer{it.tam^{2}}
+		\State \NombreFuncion{AgregarAtras}(siguientes, \NombreFuncion{Actual}(itVar)) \ComplejidadDer{1}
+		\State \NombreFuncion{Avanzar}(it) \ComplejidadDer{it.tam}
+	\EndWhile
+	\State $res$ $\gets$ siguientes \ComplejidadDer{1}
+}{\Complejidad{it.tam^{2}}}{
+}
+
+
+
+
+
+
+
+
 
 \end{Algoritmos}
 

@@ -4,40 +4,48 @@
 
 \begin{Interfaz}
 
-  \textbf{se explica con}: \tadNombre{Diccionario(String, $\alpha$)}.
+ \textbf{parámetros formales}: string, $\beta$;
 
-  \textbf{géneros}: \TipoVariable{diccString($\alpha$)}.
+  \textbf{se explica con}: \tadNombre{Diccionario(clave, significado)}.
 
-  \Titulo{Operaciones básicas de Diccionario String($\alpha$)}
+  \textbf{géneros}: \TipoVariable{diccString(string, $\beta$)}.
+
+  \Titulo{Operaciones básicas de Diccionario String(string, $\beta$)}
   
-  \InterfazFuncion{Def?}{\In{clv}{string}, \In{d}{diccString($\alpha$)}}{bool}
+  \InterfazFuncion{Def?}{\In{c}{string}, \In{d}{diccString(string, $\beta$)}}{bool}
   [true]
-  {$res \igobs$ def?($clv, d$)}
-  [$\Complejidad{|clv|}$]
-  [Revisa si la clave ingresada se encuentra definida en el Diccionario.]
+  {$res \igobs$ def?($c, d$)}
+  [$\Complejidad{|c|}$]
+  [Revisa si la clave ingresada se encuentra definida en el diccionario]
 
-  \InterfazFuncion{Vacío}{}{diccString($\alpha$)}
+  \InterfazFuncion{Vacío}{}{diccString(string, $\beta$)}
   [true]
   {$res \igobs$ vacío()}
   [\Complejidad{1}]
-  [Crea nuevo diccionario vacio.]
+  [Crea nuevo diccionario vacío]
 	
-  \InterfazFuncion{Obtener}{\In{clv}{string}, \In{d}{diccString($\alpha$)}}{diccString($\alpha$)}
-  [def?($d, clv$)]
-  {$res \igobs$ obtener($clv, d$)}
-  [$\Complejidad{|clv|}$]
-  [Devuelve la definicion correspondiente a la clave.]
+  \InterfazFuncion{Obtener}{\In{c}{string}, \In{d}{diccString(string, $\beta$)}}{$\beta$}
+  [def?($c, d$)]
+  {$res \igobs$ obtener($c, d$)}
+  [$\Complejidad{|c|}$]
+  [Devuelve el significado correspondiente a la clave]
+  [Res es modificable si y sólo si d es modificable]
 
-  \InterfazFuncion{Definir}{\In{clv}{string}, \In{def}{$\alpha$}, \Inout{d}{diccString($\alpha$)}}{}
+  \InterfazFuncion{Definir}{\In{c}{string}, \In{s}{$\beta$}, \Inout{d}{diccString(string, $\beta$)}}{}
   [$d$ $\igobs$ $d_0$]
-  {$d$ $\igobs$ definir($clv, def, d_0$)}
-  [$\Complejidad{|clv|}$]
-  [Agrega un nueva definicion.]
+  {$d$ $\igobs$ definir($c, s, d_0$)}
+  [$\Complejidad{|c|}$]
+  [Define la clave, asociando su significado, al diccionario]
+  [Los elementos c y s se pasan por referencia]
 	
-  \InterfazFuncion{Borrar}{\In{clv}{string}, \Inout{d}{diccString($\alpha$)}}{}
-  [$d$ $\igobs$ $d_0$ $\wedge$ def?($clv, d_0$)]
-  {$res$ $\igobs$ borrar($k, d_0$)}
-  [$\Complejidad{|clv|}$]
-  [Borra la definición.]
+  \InterfazFuncion{Borrar}{\In{c}{string}, \Inout{d}{diccString(string, $\beta$)}}{}
+  [$d$ $\igobs$ $d_0$ $\wedge$ def?($c, d_0$)]
+  {$res$ $\igobs$ borrar($c, d_0$)}
+  [$\Complejidad{|c|}$]
+  [Borra la clave (y su significado) del diccionario]
+  
+  \vspace{2em}
+  La representación y los algoritmos del módulo no hacen falta explicitarlos porque están dados por la cátedra. 
+  \\ De todas formas, cabe recordar que este módulo se representa sobre un Trie.
 	
 \end{Interfaz}
