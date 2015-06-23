@@ -15,13 +15,13 @@
   \InterfazFuncion{Def?}{\In{c}{$\alpha$}, \In{d}{diccRapido($\alpha$,$\beta$)}}{bool}
   [true]
   {$res$ $\igobs$ def?($c, d$)}
-  [\Complejidad{log_2\ n}, siendo n la cantidad de claves]
+  [\Complejidad{log_2\ n * k}, siendo n la cantidad de claves y k el costo de comparación de $\alpha$]
   [Verifica si una clave está definida.]
   
  \InterfazFuncion{Obtener}{\In{c}{$\alpha$}, \In{d}{diccRapido($\alpha$,$\beta$)}}{$\beta$}
  [def?($c, d$)]
  {$res$ $\igobs$ obtener($c, d$)}
- [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
+ [$\Complejidad{log_2\ n * k}$, siendo n la cantidad de claves y k el costo de comparación de $\alpha$]
  [Devuelve el significado asociado a una clave]
  [Res es modificable si y sólo si d es modificable]
   
@@ -34,14 +34,14 @@
  \InterfazFuncion{Definir}{\In{c}{$\alpha$}, \In{s}{$\beta$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}
  [$d$ $\igobs$ $d_0$]
  {$d$ $\igobs$ definir($c, s, d_0$)}
- [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
+ [$\Complejidad{log_2\ n * k}$, siendo n la cantidad de claves y k el costo de comparación de $\alpha$]
  [Define la clave, asociando su significado, al diccionario]
  [Los elementos c y s se pasan por referencia. ]
   
  \InterfazFuncion{Borrar}{\In{c}{$\alpha$}, \Inout{d}{diccRapido($\alpha$,$\beta$)}}{}
  [$d$ $\igobs$ $d_0$ $\wedge$ def?($c, d_0$)]
  {$d$ $\igobs$ borrar($c, d_0$)}
- [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves]
+ [$\Complejidad{log_2\ n * k}$, siendo n la cantidad de claves y k el costo de comparación de $\alpha$]
  [Borra la clave (y su significado) del diccionario]
   
  \InterfazFuncion{Vacío?}{\In{d}{diccRapido($\alpha$,$\beta$)}}{bool}
@@ -53,7 +53,7 @@
  \InterfazFuncion{ClaveMax}{\In{d}{diccRapido($\alpha$,$\beta$)}}{$\alpha$}
  [$\neg$vacío?(d)]
  {$res$ $\igobs$ claveMax($d$)}
- [$\Complejidad{log_2\ n}$]
+ [$\Complejidad{log_2\ n}$, siendo n la cantidad de claves.]
  [Devuelve la mayor clave]
  [Res es modificable si y sólo si d es modificable]
   
@@ -61,7 +61,13 @@
  [true]
  {$res$ $\igobs$ CrearIt(claves($d$))}
  [$\Complejidad{1}$]
- [Devuelve un iterador de paquete]  
+ [Devuelve un iterador de clave]  
+ 
+ %\InterfazFuncion{Significados}{\In{d}{diccRapido($\alpha$, $\beta$)}}{ConjLineal($\beta$)}
+ %[true]
+ %{$res$ $\igobs$ significados($d$)}
+ %[$\Complejidad{n * max(log_2\ n * k + copy(\beta), n)}$, siendo n la cantidad de claves del diccionario y k el costo de comparación de $\alpha$.]
+ %[Devuelve un conjunto con todos los significados.]
  
  \Titulo{Operaciones del Iterador}
  
@@ -78,7 +84,7 @@
  [$\Complejidad{1}$]
  [Verifica si hay más elementos a iterar]
  
- \InterfazFuncion{Actual}{\In{it}{itClave}}{$\alpha$}
+ \InterfazFuncion{ClaveActual}{\In{it}{itClave}}{$\alpha$}
  [HayMas?($it$)]
  {$res$ $\igobs$ Actual($it$)}
  [$\Complejidad{1}$]
@@ -88,7 +94,7 @@
  \InterfazFuncion{Avanzar}{\Inout{it}{itClave}}{}
  [$it$ $\igobs$ $it_0$ $\wedge$ HayMas?($it_0$)]
  {$it$ $\igobs$ Avanzar($it_0$)} 
- [$\Complejidad{n}$]
+ [$\Complejidad{n}$, siendo n la cantidad de claves.]
  [Avanza el iterador]
   
   \subsection{Auxiliares}
@@ -99,37 +105,37 @@
  \InterfazFuncion{DameNodos}{\In{p}{puntero(nodo)}, \In{actual}{nat}, \In{destino}{nat}}{conjLineal(nodo)}
  [true]
  {$res$ $\igobs$ nodosNivel($p, actual, destino$)}
- [$\Complejidad{n}$]
+ [$\Complejidad{n}$, siendo n la cantidad de claves.]
  [Crea un conjunto de nodos con todos los nodos pertenecientes al nivel destino]
  
  \InterfazFuncion{Rotar}{\Inout{p}{puntero(nodo)}}{}
  [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ (|\tadNombre{FactorDesbalance}(p)| $>$ 1)]
  {$p$ $\igobs$ rotar($p_0$)}
- [$\Complejidad{1}$]
+ [$\Complejidad{k}$, siendo k el costo de comparación de *(p).clave.]
  [Realiza la rotación pertinente de p, de ser necesario]
  
  \InterfazFuncion{RotarSimpleIzq}{\Inout{p}{puntero(nodo)}}{}
  [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ *(p).der != NULL]
  {$p$ $\igobs$ rotarSimpleIzq($p_0$)}
- [$\Complejidad{1}$]
+ [$\Complejidad{k}$, siendo k el costo de comparación de *(p).clave.]
  [Realiza una rotación simple izquierda del nodo p, y los nodos involucrados] 
 
  \InterfazFuncion{RotarSimpleDer}{\Inout{p}{puntero(nodo)}}{}
  [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ *(p).izq != NULL]
  {$p$ $\igobs$ rotarSimpleDer($p_0$)}
- [$\Complejidad{1}$]
+ [$\Complejidad{k}$, siendo k el costo de comparación de *(p).clave.]
  [Realiza una rotación simple derecha del nodo p, y los nodos involucrados]
  
  \InterfazFuncion{RotarDobleIzq}{\Inout{p}{puntero(nodo)}}{}
  [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ *(p).der !=NULL $\yluego$ *(*(p).der).izq != NULL]
  {$p$ $\igobs$ rotarDobleIzq($p_0$)}
- [$\Complejidad{1}$]
+ [$\Complejidad{k}$, siendo k el costo de comparación de *(p).clave.]
  [Realiza una rotación doble izquierda del nodo p, y los nodos involucrados]
  
  \InterfazFuncion{RotarDobleDer}{\Inout{p}{puntero(nodo)}}{}
  [$p$ $\igobs$ $p_0$ $\wedge$ p != NULL $\yluego$ *(p).izq != NULL $\yluego$ *(*(p).izq).der != NULL]
  {$p$ $\igobs$ rotarDobleDer($p_0$)}
- [$\Complejidad{1}$]
+ [$\Complejidad{k}$, siendo k el costo de comparación de *(p).clave.]
  [Realiza una rotación doble derecha del nodo p, y los nodos involucrados]
  
  \InterfazFuncion{Altura}{\In{p}{puntero(nodo)}}{nat}
@@ -146,7 +152,7 @@
  
   \Titulo{Operaciones auxiliares del Iterador}
   
-  \InterfazFuncion{Siguientes}{\In{it}{itClave}}{Lista Enlazada}
+  \InterfazFuncion{Siguientes}{\In{it}{itClave}}{listaEnlazada}
   [true]
   {$res$ $\igobs$ siguientes(it)}
   [$\Complejidad{it.tam^{2}}$]
@@ -476,6 +482,17 @@ El iterador es una tupla con varias componentes, entre ellas, un puntero al nodo
 }{\Complejidad{1}}{
 }
 
+%\Algoritmo{ISignificados}{\In{d}{diccRapido($\alpha$, $\beta$)}}{conjLineal($\beta$)}{
+%	\State var it: itClave $\gets$ \NombreFuncion{CrearIt}(d) \ComplejidadDer{1}
+%	\State var conj: conjLineal $\gets$ \NombreFuncion{Vacío()} \ComplejidadDer{1}
+%	\While{\NombreFuncion{HayMas?}(it)} \ComplejidadDer{n * max(log_2\ n * k + copy(\beta), n)}
+%		\State \NombreFuncion{AgregarRapido}(conj, \NombreFuncion{Obtener}(\NombreFuncion{Actual}(it), d)) \ComplejidadDer{log_2\ n * k + copy(\beta)}
+%		\State \NombreFuncion{Avanzar}(it) \ComplejidadDer {n}
+%	\EndWhile
+%	\State res $\gets$ conj \ComplejidadDer{1}
+%}{\Complejidad{n * max(log_2\ n * k + copy(\beta), n)}}{Siendo n la cantidad de claves y k el costo de comparación de $\alpha$. Para analizar la complejidad de este algoritmo, ignoraremos las asignaciones ya que ocurren en tiempo constante y nos centraremos en el ciclo. Sabemos que cada iteración cuesta \Complejidad{max(log_2\ n * k + copy(\beta), n)}, esto podría acotarse por n, pero eso podría no siempre ser cierto (por ejemplo, cuando n sea ínfimo), por eso no lo acotaremos de esa forma. Luego el ciclo itera \Complejidad{n} veces, porque recorre todos los nodos para agregar sus significados al conjunto. Finalmente, como itera \Complejidad{n} veces y cada iteración cuesta \Complejidad{max(log_2\ n * k + copy(\beta), n)}, se tiene que la complejidad del algoritmo es \Complejidad{n * max(log_2\ n * k + copy(\beta), n)}.
+%}
+
 %% la tupla es (0: nivel, 1: numero de nodo, 2: total de nodos, 3: actual, 4: raiz)
 \Algoritmo{ICrearIt}{\In{d}{diccRapido($\alpha$,$\beta$)}}{itClave}{
 	\State $res$ $\gets$ tupla(1, 0, d.tam, d.raiz, d.raiz) \ComplejidadDer{1}
@@ -511,7 +528,7 @@ El iterador es una tupla con varias componentes, entre ellas, un puntero al nodo
 		\State it.nodoActual $\gets$ \NombreFuncion{Siguiente}(itNodosNivelActual) \ComplejidadDer{1}
 	\Else
 	\State it.nivelActual $\gets$ it.nivelActual + 1 \ComplejidadDer{1}
-	\State it.nodoActual $\gets$ \NombreFuncion{Siguiente}(\NombreFuncion{crearIt}(DameNodos(it.raiz, 1, it.nivelActual))) \ComplejidadDer{n}
+	\State it.nodoActual $\gets$ \NombreFuncion{Siguiente}(\NombreFuncion{crearIt}(\NombreFuncion{DameNodos}(it.raiz, 1, it.nivelActual))) \ComplejidadDer{n}
 	\EndIf
 }{\Complejidad{n}}{Siendo n la cantidad de nodos. 
 \\ el ciclo busca encontrar el nodo en donde se encuentra el iterador, para eso avanza el nuevo iterador creado, que itera un conjunto de nodos -estos nodos son todos los del nivel al que pertence el iterador buscado-. En el peor caso este conjunto es de n / 2 elementos, porque sería el nivel más bajo. Por eso tiene complejidad \Complejidad{n}. Además se le agrega a la complejidad total, la complejidad de llamar a \NombreFuncion{DameNodos} dos veces.
@@ -651,7 +668,7 @@ El iterador es una tupla con varias componentes, entre ellas, un puntero al nodo
 }{\Complejidad{1}}{
 }
 
-\Algoritmo{ISiguientes}{\In{it}{itClave}}{Lista Enlazada}{
+\Algoritmo{ISiguientes}{\In{it}{itClave}}{listaEnlazada}{
 	\State var itVar: itClave $\gets$ it \ComplejidadDer{1}
 	\State var siguientes: Lista Enlazada $\gets$ \NombreFuncion{Vacia}() \ComplejidadDer{1}
 	\While{\NombreFuncion{HayMas?}(itVar)} \ComplejidadDer{it.tam^{2}}
