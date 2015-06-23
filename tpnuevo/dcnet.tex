@@ -3,15 +3,6 @@
 \subsection{Interfaz}
 
 \begin{Interfaz}
-  
-  %\textbf{parámetros formales}\hangindent=2\parindent\\
-  %\parbox{1.7cm}{\textbf{géneros}} \\
-  %\parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
-    %\InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{$\alpha$}
-    %{$res \igobs a$}
-    %[$\Theta(copy(a))$]
-    %[función de copia de $\alpha$'s]
-  %}
 
   \textbf{se explica con}: \tadNombre{DCNet}.
 
@@ -25,67 +16,68 @@
   {$res \igobs$ red($d$)}
   [\Complejidad{1}]
   [Devuelve la red del dcnet.]
+  [Res es modificable si y sólo si dcnet es modificable]
   
-  \InterfazFuncion{CaminoRecorrido}{\In {d}{dcnet}, \In{p}{paquete} }{secu(compu)}
-  [$p$ $\in$ paqueteEnTransito?($d,p$)]
+  \InterfazFuncion{CaminoRecorrido}{\In {d}{dcnet}, \In{p}{paquete} }{listaEnlazada(compu)}
+  [$p$ $\in$ paqueteEnTransito?($d, p$)]
   {$res \igobs$ caminoRecorrido($d,p$))}
   [\Complejidad{n*log_2 (k)}]
-  [Devuelve una secuencia con las computadoras por las que paso el paquete.]
+  [Devuelve una secuencia con las computadoras por las que paso el paquete. Siendo n el número de computadoras de la red y k la longitud de la cola de paquetes más larga al momento.]
   
   \InterfazFuncion{cantidadEnviados}{\In {d}{dcnet}, \In {c}{compu}}{nat}
   [$c$ $\in$ computadoras(red($d$))]
-  {$res \igobs$ cantidadEnviados($d,c$)}
-  [\Complejidad{|$c$.id|}]
+  {$res \igobs$ cantidadEnviados($d, c$)}
+  [\Complejidad{|$c$.hostname|}]
   [Devuelve la cantidad de paquetes que fueron enviados desde la computadora.]
   
   \InterfazFuncion{enEspera}{\In {d}{dcnet}, \In {c}{compu}}{itPaquete}
   [$c$ $\in$ computadoras(red($d$))]
-  {$res \igobs$ enEspera($d,c$)}
-  [\Complejidad{|$c$.id|}]
+  {$res \igobs$ enEspera($d, c$)}
+  [\Complejidad{|$c$.hostname|}]
   [Devuelve los paquetes que se encuentran en ese momento en la computadora.]
+  [Res es modificable si y sólo si dcnet es modificable]
   
   \InterfazFuncion{IniciarDCNet}{\In {r}{red}}{dcnet}
   %[ACA VA EL PRE (SI LO HUBIERA)]
   {$res \igobs$ iniciarDCNet($r$)}
-  [\Complejidad{N*L}]
-  [Inicia un dcnet con la red y sin paquetes.]
+  [\Complejidad{n * L}]
+  [Inicia el módulo, con la red y sin paquetes. Siendo n el número de computadoras de la red y L la longitud de nombre de computadora (hostname) más larga de aquellas que hay en la red.]
 
-  \InterfazFuncion{CrearPaquete}{\In {p}{paquete}, \Inout {d}{dcnet}}{}
-  [$d_0 \equiv d$ $\wedge$ $\neg$ (($\exists$ $p_1$: paquete)(paqueteEnTransito($s,p_1$) $\wedge$ id($p_1$) $=$ id($p$)) $\wedge$ origen($p$) $\in$ computadoras(red($d$))$\yluego$ destino($p$) $\in$ computadoras(red($d$))$\yluego$ hayCamino?(red($d$,origen($p$),destino($p$))  ]
-  {$res \igobs$ iniciarDCNet($r$)}
+  \InterfazFuncion{CrearPaquete}{\Inout {d}{dcnet}, \In {p}{paquete}}{}
+  [$d \igobs d_0$ $\wedge$ $\neg$ (($\exists$ $p_1$: paquete)(paqueteEnTransito($s, p_1$) $\wedge$ id($p_1$) $=$ id($p$)) $\wedge$ origen($p$) $\in$ computadoras(red($d$))$\yluego$ destino($p$) $\in$ computadoras(red($d$))$\yluego$ hayCamino?(red($d$, origen($p$), destino($p$))  ]
+  {$d \igobs$ crearPaquete($d_0, p$)}
   [\Complejidad{L+log_2(k)}]
-  [Agrega el paquete al dcnet.]
+  [Agrega el paquete al dcnet. Siendo L la longitud de nombre de computadora (hostname) más larga de aquellas que hay en la red y k la longitud de la cola de paquetes más larga al momento.]
   
   \InterfazFuncion{AvanzarSegundo}{\Inout {d}{dcnet}}{}
-  [$d_0 \equiv d$ ]
-  {$d$ $\igobs$ avanzarSegundo($c_0$)}
-  [\Complejidad{N*(L+log_2(k)}]
-  [El paquete de mayor prioridad de cada computadora avanza a su proxima computadora siendo esta la del camino mas corto.]
+  [$d \igobs d_0$ ]
+  {$d$ $\igobs$ avanzarSegundo($d_0$)}
+  [\Complejidad{n*(L+log_2(k)}]
+  [Un paquete de mayor prioridad de cada computadora avanza a su próxima computadora, perteneciendo ésta a uno (o algunos) de los caminos más cortos entre su computadora actual y su destino. Siendo n el número de computadoras de la red, L la longitud de nombre de computadora (hostname) más larga de aquellas que hay en la red y k la longitud de la cola de paquetes más larga al momento.]
   
   
   \InterfazFuncion{PaqueteEnTransito?}{\In {d}{dcnet}, \In {p}{paquete}}{bool}
-  [ ]
-  {$res$ $\igobs$ paqueteEnTransito?($d$,$p$)}
-  [\Complejidad{N*log_2(k)}]
-  [Devuelve si el paquete esta o no en alguna computadora del sistema.]
+  [true]
+  {$res$ $\igobs$ paqueteEnTransito?($d$, $p$)}
+  [\Complejidad{n*log_2(k)}]
+  [Verifica si el paquete está en alguna computadora del sistema. Siendo n el número de computadoras de la red y k la longitud de la cola de paquetes más larga al momento.]
   
   
   \InterfazFuncion{LaQueMasEnvio}{\In {d}{dcnet)}}{compu}
-  []
+  [true]
   {$res$ $\igobs$ laQueMasEnvio($d$)}
   [\Complejidad{1}]
-  [Devuelve la computadora que mas paquetes envio.]
+  [Devuelve la computadora que más paquetes envió.]
+  [Res es modificable si y sólo si dcnet es modificable.]
 	
-	\Titulo{Operaciones del iterador}
-  
 \end{Interfaz}
 
-\subsection{Representacion}
+\subsection{Representación}
 
 \begin{Representacion}
 
 %DESCRIPCION
-El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d.red) con la que se inicia el dcnet(pasada por referencia), una tupla que tiene la computadora que mas paquetes envio y cuantos ha enviado (en d.MasEnviante). Luego, un diccionario String (d.CompYPaq) cuyas claves son las computadoras de la red  y su significado es una tupla. Esta tupla tiene tres componentes: un Diccionario Rapido (MasPriori) cuya clave es un natural (prioridad, osea la prioridad del paquete) y su significado es un conj(paquete) (PaqdePriori), luego otro Diccionario Rapido (PaqYCam) cuya clave es el paquete (habiendo establecido previamente que la relacion de orden entre paquetes es por id) y su significado es una secu(compu) (CamRecorrido), finalmente un natural (Enviados) que representa la cantidad de paquetes enviados por la computadora.
+El dcnet está representado con una tupla, en la cual: vamos a tener la red con la que se inicia el dcnet (d.red), una tupla que tiene la computadora que más paquetes envió y cuántos ha enviado (d.masEnviante). Luego, un Diccionario String (d.compYPaq) cuyas claves son los hostnames de las computadoras de la red y su significado es una tupla. Ésta tupla tiene tres componentes: un Diccionario Rápido (masPriori) cuya clave es un natural (prioridad, osea la prioridad del paquete) y su significado es un conjLineal(paquete) (paqDePriori), luego otro Diccionario Rápido (paqYCam) cuya clave es el paquete (habiendo establecido previamente que la relación de orden entre paquetes es por id) y su significado es una listaEnlazada(compu) (camRecorrido), finalmente un natural (Enviados) que representa la cantidad de paquetes enviados por la computadora.
 
 
 
@@ -93,20 +85,25 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 \begin{Estructura}{dcnet}[e\_dc]
 	\begin{Tupla}[e\_dc]
 		\tupItem{red}{red}
-		\tupTupItem{\\MasEnviante}{\TipoVariable{tupla}$($\ignorespaces
+		\\
+		\tupTupItem{\\masEnviante}{\TipoVariable{tupla}$($\ignorespaces
 			\emph{compu}: \TipoVariable{compu}, 
 			\emph{enviados}: \TipoVariable{nat}$)$}
-		\tupTupItem{\\CompYPaq}{\TipoVariable{DiccString}$($\ignorespaces
-			\emph{compu}: \TipoVariable{compu},
+		\\
+		\tupTupItem{\\compYPaq}{\TipoVariable{DiccString}$($\ignorespaces
+			\emph{hostname}: \TipoVariable{string},
 			\TipoVariable{tupla}$($\ignorespaces
-			\emph{MasPriori}:{DiccRapido}$($\ignorespaces
+			\\
+			\emph{masPriori}:{DiccRapido}$($\ignorespaces
 			\emph{prioridad} :{nat},
-			\emph{PaqdePriori}:{conj$($paquete$)$}
+			\emph{paqdePriori}:{conjLineal$($paquete$)$}
 			 $)$,
-			\emph{PaqYCam}:{DiccRapido} $($\ignorespaces
+			 \\
+			\emph{paqYCam}:{DiccRapido} $($\ignorespaces
 			\emph{paq}:{paquete},
-			\emph{CamRecorrido}:{secu($compu$)}$)$, 
-			\emph{Enviados}:{nat})
+			\emph{camRecorrido}:{listaEnlazada($compu$)}$)$, 
+			\\
+			\emph{enviados}:{nat})
 		
 			}
 			
@@ -116,67 +113,80 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 
 \subsection{InvRep y Abs}
 
+\textbf{InvRep en lenguaje coloquial:}
+
 \begin{enumerate}
- \item{El conjunto armado por las ips de las computadoras de 'red' es igual al conjunto con todas las claves de 'CompYPaq'.}
- \item{Para toda compu (c1) perteneciente a las claves de 'CompYPaq' cuyo significado.enviados es (e1), d.MasEnviante.enviados (e2) es mayor o igual a e1. Luego, d.MasEnviante.compu esta definida en 'CompYPaq' y su significado es e2. }
- \item{si una computadora pertenece a un significado de 'PaqYCam', entonces pertenece a claves de 'CompYPaq'}
- \item{La union de todos los significados de MasPriori es igual a las claves de 'PaqYCam'}
- \item{si un paquete (paq) pertenece al significado de una prioridad (pri) en el diccionario MasPriori, entonces la prioridad de paq es pri}
- \item{no existen claves en el diccionario 'MasPriori' con significado vacio.}
- \item{si un paquete (p1) esta definido en 'PaqYCam' como significado de una computadora (c1) en el diccionario 'CompYPaq', entonces p1 no puede estar definido en 'PaqYCam' como significado de una computadora (c2), siendo c1 y c2 distintas.}
- \item{si un paquete (p1) esta definido en 'PaqYCam' como significado de una computadora(c1) en el diccionario 'CompYPaq', entonces la ultima componente de su significado (osea, 'CamRecorrido') es c1}
+ \item{El conjunto armado por los hostnames de las computadoras de d.red es igual al conjunto con todas las claves de d.compYPaq.}
+ \item{Para toda compu (c1) perteneciente a las claves de d.compYPaq cuyo significado.enviados es e1, d.masEnviante.enviados (e2) es mayor o igual a e1. Y además, d.masEnviante.compu está definida en d.compYPaq y su significado es e2. }
+ \item{Si una computadora pertenece a un significado de 'paqYCam', entonces pertenece a las claves de d.compYPaq.}
+ \item{La unión de todos los significados de masPriori es igual a las claves de 'paqYCam'.}
+ \item{Si un paquete (paq) pertenece al significado de una prioridad (pri) en el diccionario masPriori, entonces la prioridad de paq es pri.}
+ \item{No existen claves en el diccionario 'masPriori' con significado vacío.}
+ \item{Si un paquete (p1) está definido en 'paqYCam' como significado de una computadora (c1) en el diccionario d.compYPaq, entonces p1 no puede estar definido en 'paqYCam' como significado de una computadora (c2), siendo c1 y c2 distintas.}
+ \item{Si un paquete (p1) está definido en 'paqYCam' como significado de una computadora(c1) en el diccionario d.compYPaq, entonces la última componente de su significado (osea, 'camRecorrido') es c1.}
+ \item{Todas las computadoras de 'camRecorrido' pertenecen a las computadoras de d.red. Para todas computadoras c1 y c2 (distintas) pertenecientes a la lista vale que, si una es siguiente o anterior a la otra, están conectadas directamente en la red (osea, la lista es un cámino válido). Y además, la lista es prefijo de algún camino mínimo entre el origen y el destino del paquete (osea, es un camino válido mínimo). Además, si c.hostname está definido en d.compYPaq, entonces todos los significados de su 'paqYCam' asociado tienen como último elemento de la lista a c.}
 
 
 \end{enumerate}
 
+\vspace{1em}
+\textbf{InvRep en lenguaje formal:}
+\vspace{1em}
 
-\Rep[e\_dc][d]{claves(d.CompYPaq) $=$ ipCompus(computadoras(d.red))$\wedge$ \hfill1 \newline
-	($\forall$ c:compu)(c.ip $\in$ claves(d.CompYPaq))\newline
-	(obtener(c.ip,d.CompYPaq).enviados $\leq$ (d.MasEnviante).enviados $\wedge$ def?(d.MasEnviante).compu, d.CompYPaq) $\yluego$ \newline obtener(d.MasEnviante.compu, d.CompYPaq).enviados = (d.MasEnviante).enviados)\hfill2 \newline
-	($\forall$ $c_2$:compu, p:paquete)(esta?($c_2$,obtener(p,obtener(c.ip, d.CompYPaq).PaqYCam)) $\Rightarrow$  def?($c_2$, d.CompYPaq) \hfill3 \newline
-	$\wedge$ juntarSignificados(obtener(c.ip,d.CompYPaq).MasPriori,claves(obtener(c.ip,d.CompYPaq).MasPriori)
- $=$ claves(obtener(c.ip,d.CompYPaq).PaqYCam)	\hfill4 \newline
- ($\forall$ pr:Nat,p:paquete)(def?(pr,Obtener(c.ip,d.CompYPaq).MasPriori) $\yluego$ \newline 
- p $\in$ obtener(pr,c.ip,d.CompYPaq).MasPriori)$\rightarrow$ pr = p.prioridad) $\wedge$ \hfill5 \newline
- ($\forall$ pr:Nat) (Def?(pr, Obtener(c.ip, d.CompYPaq).MasPriori) $\impluego$  $\neg$ $\emptyset$? Obtener(pr, Obtener(c.ip, d.CompYPaq).MasPriori)) $\wedge$ \hfill6 \newline
- ($\forall$ p1:paquete, c2:computadora) (Def?(p, Obtener(c.ip, d.CompYPaq).PaqYCam) $\wedge$ def?(c2.ip, d.CompYPaq) $\impluego$ $\neg$def?(p, Obtener(c2.ip, d.CompYPaq).PaqYCam)  $\wedge$ \hfill7 \newline
- ($\forall$ p:paquete) (def?(p, obtener(c.ip, d.CompYPaq).PaqYCam) $\impluego$ ult(obtener(p, obtener(c.ip, d.CompYPaq).PaqYCam)) = c)	\hfill8
+\Rep[e\_dc][d]{\NombreFuncion{Claves}(d.compYPaq) $=$ ipCompus(computadoras(d.red))$\wedge$ \hfill1 \newline
+	($\forall$ c:compu)(\NombreFuncion{Def?}(c.hostname, d.compYPaq))\newline
+	(\NombreFuncion{Obtener}(c.hostname, d.compYPaq).enviados $\leq$ (d.masEnviante).enviados $\wedge$ \NombreFuncion{Def?}(d.masEnviante).compu, d.compYPaq) $\yluego$ \newline \NombreFuncion{Obtener}(d.masEnviante.compu, d.compYPaq).enviados = (d.masEnviante).enviados)\hfill2 \newline
+	($\forall$ $c_2$: compu, p: paquete)(esta?($c_2$, \NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam)) $\impluego$  \NombreFuncion{Def?}($c_2$, d.compYPaq) \hfill3 \newline
+	$\wedge$ (\NombreFuncion{Significados}(\NombreFuncion{Obtener}(c.hostname, d.compYPaq).masPriori)
+ $=$ \NombreFuncion{Claves}(\NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam))	\hfill4 \newline
+ ($\forall$ pr: Nat,p: paquete)(\NombreFuncion{Def?}(pr, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).masPriori) $\yluego$ \newline 
+ p $\in$ \NombreFuncion{Obtener}(pr, c.hostname, d.compYPaq).masPriori)$\impluego$ pr = p.prioridad) $\wedge$ \hfill5 \newline
+ ($\forall$ pr: Nat) (\NombreFuncion{Def?}(pr, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).masPriori) $\impluego$  $\neg$ $\emptyset$? \NombreFuncion{Obtener}(pr, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).masPriori)) $\wedge$ \hfill6 \newline
+ ($\forall$ p1: paquete, $c_2$: computadora) (\NombreFuncion{Def?}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam) $\wedge$ \NombreFuncion{Def?}($c_2$.hostname, d.compYPaq) $\impluego$ $\neg$\NombreFuncion{Def?}(p, \NombreFuncion{Obtener}($c_2$.hostname, d.compYPaq).paqYCam)  $\wedge$ \hfill7 \newline
+ ($\forall$ p: paquete) (\NombreFuncion{Def?}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam) $\impluego$ ult(\NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam)) = c))	\hfill8 \newline
+ ($\forall$ $c_2$, $c_3$: compu, p: paquete) ((\NombreFuncion{Def?}(c.hostname, d.compYPaq) $\yluego$ \NombreFuncion{Def?}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam)) $\impluego$ [((\NombreFuncion{Está}($c_2$, \NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam))) \NombreFuncion{Pertenece?}($c_2$, computadoras(d.red))) $\wedge$ ((\NombreFuncion{Está}($c_2$, \NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam)) $\wedge$ \NombreFuncion{Está}($c_3$, \NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam))) (($\exists$ $i_2$, $i_3$: nat)  ( \NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam)[$i_2$] = $c_2$ $\wedge$ \NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam)[$i_3$] = $c_3$) $\wedge$ $i_2$ + 1 = $i_3$) \NombreFuncion{Conectadas?}(d.red, $c_2$, $c_3$)) $\wedge$ (($\exists$ l: listaEnlazada(compu)) \NombreFuncion{Pertenece?}(l, \NombreFuncion{CaminosMinimos}(d.red, p.origen, p.destino)) $\wedge$ \NombreFuncion{EsPrefijo}(\NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam), l)) $\wedge$ (c = \NombreFuncion{Ultimo}(\NombreFuncion{Obtener}(p, \NombreFuncion{Obtener}(c.hostname, d.compYPaq).paqYCam))) ] )      \hfill9  
 	 }
 	
 	\vspace{3em}
-	
+	\textbf{Operaciones Auxiliares:}
+	\vspace{1em}
+	\tadAlinearFunciones{significadosAux}{Dicc($\alpha$, $\beta$)/d, Conj($\alpha$)/ccl}
 	\tadOperacion{ipCompus}{Conj(compu)}{Conj(string)}{}
-	\tadOperacion{juntarSignificados}{Dicc , Conj}{Conj}{}
+	\tadOperacion{significados}{Dicc($\alpha$, $\beta$)}{Conj($\beta$)}{}
+	\tadOperacion{significadosAux}{Dicc($\alpha$, $\beta$)/d, Conj($\alpha$)/ccl}{Conj($\beta$)}{ccl $\subseteq$ claves(d)}
 	
 	\vspace{1em}
-	\tadAxioma{juntarSignificados(dic, cl)}{
-	\IF vacia?(cl) 
+	\tadAxiomas[\paratodo{Conj(compu)}{cc}, \paratodo{Conj($\alpha$)}{ccl}, \paratodo{Diccionario($\alpha$, $\beta$)}{d}]
+	\tadAlinearAxiomas{significadosAux(d, ccl)}
+		\tadAxioma{ipCompus(cc)}{
+	\IF vacía?(cc) 
 	THEN $\emptyset$ 
 	ELSE 
-	      obtener(DameUno(cl),dic) $\cup$ juntarSignificados(dic, SinUno(cl))
-	FI}	
-	\tadAxioma{ipCompus(cc)}{
-	\IF vacia?(cp) 
-	THEN $\emptyset$ 
-	ELSE 
-	      {Agregar(DameUno(cc).ip,ipCompus(SinUno(cc)))}
+	      {Agregar(DameUno(cc).hostname,ipCompus(SinUno(cc)))}
 	FI}
 	
-	
-	\vspace{3em}
+	\tadAxioma{significados(d)}{significadosAux(d, claves(d))}
+	\tadAxioma{significadosAux(d, ccl)}{
+	\IF vacía?(ccl) 
+	THEN $\emptyset$ 
+	ELSE 
+	      Ag(obtener(dameUno(ccl), d), significadosAux(d, sinUno(ccl))
+	FI}	
+
+\vspace{1em}	
+\textbf{Abs:}
+\vspace{1em}
 	
 	\Abs[e\_dc]{dcnet}[e]{d}{
 		\\ red(d) = e.red $\yluego$
-		\\($\forall$ p:paquete, c:compu) (paqueteEnTransito?(d, p) $\impluego$ (def?(c.ip, e.CompYPaq $\yluego$ def?(p, obtener(c.ip, e.CompYPaq).PaqYCam) $\impluego$ obtener(p, obtener(c.ip, e.CompYPaq).PaqYCam) = caminoRecorrido(d, p)))
-		\\($\forall$ c:compu) (c $\in$ computadoras(red(d)) $\impluego$ ((def?(c.ip, e.CompYPaq) $\impluego$ obtener(c.ip, e.CompYPaq).Enviados = cantidadEnviados(d, c)) $\wedge$ (def?(c.ip, e.CompYPaq) $\impluego$ claves(obtener(c.ip, e.CompYPaq).PaqYCam) = enEspera(d, c))))
+		\\($\forall$ p:paquete, c:compu) (c $\in$ computadoras(red(d)) $\yluego$ (def?(c.hostname, e.compYPaq $\yluego$ def?(p, obtener(c.hostname, e.compYPaq).paqYCam) $\impluego$ obtener(p, obtener(c.hostname, e.compYPaq).paqYCam) = caminoRecorrido(d, p)))
+		\\($\forall$ c:compu) (c $\in$ computadoras(red(d)) $\impluego$ ((def?(c.hostname, e.compYPaq) $\impluego$ obtener(c.hostname, e.compYPaq).enviados = cantidadEnviados(d, c)) $\wedge$ (def?(c.hostname, e.compYPaq) $\impluego$ claves(obtener(c.hostname, e.compYPaq).paqYCam) = enEspera(d, c))))
 		
 		 }
 		
 \vspace{3em}
 
 \end{Representacion}
-
-%tupla<mapa:mapa, robEnEst: dicctrie(estacion, conj(puntero(RUR))), robots: conj(RUR)>
 
 \subsection{Algoritmos}
 
@@ -197,110 +207,96 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 	
 	
 	
-	\begin{Algoritmo}{iCaminoRecorrido}{\In {d}{dcnet},\In {p}{paquete}}{secu(compu)}
+	\begin{Algoritmo}{iCaminoRecorrido}{\In {d}{dcnet},\In {p}{paquete}}{listaEnlazada(compu)}
 	{
-		\State var $it$ $\gets$ \NombreFuncion {creaIt}(d.CompYPaq) \ComplejidadDer{N}
+		\State var $it$ $\gets$ \NombreFuncion {CrearIt}(d.compYPaq) \ComplejidadDer{n}
 		\State var $esta$: bool $\gets$ false \ComplejidadDer{1}
-		\While {\NombreFuncion {HaySiguiente}($it$) $\wedge$ $\neg$ esta}   \ComplejidadDer{n}
-			\State var $diccpaq$:diccRapido  $\gets$  ((\NombreFuncion{Siguiente}($it$)).significado).PaqYCam	\ComplejidadDer{1}
-			\If {\NombreFuncion {def?}($p$,$diccpaq$)}	\ComplejidadDer{log_2(k)}
+		\While {\NombreFuncion {HaySiguiente?}($it$) $\wedge$ $\neg$ esta}   \ComplejidadDer{n}
+			\State var $diccpaq$: diccRapido  $\gets$  ((\NombreFuncion{Siguiente}($it$)).significado).paqYCam	\ComplejidadDer{1}
+			\If {\NombreFuncion {def?}($p$, $diccpaq$)}	\ComplejidadDer{log_2\ k}
 				\State $esta$ $\gets$ true \ComplejidadDer{1}
-				\State $res$ $\gets$ \NombreFuncion {obtener}($p$, $diccpaq$)	\ComplejidadDer{log_2(k)} 		
+				\State $res$ $\gets$ \NombreFuncion {obtener}($p$, $diccpaq$)	\ComplejidadDer{log_2\ k} 		
 			\EndIf
-			\State \NombreFuncion {Avanzar}($it$)  \ComplejidadDer{1}
+			\State \NombreFuncion{Avanzar}($it$)  \ComplejidadDer{1}
 		\EndWhile
 	}
-	{\Complejidad{N* log_2(k) }Donde N es la cantidad de computadoras en la red, y k la cantidad maxima de paquetes que hay en una computadora.}
-	{$\Complejidad{1} + \Complejidad{1} + n* (\Complejidad{1} + \Complejidad{log_2(k)} + \Complejidad{1} + \Complejidad{log_2(k)} =$\\
-	$\Complejidad{2} + n*(2 \Complejidad{ log_2(k)}) =$ \\
-	 $\Complejidad{n* (log_2(k)) }$
+	{\Complejidad{n * log_2\ k}Donde n es la cantidad de computadoras en la red y k la cantidad máxima de paquetes que hay en una computadora. El costo de las operaciones de diccpaq es \Complejidad{log_2\ k} en lugar de \Complejidad{log_2\ k * cp} (siendo cp el costo de comparación de p) porque cp tiene costo constante. Se asume que el módulo Diccionario String cuenta con un iterador que permite crearse en \Complejidad{n}; y preguntar por siguiente, obtener siguiente.clave, siguiente.significado y avanzar en \Complejidad{1}}
+	{$\Complejidad{n} + \Complejidad{1} + n * (\Complejidad{1} + \Complejidad{log_2\ k} + \Complejidad{1} + \Complejidad{log_2\ k} + \Complejidad{1} =$\\
+	$\Complejidad{n} + n * (2 * \Complejidad{log_2\ k}) =$ \\
+	 $\Complejidad{n * (log_2\ k) }$
 	}
 	\end{Algoritmo}
-	
-	
-	
-	
 	
 	\begin{Algoritmo}{iCantidadEnviados}{\In {d}{dcnet}, \In {c}{compu}}{nat}
 	{
-		\State $res$ $\gets$ \NombreFuncion {obtener}($c$.id,$d$.CompYPaq).Enviados  \ComplejidadDer{L}
+		\State $res$ $\gets$ \NombreFuncion {obtener}($c$.hostname,$d$.compYPaq).enviados  \ComplejidadDer{L}
 	}
-	{\Complejidad{L} Siendo L la longitud de el ID de $c$}
+	{\Complejidad{L} Siendo L la longitud de el hostname de $c$}
 	{}
 	\end{Algoritmo}
-	
-	
-	
 	
 	\begin{Algoritmo}{iEnEspera}{\In {d}{dcnet}, \In {c}{compu}}{itPaquete)}
 	{
-		\State $res$  $\gets$ \NombreFuncion {claves}(\NombreFuncion {obtener}($c$.id, $d$.CompYPaq).PaqYCam) \ComplejidadDer{L}
+		\State $res$  $\gets$ \NombreFuncion {claves}(\NombreFuncion {obtener}($c$.hostname, $d$.compYPaq).paqYCam) \ComplejidadDer{L}
 	}
-	{\Complejidad{|L|} Siendo L la longitud  del ID de $c$}
+	{\Complejidad{L} Siendo L la longitud  del hostname de $c$}
 	{}
 	\end{Algoritmo}
 	
-	
-	
-	
-	
-	
 	\begin{Algoritmo}{iIniciarDCNet}{\In {r}{red}, \Inout {d}{dcnet}}{}
 	{
-		\State $d$.red $\gets$ r \ComplejidadDer{NOSE}
+		\State $d$.red $\gets$ r \ComplejidadDer{1}
 		\State  var $it$ $\gets$ \NombreFuncion {computadoras}(red) \ComplejidadDer{1}
-		\State $d$.MasEnviante $\gets$ tupla(\NombreFuncion {Siguiente}($it$),0) \ComplejidadDer{1}
+		\State $d$.masEnviante $\gets$ tupla(\NombreFuncion {Siguiente}($it$),0) \ComplejidadDer{1}
 		\State $d$.CompyPaq $\gets$ Vacio() \ComplejidadDer{1}
-		\While {\NombreFuncion{HaySiguiente}($it$)}  \ComplejidadDer{N}
-			\State \NombreFuncion {Definir}(\NombreFuncion {Siguiente}($it$).id, tupla(\NombreFuncion {Vacio}(),\NombreFuncion {Vacio}(), 0), $d$.CompyPaq) \ComplejidadDer{L + 1 + 1}
+		\While {\NombreFuncion{HaySiguiente}($it$)}  \ComplejidadDer{n}
+			\State \NombreFuncion {Definir}(\NombreFuncion {Siguiente}($it$).hostname, tupla(\NombreFuncion {Vacio}(),\NombreFuncion {Vacio}(), 0), $d$.compYPaq) \ComplejidadDer{L + 1 + 1}
 			\State \NombreFuncion {Avanzar}($it$) \ComplejidadDer{1}
 		\EndWhile
 		
 	}
-	{\Complejidad{N*L} Siendo N la cantidad de computadoras en la red y L el ID mas largo de ellas.}
-	{$\Complejidad{1} + \Complejidad{1}+ \Complejidad{1} + \Complejidad{1} + N * \Complejidad{L +1 +1} + \Complejidad{1} =$ \\
-	$\Complejidad{N*L}$ }
+	{\Complejidad{n*L} Siendo n la cantidad de computadoras en la red y L el hostname mas largo de ellas.}
+	{$\Complejidad{1} + \Complejidad{1}+ \Complejidad{1} + \Complejidad{1} + n * \Complejidad{L +1 +1} + \Complejidad{1} =$ \\
+	$\Complejidad{n*L}$ }
 	\end{Algoritmo}
-	
-	
-	
-	
-	
 	
 	\begin{Algoritmo}{iCrearPaquete}{\In {p}{paquete}, \Inout {d}{dcnet}}{}
 	{
 	
-		\State var $diccprio$: diccRapido $\gets$ \NombreFuncion {obtener}($p$.origen, $d$.CompYPaq).MasPriori)	\ComplejidadDer{L}
-		\State var $dicccam$: diccRapido $\gets$ \NombreFuncion {obtener}($p$.origen, $d$.CompYPaq).PaqYCam) \ComplejidadDer{L}
-		\If {$\neg$ \NombreFuncion {def?}(p.prioridad, $diccprio$)}	\ComplejidadDer{log_2(k)}
-			\State \NombreFuncion {Definir}($p$.prioridad,\NombreFuncion {Agregar}(\NombreFuncion {Vacio}(), $p$), $diccprio$)	\ComplejidadDer{log_2(k)}
+		\State var $diccprio$: diccRapido $\gets$ \NombreFuncion {obtener}($p$.origen, $d$.compYPaq).masPriori)	\ComplejidadDer{L}
+		\State var $dicccam$: diccRapido $\gets$ \NombreFuncion {obtener}($p$.origen, $d$.compYPaq).paqYCam) \ComplejidadDer{L}
+		\If {$\neg$ \NombreFuncion {def?}(p.prioridad, $diccprio$)}	\ComplejidadDer{log_2\ k}
+			\State var cj: conjLineal $\gets$ \NombreFuncion {Vacio}() \ComplejidadDer{1}
+			\State \NombreFuncion {AgregarRapido}(cj, $p$)\ComplejidadDer{copy(p) = 1}
+			\State \State \NombreFuncion {Definir}($p$.prioridad, cj, $diccprio$)	\ComplejidadDer{log_2\ k}
 		\Else 
-			\State \NombreFuncion {Definir}($p$.prioridad,\NombreFuncion{Agregar}(\NombreFuncion {obtener}($p$.prioridad, $diccprio$), $p$), $diccprio$	\ComplejidadDer{log_2(k)}
+			\State var cj: conjLineal $\gets$ \NombreFuncion {obtener}($p$.prioridad, $diccprio$)\ComplejidadDer{log_2\ k}
+			\State \NombreFuncion{AgregarRapido}(cj, $p$) \ComplejidadDer{copy(p) = 1}
+			\State \State \NombreFuncion {Definir}($p$.prioridad, cj, $diccprio$)	\ComplejidadDer{log_2\ k}
 		\EndIf
-		
-		\State \NombreFuncion{definir}($p$, $dicccam$, \NombreFuncion {AgregarAtras}(<>,p.origen)	\ComplejidadDer{log_2(k)}
-		
-		
+		\State var l: listaEnlazada $\gets$ \NombreFuncion {Vacía}() \ComplejidadDer{1}
+		\State \NombreFuncion {AgregarAtrás}(l, p.origen)\ComplejidadDer{1}
+		\State \NombreFuncion{Definir}($p$, l, $dicccam$)	\ComplejidadDer{log_2\ k}
 		}
-	{\Complejidad{L+ log_2(k)} Donde L es la longitud de la computadora de origen del paquete, y k la cantidad de paquetes que EnEspera en esa computadora.}
-	{$ \Complejidad{L} + \Complejidad{L} + \Complejidad{log_2(k)} + \Complejidad{log_2(k)} + \Complejidad{log_2(k)} + \Complejidad{log_2(k)} =$ \\
-	$2*\Complejidad{L} + 4*\Complejidad{log_2(k)} =$\\
-	$\Complejidad{L + log_2(k) }$}
+	{\Complejidad{L + log_2\ k} Donde L es la longitud de la computadora de origen del paquete, y k la cantidad de paquetes que hay en espera en esa computadora. El costo de las operaciones de diccprio y dicccam es \Complejidad{log_2\ k} en lugar de \Complejidad{log_2\ k * cPri} y \Complejidad{log_2\ k * cp} (siendo cPri el costo de comparación de prioridades y siendo cp el costo de comparación de p) porque cPri y cp tienen costo constante.}
+	{$ \Complejidad{L} + \Complejidad{L} + \Complejidad{log_2\ k} + \Complejidad{log_2\ k} + \Complejidad{log_2\ k} + \Complejidad{1} + \Complejidad{1} + \Complejidad{log_2\ k}=$ \\
+	$2 * \Complejidad{L} + 2 * \Complejidad{1} + 4*\Complejidad{log_2\ k} =$\\
+	$\Complejidad{L + log_2\ k}$}
 	\end{Algoritmo}
 	
 	
 	
 	\begin{Algoritmo}{iAvanzarSegundo}{\Inout {d}{dcnet}}{}
 	{
-		\State var $it$ $\gets$ \NombreFuncion {computadoras}(red) \ComplejidadDer{1}
-		\State var aux $\gets$ \NombreFuncion {Vacia}()	\ComplejidadDer{1}
-		\While {\NombreFuncion {HaySiguiente}($it$)}	\ComplejidadDer{N}
+		\State var $it$ $\gets$ \NombreFuncion {computadoras}(d.red) \ComplejidadDer{1}
+		\State var aux $\gets$ \NombreFuncion {Vacía}()	\ComplejidadDer{1}
+		\While {\NombreFuncion {HaySiguiente}($it$)}	\ComplejidadDer{n}
 		
-			\State var $diccprio$: diccRapido $\gets$ \NombreFuncion {obtener}( \NombreFuncion{Siguiente}($it$).id, $d$.CompYPaq).MasPriori)	\ComplejidadDer{L}
-		\State var $dicccam$: diccRapido $\gets$ \NombreFuncion {obtener}(\NombreFuncion{Siguiente}($it$).id, $d$.CompYPaq).PaqYCam) \ComplejidadDer{L}
+			\State var $diccprio$: diccRapido $\gets$ \NombreFuncion {obtener}( \NombreFuncion{Siguiente}($it$).id, $d$.compYPaq).masPriori)	\ComplejidadDer{L}
+		\State var $dicccam$: diccRapido $\gets$ \NombreFuncion {obtener}(\NombreFuncion{Siguiente}($it$).id, $d$.compYPaq).paqYCam) \ComplejidadDer{L}
 			\If {$\neg$ \NombreFuncion {Vacio?}($diccprio$)} \ComplejidadDer{1}
-				\State var $paq$: paquete $\gets$ \NombreFuncion{Primero}(\NombreFuncion {obtener}(\NombreFuncion {ClaveMax}($diccprio$), $diccprio$)) \ComplejidadDer{log_2(k)+1+1}
-				\State \NombreFuncion {AgregarAdelante}(aux, tupla(paq: $paq$,pcant: $it$.id, camrecorrido: \NombreFuncion{obtener}($paq$, $dicccam$)) \ComplejidadDer{1+ log_2(k)}
+				\State var $paq$: paquete $\gets$ \NombreFuncion{dameUno}(\NombreFuncion {obtener}(\NombreFuncion {ClaveMax}($diccprio$), $diccprio$)) \ComplejidadDer{log_2(k)+1+1}
+				\State \NombreFuncion {AgregarAdelante}(aux, tupla(paq: $paq$,pcant: \NombreFuncion{Siguiente}($it$).hostname, camrecorrido: \NombreFuncion{obtener}($paq$, $dicccam$)) \ComplejidadDer{1+ log_2(k)}
 			
 				\State \NombreFuncion {Eliminar}(\NombreFuncion{obtener}(\NombreFuncion {ClaveMax}($diccprio$), $diccprio$), $paq$) \ComplejidadDer{log_2(k)+log_2(k)+1}%elimino el primero entonces es o 1( porque paq era el primero)
 				\If {\NombreFuncion{EsVacio?}(\NombreFuncion{obtener}(\NombreFuncion {ClaveMax}($diccprio$), $diccprio$)} \ComplejidadDer{log_2(k)}
@@ -309,9 +305,9 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 				\State \NombreFuncion{borrar}($paq$, $dicccam$) \ComplejidadDer{log_2(k)}
 				
 				
-				\State	\NombreFuncion {obtener}(\NombreFuncion{Siguiente}($it$).id, $d$.CompYPaq).Enviados ++ \ComplejidadDer{L}
-					\If {\NombreFuncion {obtener}(\NombreFuncion{Siguiente}($it$).id, $d$.CompYPaq).Enviados > ($d$.MasEnviante).enviados }	\ComplejidadDer{L+1}
-						\State $d$.MasEnviante $\gets$ tupla(\NombreFuncion{Siguiente}($it$), \NombreFuncion {obtener}(\NombreFuncion{Siguiente}($it$).id, $d$.CompYPaq).Enviados )	\ComplejidadDer{L+1}
+				\State	\NombreFuncion {obtener}(\NombreFuncion{Siguiente}($it$).id, $d$.compYPaq).enviados ++ \ComplejidadDer{L}
+					\If {\NombreFuncion {obtener}(\NombreFuncion{Siguiente}($it$).id, $d$.compYPaq).enviados > ($d$.masEnviante).enviados }	\ComplejidadDer{L+1}
+						\State $d$.masEnviante $\gets$ tupla(\NombreFuncion{Siguiente}($it$), \NombreFuncion {obtener}(\NombreFuncion{Siguiente}($it$).id, $d$.compYPaq).enviados )	\ComplejidadDer{L+1}
 					\EndIf
 							
 				\EndIf
@@ -320,36 +316,35 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 		\EndWhile
 		
 		\State var $itaux$ $\gets$ \NombreFuncion{crearIt}(aux) \ComplejidadDer{1}
-		\While {\NombreFuncion{HaySiguiente}($itaux$)} \ComplejidadDer{Nk}
+		\While {\NombreFuncion{HaySiguiente}($itaux$)} \ComplejidadDer{n}
 		
-			\State var $proxpc$: compu $\gets$ \NombreFuncion{Primero}(\NombreFuncion{Siguiente}(\NombreFuncion{CaminosMinimos}($d$.red, $itaux$.pcant, $itaux$.destino)) \ComplejidadDer{L_1 + L_2}
+			\State var $proxpc$: compu $\gets$ \NombreFuncion{Primero}(\NombreFuncion{Siguiente}(\NombreFuncion{CaminosMinimos}($d$.red, \NombreFuncion{Siguiente}($itaux$).pcant, \NombreFuncion{Siguiente}($itaux$).destino)) \ComplejidadDer{L + L}
 			
-			\State var $diccprio$: diccRapido $\gets$ \NombreFuncion {obtener}( $proxpc$.id, $d$.CompYPaq).MasPriori)	\ComplejidadDer{L}
-		\State var $dicccam$: diccRapido $\gets$ \NombreFuncion {obtener}($proxpc$.id, $d$.CompYPaq).PaqYCam) \ComplejidadDer{L}
+			\State var $diccprio$: diccRapido $\gets$ \NombreFuncion {obtener}( $proxpc$.id, $d$.compYPaq).masPriori)	\ComplejidadDer{L}
+		\State var $dicccam$: diccRapido $\gets$ \NombreFuncion {obtener}($proxpc$.id, $d$.compYPaq).paqYCam) \ComplejidadDer{L}
 			
-			\If {$proxpc$ $\neq$ ($itaux$.paq).destino }
-				\If {\NombreFuncion{def?}(($itaux$.paq).prioridad, $diccprio$)}	\ComplejidadDer{log_2(k)}
+			\If {$proxpc$ $\neq$ (\NombreFuncion{Siguiente}($itaux$).paq).destino }
+				\If {\NombreFuncion{def?}((\NombreFuncion{Siguiente}($itaux$).paq).prioridad, $diccprio$)}	\ComplejidadDer{log_2(k)}
 			
-					\State 	var $mismaprio$: conj(paquetes) $\gets$ \NombreFuncion{Agregar}(\NombreFuncion {obtener}($it3$.paq.prioridad, $diccprio$), $it3$.paq)	\ComplejidadDer{log_2(k)}
-					\State {\NombreFuncion{definir}(($it3$.paq).prioridad, $mismaprio$, $diccprio$)} \ComplejidadDer{log_2(k)}
+					\State 	var $mismaprio$: conjLineal(paquete) $\gets$ \NombreFuncion{Agregar}(\NombreFuncion {obtener}(\NombreFuncion{Siguiente}($itaux$).paq.prioridad, $diccprio$), \NombreFuncion{Siguiente}($itaux$).paq)	\ComplejidadDer{log_2(k)}
+					\State {\NombreFuncion{definir}((\NombreFuncion{Siguiente}($itaux$).paq).prioridad, $mismaprio$, $diccprio$)} \ComplejidadDer{log_2(k)}
 		
 		
 		 		\Else 
-		 			\State \NombreFuncion{Definir}($it3$.prioridad, \NombreFuncion{Agregar}(\NombreFuncion{Vacio}(),$it3$.paq), $diccprio$)\ComplejidadDer{log_2(k)}
+		 			\State \NombreFuncion{Definir}(\NombreFuncion{Siguiente}($itaux$).prioridad, \NombreFuncion{Agregar}(\NombreFuncion{Vacio}(),\NombreFuncion{Siguiente}($it3$).paq), $diccprio$)\ComplejidadDer{log_2(k)}
 				\EndIf
 		
-			\State \NombreFuncion{definir}($p$.paq,\NombreFuncion{AgregarAtras}($it3$.camrecorrido ,$proxpc$), $dicccam$)	\ComplejidadDer{log_2(k)}
+			\State \NombreFuncion{definir}($p$.paq,\NombreFuncion{AgregarAtras}(\NombreFuncion{Siguiente}($itaux$).camrecorrido ,$proxpc$), $dicccam$)	\ComplejidadDer{log_2(k)}
 			\EndIf
-			\State \NombreFuncion{EliminarSiguiente}($it3$) \ComplejidadDer{1}
-			\State \NombreFuncion{Avanzar}($it3$) \ComplejidadDer{1}
+			\State \NombreFuncion{Avanzar}($itaux$) \ComplejidadDer{1}
 		\EndWhile
 		
 		}
-	{\Complejidad{N*(L+log_2(k)} Donde N es la cantidad de computadoras, L la longitud del nombre mas largo de las computadoras, y k la cantidad mas grande de paquetes que tiene una computadora.}
-	{$\Complejidad{1} + \Complejidad{1} + N * (\Complejidad{L} + \Complejidad{L} + \Complejidad{1} + \Complejidad{log_2(k)+1+1} + \Complejidad{1+log_2(k)} +\Complejidad{log_2(k)+log_2(k)+1} + \Complejidad{log_2(k)} + \Complejidad{log_2(k)} + \Complejidad{log_2(k)} + \Complejidad{L} + \Complejidad{L} + \Complejidad{L} + \Complejidad{1}) + N * (\Complejidad{L} + \Complejidad{L} + \Complejidad{log_2(k)} + \Complejidad{log_2(k)} +  \Complejidad{log_2(k)} + \Complejidad{log_2(k)} \Complejidad{log_2(k)} + \Complejidad{1} + \Complejidad{1} ) =$\\
-	$N*(\Complejidad{5*L+5*log_2(k))} + N*\Complejidad{3*L+5*log_2(k)} =$\\
-	$2N*(\Complejidad{L+log_2(k)} =$ \\
-	 $\Complejidad{N*(L+log_2(k))$}
+	{\Complejidad{n*(L+log_2(k)} Donde n es la cantidad de computadoras, L la longitud del nombre mas largo de las computadoras, y k la cantidad más grande de paquetes que tiene una computadora.}
+	{$\Complejidad{1} + \Complejidad{1} + n * (\Complejidad{L} + \Complejidad{L} + \Complejidad{1} + \Complejidad{log_2\ k + 1 + 1} + \Complejidad{1 + log_2\ k} +\Complejidad{log_2\ k + log_2\ k + 1} + \Complejidad{log_2\ k} + \Complejidad{log_2\ k} + \Complejidad{log_2\ k} + \Complejidad{L} + \Complejidad{L} + \Complejidad{L} + \Complejidad{1}) + n * (\Complejidad{L} + \Complejidad{L} + \Complejidad{log_2\ k} + \Complejidad{log_2\ k} +  \Complejidad{log_2\ k} + \Complejidad{log_2\ k} \Complejidad{log_2\ k} + \Complejidad{1} + \Complejidad{1} ) =$\\
+	$n * \Complejidad{5 * L + 5 * log_2\ k} + n * \Complejidad{3 * L + 5 * log_2\ k} =$\\
+	$2n * \Complejidad{L + log_2\ k} =$ \\
+	 $\Complejidad{n * (L + log_2\ k)$}
 	 }
 	\end{Algoritmo}
 	
@@ -358,61 +353,28 @@ El dcnet esta representado con una tupla en la cual: vamos a tener  la red (en d
 	{
 		\State var $it$  $\gets$ \NombreFuncion {crearIt}(\NombreFuncion {computadoras}(d.red) \ComplejidadDer{1}
 		\State var $esta$: bool $\gets$ false \ComplejidadDer{1}
-		\While{\NombreFuncion{HaySiguiente}($it$) $\wedge$ $\neg$ $esta$ }\ComplejidadDer{N}
-			\State $esta$ $\gets$ \NombreFuncion{def?}(\NombreFuncion{obtener}(d.CompYPaq,$i$.id).PaqYCam , $p$) \ComplejidadDer{log_2(k)}
+		\While{\NombreFuncion{HaySiguiente}($it$) $\wedge$ $\neg$ $esta$ }\ComplejidadDer{n}
+			\State $esta$ $\gets$ \NombreFuncion{Def?}($p$, \NombreFuncion{obtener}(d.compYPaq, \NombreFuncion{Siguiente}($it$).hostname).paqYCam) \ComplejidadDer{log_2(k)}
 			\State \NombreFuncion{Avanzar}($it$)\ComplejidadDer{1}
 		\EndWhile
 			\State $res$ $\gets$ $esta$	\ComplejidadDer{1}
 	
 	
 	}
-	{\Complejidad{N*log(k)}Donde N es la cantidad de computadoras en la red y k la cantidad maxima de paquetes que hay en alguna compu.}
-	{$\Complejidad{1} + \Complejidad{1} + N *( \Complejidad{log_2(k)} + \Complejidad{1}) + \Complejidad{1}=$\\
-	$\Complejidad{3}+ N*(\Complejidad{log_2(k)}=$\\
-	$\Complejidad{N*log_2(k)}$}
+	{\Complejidad{n*log(k)}Donde n es la cantidad de computadoras en la red y k la cantidad maxima de paquetes que hay en alguna compu. El costo de las operaciones de paqYCam es \Complejidad{log_2\ k} en lugar de \Complejidad{log_2\ k * cp} (siendo cp el costo de comparación de p) porque cp tiene costo constante}
+	{$\Complejidad{1} + \Complejidad{1} + n *( \Complejidad{log_2(k)} + \Complejidad{1}) + \Complejidad{1}=$\\
+	$\Complejidad{3}+ n*(\Complejidad{log_2(k)}=$\\
+	$\Complejidad{n*log_2(k)}$}
 	\end{Algoritmo}
 	
 	
 	
 	\begin{Algoritmo}{iLaQueMasEnvio}{\In {d}{dcnet}}{compu}
 	{
-		\State $res$  $\gets$ ($d$.MasEnviante).compu \ComplejidadDer{1}
+		\State $res$  $\gets$ ($d$.masEnviante).compu \ComplejidadDer{1}
 	}
 	{\Complejidad{1}}
 	{}
 	\end{Algoritmo}
-	
-	
-	
-	
-	
-
-	%\Algoritmo{IENTRAR}{\In {ts}{conj(tags)}, \In {e}{estación}, \Inout {c}{ciudad}}{}{
-		%\State e\_ciudad.cRUR $\gets$ e\_ciudad.cRUR + 1 \ComplejidadDer{1}
-		%\State var sendas $\gets$ EVALUARSENDAS(ts, e\_ciudad.m) \ComplejidadDer{S \cdot R}
-		%\State var nRUR $\gets$ tupla(e\_ciudad.RURs, e, 0, ts, sendas) \ComplejidadDer{1}
-		%\State AGREGARATRAS(e\_ciudad.RURs, nRUR) \ComplejidadDer{1}
-		%\State obtEst = \&(SIGNIFICADO(e.RUREnEst, e)) \ComplejidadDer{|e|}
-		%\State ENCOLAR(obtEst, tupla(e\_ciudad.cRUR, 0)) \ComplejidadDer{log\ N}
-	%}{\Complejidad{|e| + S \cdot R + log\ N}}{
-	%Justificacion.
-	%}
-	%
-	%\newpage
-	%
-	%\Algoritmo{IMOVER}{\In {u}{nat}, \In {e2}{estación}, \Inout {c}{ciudad}}{}{
-		%\State var est $\gets$ OBTENERCOLAEST(c.RUREnEst, c.RURs[u].e) \ComplejidadDer{|e1|}
-		%\State SACARRUR(est, u) \ComplejidadDer{log\ N_{e1}}
-		%\State INFRACCIONO?(u, NROCONEXION(c.RURs[u].e, e2) \ComplejidadDer{|e1| + |e2|}
-		%\State MODIFICARRUR(u) \ComplejidadDer{1}
-		%\State est $\gets$ OBTENERCOLAEST(c.RUREnEst, e2) \ComplejidadDer{|e2|}
-		%\State METERRUR(est, u) \ComplejidadDer{log\ N_{e2}}
-	%}{\Complejidad{|e1| + |e2| + log\ N_{e1} + log\ N_{e2}}}{
-		%$\Complejidad{|e1|} + \Complejidad{|e2|} + \Complejidad{log\ N_{e1}} + 
-		%\Complejidad{log\ N_{e2}} + \Complejidad{|e1| + |e2|} + \Complejidad{1} =$\\
-		%$2 * \Complejidad{|e1| + |e2|} + \Complejidad{log\ N_{e2} + log\ N_{e1}} =$\\
-		%$\Complejidad{|e1| + |e2|} + \Complejidad{log\ N_{e2} + log\ N_{e1}} =$\\
-		%$\Complejidad{|e1| + |e2| + log\ N_{e2} + log\ N_{e1}}$
-	%}
 
 \end{Algoritmos}
