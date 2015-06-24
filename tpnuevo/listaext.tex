@@ -15,7 +15,7 @@
 
   \textbf{se explica con}: \tadNombre{Secu($\alpha$), Iterador Bidireccional($\alpha$)}.
 
-  \textbf{géneros}: \TipoVariable{lista, itLista($\alpha$)}.
+  \textbf{géneros}: \TipoVariable{listaEnlazada, itlistaEnlazada($\alpha$)}.
 
   \Titulo{Operaciones básicas de lista}
 
@@ -25,10 +25,10 @@
   %[$\Theta(COMPLEJIDAD)$]
   %[DESCRIPCION]
 
-  \InterfazFuncion{Pertenece?}{\In{l}{lista}, \In{e}{$\alpha$}}{bool}
+  \InterfazFuncion{Pertenece?}{\In{l}{listaEnlazada}, \In{e}{$\alpha$}}{bool}
   [true]
   {$res \igobs$ está?($l, e$)}
-  [$\Complejidad{1}$]
+  [$\Complejidad{n}$, donde n es la cantidad de elementos de la lista.]
   [Devuelve true o false según si el elemento pertenece o no a la lista]
 	
  \end{Interfaz}
@@ -38,7 +38,7 @@
 \begin{Algoritmos}
 	
 	%Algoritmos / Inputs / TSalida / Codigo / Complejidad Final / Justificacion
-	\begin{Algoritmo}{Pertenece?}{\In{l}{lista($\alpha$)}, \In{e}{lista}}{bool}
+	\begin{Algoritmo}{Pertenece?}{\In{l}{listaEnlazada($\alpha$)}, \In{e}{listaEnlazada}}{bool}
 	{
 		\State var $itLista$ $\gets$ CrearIt(l) \ComplejidadDer{1}
 		\State $res$ $\gets$ false \ComplejidadDer{1}
@@ -49,7 +49,7 @@
 		\State Avanzar($itLista$) \ComplejidadDer{1}
 		\EndWhile
 	} 
-	{$\Complejidad{1}$}{}
+	{$\Complejidad{n}$, donde n es la cantidad de elementos de la lista.}{}
 	\end{Algoritmo}
 
 \end{Algoritmos}

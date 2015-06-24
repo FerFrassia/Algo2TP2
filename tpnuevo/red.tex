@@ -7,7 +7,7 @@
   %\textbf{parámetros formales}\hangindent=2\parindent\\
   %\parbox{1.7cm}{\textbf{géneros}} \\
   %\parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{\textwidth-2\parindent-1.7cm}{%
-    %\InterfazFuncion{Verifica?}{\In{c}{conj(tag)}, \In{r}{rest}}{$\alpha$}
+    %\InterfazFuncion{Verifica?}{\In{c}{conjLineal(tag)}, \In{r}{rest}}{$\alpha$}
     %{$res \igobs a$}
     %[$\Theta(copy(a))$]
     %[función de copia de $\alpha$'s]
@@ -15,7 +15,7 @@
 
   \textbf{se explica con}: \tadNombre{Red, Iterador Unidireccional($compu$), Compu}.
 
-  \textbf{géneros}: \TipoVariable{red, itConj(Compu)}.
+  \textbf{géneros}: \TipoVariable{red, itconjLineal(Compu)}.
 
   \Titulo{Operaciones básicas de Red}
 
@@ -25,24 +25,24 @@
   %[$\Theta(COMPLEJIDAD)$]
   %[DESCRIPCION]
 
-  \InterfazFuncion{Computadoras}{\In{r}{red}}{itConj(Compu)}
+  \InterfazFuncion{Computadoras}{\In{r}{red}}{itconjLineal(Compu)}
   %[ACA VA EL PRE (SI LO HUBIERA)]
   {$res \igobs$ crearIt(computadoras($r$))}
   [$\Complejidad{1}$]
   [Devuelve las computadoras de red.]
-  [$res es modificable$]
+  [$res$ es modificable.]
 	
   \InterfazFuncion{Conectadas?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
-  [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
+  [{$c_1, c_2$} $\subseteq$ computadoras($r$)]
   {$res \igobs$ conectadas?($r, c_1, c_2$)}
-  [$\Complejidad{|I|}, donde I es la ip mas larga de las computadoras$]
-  [Devuelve verdadero si c_1 y c_2 están conectadas.]
-
+  [$\Complejidad{|I|}$, donde I es el hostname más largo de las computadoras.]
+  [Devuelve verdadero si $c_1$ y $c_2$ están conectadas.]
+  
   \InterfazFuncion{InterfazUsada}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{interfaz}
-  [\{$c_1, c_2$\} $\subseteq$ computadoras($r$) $\yluego$ conectadas?($r, c_1, c_2$)]
+  [{$c_1, c_2$} $\subseteq$ computadoras($r$) $\yluego$ conectadas?($r, c_1, c_2$)]
   {$res \igobs$ interfazUsada($r, c_1, c_2$)}
-  [$\Complejidad{|I|}, donde I es la longitud mas larga de las computadoras$]
-  [Devuelve la interfaz que $c_1$ usa para conectarse con $c_2$]
+  [$\Complejidad{|I|}$, donde I es la longitud mas larga de las computadoras.]
+  [Devuelve la interfaz que $c_1$ usa para conectarse con $c_2$.]
 
   \InterfazFuncion{IniciarRed}{}{red}
   %[ACA VA EL PRE (SI LO HAY)]
@@ -51,64 +51,62 @@
   [Crea una red sin computadoras.]
 	
   \InterfazFuncion{AgregarComputadora}{\Inout{r}{red}, \In{c}{compu}}{}
-  [$r_0 \igobs r$ $\wedge$ (paratodo($d:compu$) ($d \in computadoras(r) \therefore ip(c) \not= ip(d)$))]
+  [$r_0 \igobs r$ $\wedge$ (paratodo($d:compu$) ($d \in computadoras(r) \therefore hostname(c) \not= hostname(d)$))]
   {$r$ $\igobs$ agregarComputadora($r_0, c$)}
-  [$\Complejidad{\#(r.computadoras) * I}, donde I es la ip mas larga de las computadoras$]
+  [$\Complejidad{\#(r.computadoras) * I}$, donde I es el hostname más largo de las computadoras.]
   [Agrega una computadora a la red.]
   
    \InterfazFuncion{Conectar}{\Inout{r}{red}, \In{c_1}{compu}, \In{i_1}{interfaz}, \In{c_2}{compu}, \In{i_2}{interfaz}}{}
-  [$r_0$ $\igobs$ r $\wedge$ \{$c_1,c_2$\} $\subseteq$ computadoras($r$) $\wedge$ ip($c_1$) $\neq$ ip($c_2$) $\yluego$ $\neg$ conectadas?($r, c_1, c_2$) $\wedge$ $\neg$ usaInterfaz?($r, c_1, i_1$) $\wedge$ $\neg$ usaInterfaz?($r, c_2, i_2$)]
+  [$r_0$ $\igobs$ r $\wedge$ \{$c_1,c_2$\} $\subseteq$ computadoras($r$) $\wedge$ hostname($c_1$) $\neq$ hostname($c_2$) $\yluego$ $\neg$ conectadas?($r, c_1, c_2$) $\wedge$ $\neg$ usaInterfaz?($r, c_1, i_1$) $\wedge$ $\neg$ usaInterfaz?($r, c_2, i_2$)]
   {$r$ $\igobs$ conectar($r, c_1, i_1, c_2, i_2$)}
-  [$\Complejidad{|c_1| + |c_2|}$]
+  [$\Complejidad{(|I| + n^4 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z)}$]
   [Conecta dos computadoras.]
 
-  \InterfazFuncion{Vecinos}{\In{r}{red}, \In{c}{compu}}{conj(compu)}
+  \InterfazFuncion{Vecinos}{\In{r}{red}, \In{c}{compu}}{conjLineal(compu)}
   [$c$ $\in$ computadoras($r$)]
   {$res$ $\igobs$ vecinos(r, c)}
-  [$\Complejidad{\#(tupVecinos.compusDirectas) * |I|}, donde I es la ip más larga de las computadoras$]
-  [Devuelve todas las computadoras que están conectadas directamente con c]
-  [$res es modificable$]
+  [$\Complejidad{\#(tupVecinos.compusDirectas) * |I|}$, donde I es el hostname más largo de las computadoras.]
+  [Devuelve todas las computadoras que están conectadas directamente con c.]
+  [$res$ es modificable.]
 
   \InterfazFuncion{UsaInterfaz?}{\In{r}{red}, \In{c}{compu}, \In{i}{interfaz}}{bool}
   [$c$ $\in$ computadoras($r$)]
   {$res$ $\igobs$ usaInterfaz?(r, c, i)}
-  [$\Complejidad{\#(tupVecinos.compusDirectas) * |I|}, donde I es la ip más larga de las computadoras$]
-  [Verifica que una computadora use una interfaz]
+  [$\Complejidad{\#(tupVecinos.compusDirectas) * |I|}$, donde I es el hostname más largo de las computadoras.]
+  [Verifica que una computadora use una interfaz.]
 
-  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{itConj($conj(lista(compu))$)}
+  \InterfazFuncion{CaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{itconjLineal($conjLineal(listaEnlazada(compu))$)}
   [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
   {$res$ $\igobs$ crearItBi(caminosMinimos(r, $c_1$, $c_2$))}
-  [$\Complejidad{|I|}, donde I es la ip mas larga de las computadoras$]
-  [Devuelve todos los caminos minimos de conexiones entre una computadora y otra]
-  [$res es modificable$]
+  [$\Complejidad{|I|}$, donde I es el hostname más largo de las computadoras.]
+  [Devuelve todos los caminos minimos de conexiones entre una computadora y otra.]
+  [$res$ es modificable.]
 
   \InterfazFuncion{HayCamino?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
   [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
   {$res$ $\igobs$ hayCamino?(r, $c_1$, $c_2$)}
-  [$\Complejidad{|I|}, donde I es la ip mas larga de las computadoras$]
-  [Verifica si hay un camino de conexiones entre una computadora y otra]
+  [$\Complejidad{|I|}$, donde I es el hostname más largo de las computadoras.]
+  [Verifica si hay un camino de conexiones entre una computadora y otra.]
   
- \end{Interfaz}
-
 \subsection{Auxiliares}
-	%\Begin{Auxiliares}
+
   \Titulo{Operaciones auxiliares}
 	
-  \InterfazFuncion{CalcularCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista(compu))}
+  \InterfazFuncion{CalcularCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conjLineal(listaEnlazada(compu))}
   [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
   {$res$ $\igobs$ caminosMinimos(r, $c_1$, $c_2$)}
-  [$\Complejidad{ALGO}$]
-  [Devuelve los caminos minimos entre $c_1$ y $c_2$]
-  [$res se devuelve por copia$]
+  [$\Complejidad{(n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z}$]
+  [Devuelve los caminos minimos entre $c_1$ y $c_2$.]
+  [$res$ se devuelve por copia.]
   
-  \InterfazFuncion{CaminosImportantes}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}, \In{parcial}{lista}}{conj(lista(compu))}
+  \InterfazFuncion{CaminosImportantes}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}, \In{parcial}{listaEnlazada}}  {conjLineal(listaEnlazada(compu))}
   [\{$c_1,c_2$\} $\subseteq$ computadoras($r$)]
   {$res$ $\igobs$ caminosMinimos(r, $c_1$, $c_2$)}
-  [$\Complejidad{ALGO}$]
-  [Devuelve los caminos suficientes (no todos) para calcular los caminos mínimos entre $c_1$ y $c_2$]
-  [$res se devuelve por copia$]
+  [$\Complejidad{(n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z}$]
+  [Devuelve los caminos suficientes (no todos) para calcular los caminos mínimos entre $c_1$ y $c_2$.]
+  [$res$ se devuelve por copia.]
 
-	%\End{Auxiliares}
+ \end{Interfaz}
 \subsection{Representacion}
 
 \begin{Representacion}
@@ -118,22 +116,22 @@
 	\begin{Tupla}[e\_red]
 		\tupTupItem{directasEInterfaces}{\TipoVariable{diccString}$($\ignorespaces
 			% NOTA:tupTupItem es un engendro que agregue para este caso, NO USAR EN OTRO LADO, USAR tupItem EN SU LUGAR.
-			\emph{compu}: \TipoVariable{string},
+			\emph{hostname}: \TipoVariable{string},
 			tupla(
 			\emph{directas}: \TipoVariable{diccString}$($\ignorespaces
-				\emph{compu}: \TipoVariable{string}, \ignorespaces
+				\emph{hostname}: \TipoVariable{string}, \ignorespaces
 				\emph{interfaz}: \TipoVariable{nat}\ignorespaces
 			$)$,
-			\emph{compusDirectas}: \TipoVariable{conj(compu)}
+			\emph{compusDirectas}: \TipoVariable{conjLineal(compu)}
 			$) )$} \\
 			\tupTupItem{deOrigenADestino}{\TipoVariable{diccString}$($\ignorespaces
-			\emph{compu}: \TipoVariable{string},
+			\emph{hostname}: \TipoVariable{string},
 			\emph{destinos}: \TipoVariable{diccString}
 			$($\ignorespaces
-				\emph{compu}: \TipoVariable{string}, \ignorespaces
-				\emph{caminosMinimos}: \TipoVariable{conj(lista(compu))}\ignorespaces
+				\emph{hostname}: \TipoVariable{string}, \ignorespaces
+				\emph{caminosMinimos}: \TipoVariable{conjLineal(listaEnlazada(compu))}\ignorespaces
 			$) )$} \\
-			\tupItem{computadoras}{\TipoVariable{conj(compu)}}
+			\tupItem{computadoras}{\TipoVariable{conjLineal(compu)}}
 	\end{Tupla}
 	
 \end{Estructura}
@@ -141,29 +139,29 @@
 \subsection{InvRep y Abs}
 
 \begin{enumerate}
-	\item{claves($directasEInterfaces$) es igual a claves($deOrigenADestino$), al conjunto formado por las ip de $computadoras$ y también a claves($directas$).}
-	\item{Si def?(c, $directas$) de alguna clave de $directasEInterfaces$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
+	\item{claves($directasEInterfaces$) es igual a claves($deOrigenADestino$), al conjLinealunto formado por los hostnames de $computadoras$.}
+	\item{Si def?(c, $directas$) de alguna clave de $directasEInterfaces$ entonces c pertenece al conjLinealunto formado por los hostnames de $computadoras$.}
 	\item{Para todo c, si def?(c, $directasEInterfaces$), entonces $\neg$def?(c, obtener(c, $directasEInterfaces$).$directas$).}
 	\item{Para todo $c_1$ def?($c_1$, $directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, $directasEInterfaces$).$directas$) $\Leftrightarrow$ def?($c_2$, $directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, $directasEInterfaces$).$directas$).}
 	\item{Los significados de $directas$ son únicos.}	
-	\item{Si def?(c, $destinos$) de alguna clave de $deOrigenADestino$ entonces c pertenece al conjunto formado por las ip de $computadoras$.}
-	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces $\neg$def?(c, obtener(c, $deOrigenADestino$)).}
-	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces Claves(Obtener(c, $deOrigenADestino$)) es igual al conjunto formado por las ip de $computadoras$ menos la ip de c.}
-	\item{Si c pertenece a alguna lista de $significados$ de $destinos$ para cualquier clave, entonces c pertenece a $computadoras$.}
+%	\item{Para todo c, si def?(c, $deOrigenADestino$) entonces las claves de $destinos$ son todas las computadoras de $computadoras$ menos c.}
+%	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces $\neg$def?(c, obtener(c, $deOrigenADestino$)).}
+	\item{Para todo c, si def?(c, $deOrigenADestino$), entonces Claves(Obtener(c, $deOrigenADestino$)) es igual al conjLinealunto formado por los hostnames de $computadoras$ menos el hostname de c.}
+	\item{Si c pertenece a alguna listaEnlazada de $significados$ de $destinos$ para cualquier clave, entonces c pertenece a $computadoras$.}
 	
 	
 \end{enumerate}
 
 \Rep[red][r]{
 \begin{enumerate}
-	\item{claves(e.$directasEInterfaces$) = claves(e.$deOrigenADestino$) = conjips(e.$computadoras$) $\wedge$ (($\forall$ $c$:ip) (def?($c$, e.$directasEInterfaces$) $\impluego$ Claves(Obtener($c$, e.$directasEInterfaces$).$directas$) = conjips(e.$computadoras$))) $\wedge$ (($\forall$ $c$:ip) (def?($c$, e.$deOrigenADestino$) $\impluego$ Claves(Obtener($c$, e.$deOrigenADestino$)) = conjips(e.$computadoras$))) $\yluego$}
-	\item{($\forall$ $c_1$, $c_2$:ip) (def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ $c_2$ $\in$ conjips(e.$computadoras$)) $\yluego$}
-	\item{($\forall$ $c$:ip) (def?($c$, e.$directasEInterfaces$) $\impluego$ $\neg$def?($c$, Obtener($c$, e.$directasEInterfaces$).$directas$)) $\yluego$}
-	\item{($\forall$ $c_1$, $c_2$:ip) (def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\Leftrightarrow$ def?($c_2$, e.$directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, e.$directasEInterfaces$).$directas$)) $\yluego$}
-	\item{($\forall$ $c_1$, $c_2$, $c_3$:ip) ($c_2$ $\neq$ $c_3$ $\wedge$ def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\wedge$ def?($c_3$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ obtener($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\neq$ obtener($c_3$, Obtener($c_1$, e.$directasEInterfaces$).$directas$)) $\yluego$}
-	\item{($\forall$ $c$:ip) (def?($c$, e.$deOrigenADestino$) $\impluego$ Claves(Obtener($c$, e.$deOrigenADestino$)) $\subseteq$ conjips(e.$computadoras$)) $\yluego$}
-	\item{($\forall$ $c$:ip)(def?($c$, e.$deOrigenADestino$) $\rightarrow$ $\neg$def?($c$, Obtener($c$, e.$deOrigenADestino$)) $\yluego$}
-	\item{($\forall$ $c_1, c_2, c_3$:compu) (def?($c_1.ip$, e.$deOrigenADestino$) $\yluego$ def?($c_2.ip$, Obtener($c_1$, e.$deOrigenADestino$)) $\yluego$ Pertenece?($c_3$, Obtener($c_2.ip$, Obtener($c_1$, e.$deOrigenADestino$)) $\impluego$ $c_3$ $\in$ e.$computadoras$ )}
+	\item{claves(e.$directasEInterfaces$) = claves(e.$deOrigenADestino$) = conjLinealips(e.$computadoras$) $\yluego$}
+	\item{($\forall$ $c_1$, $c_2$:hostname) (def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ $c_2$ $\in$ conjLinealips(e.$computadoras$)) $\yluego$}
+	\item{($\forall$ $c$:hostname) (def?($c$, e.$directasEInterfaces$) $\impluego$ $\neg$def?($c$, Obtener($c$, e.$directasEInterfaces$).$directas$)) $\yluego$}
+	\item{($\forall$ $c_1$, $c_2$:hostname) ((def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$)) $\Leftrightarrow$ (def?($c_2$, e.$directasEInterfaces$) $\yluego$ def?($c_1$, Obtener($c_2$, e.$directasEInterfaces$).$directas$))) $\yluego$}
+	\item{($\forall$ $c_1$, $c_2$, $c_3$:hostname) ($c_2$ $\neq$ $c_3$ $\wedge$ def?($c_1$, e.$directasEInterfaces$) $\yluego$ def?($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\wedge$ def?($c_3$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\impluego$ obtener($c_2$, Obtener($c_1$, e.$directasEInterfaces$).$directas$) $\neq$ obtener($c_3$, Obtener($c_1$, e.$directasEInterfaces$).$directas$)) $\yluego$}
+	\item{($\forall$ $c$:hostname) (def?($c$, e.$deOrigenADestino$) $\impluego$ Claves(Obtener($c$, e.$deOrigenADestino$)) $=$ conjLinealips(e.$computadoras$))-c $\yluego$}
+%	\item{($\forall$ $c$:hostname)(def?($c$, e.$deOrigenADestino$) $\rightarrow$ $\neg$def?($c$, Obtener($c$, e.$deOrigenADestino$)) $\yluego$}
+	\item{($\forall$ $c_1, c_2, c_3$:compu) (def?($c_1.hostname$, e.$deOrigenADestino$) $\yluego$ def?($c_2.hostname$, Obtener($c_1$, e.$deOrigenADestino$)) $\yluego$ Pertenece?($c_3$, Obtener($c_2.hostname$, Obtener($c_1$, e.$deOrigenADestino$)) $\impluego$ $c_3$ $\in$ e.$computadoras$ )}
 \end{enumerate}
 }
 
@@ -182,7 +180,7 @@
 \begin{Algoritmos}
 	
 	%Algoritmos / Inputs / TSalida / Codigo / Complejidad Final / Justificacion
-	\begin{Algoritmo}{iComputadoras}{\In{r}{red}}{itConj(Compu)}
+	\begin{Algoritmo}{iComputadoras}{\In{r}{red}}{itconjLineal(Compu)}
 	{
 		\State $res$ $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
 	} 
@@ -191,18 +189,18 @@
 	
 	\begin{Algoritmo}{iConectadas?}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
 	{
-		\State $res$ $\gets$ Def?(Obtener($r.directasEInterfaces$, $c_1.ip$)$.directas$, $c_2.ip$) \ComplejidadDer{|c_2.ip| + |c_1.ip|}
+		\State $res$ $\gets$ Def?(Obtener($r.directasEInterfaces$, $c_1.hostname$)$.directas$, $c_2.hostname$) \ComplejidadDer{|c_2.hostname| + |c_1.hostname|}
 	}
-	{$\Complejidad{|c_1.ip| + |c_2.ip|}$}
-	{{$\Complejidad{|I| + |I|} = Complejidad{|I|}, donde I es la ip mas larga de las computadoras$}}	
+	{$\Complejidad{|c_1.hostname| + |c_2.hostname|}$}
+	{{$\Complejidad{|I| + |I|} = \Complejidad{|I|}$, donde I es el hostname más largo de las computadoras.}}	
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iInterfazUsada}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{interfaz}
 	{
-		\State $res$ $\gets$ Obtener(Obtener($r.directasEInterfaces$, $c_1.ip$)$.directas$, $c_2.ip$)\ComplejidadDer{|c_1.ip| + |c_2.ip|}
+		\State $res$ $\gets$ Obtener(Obtener($r.directasEInterfaces$, $c_1.hostname$)$.directas$, $c_2.hostname$)\ComplejidadDer{|c_1.hostname| + |c_2.hostname|}
 	}
-	{$\Complejidad{|c_1.ip| + |c_2.ip|}$}
-	{$\Complejidad{|I| + |I|} = Complejidad{|I|}, donde I es la ip mas larga de las computadoras$}
+	{$\Complejidad{|c_1.hostname| + |c_2.hostname|}$}
+	{$\Complejidad{|I| + |I|} = Complejidad{|I|}$, donde I es el hostname más largo de las computadoras.}
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iIniciarRed}{}{red}
@@ -216,26 +214,26 @@
 	
 	\begin{Algoritmo}{iAgregarComputadora}{\Inout{r}{red}, \In{c}{compu}}{}
 	{
-		\State Definir($r.directasEInterfaces$, $c.ip$, tupla(Vacío(), Vacio())) \ComplejidadDer{|c.ip|}
-		\State var $itComputadoras$:itConj($compu$) $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
+		\State Definir($r.directasEInterfaces$, $c.hostname$, tupla(Vacío(), Vacio())) \ComplejidadDer{|c.hostname|}
+		\State var $itComputadoras$:itconjLineal($compu$) $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
 		
 		\While {HaySiguiente?($itComputadoras$)} \ComplejidadDer{1}
-			\State Definir(Obtener($r.deOrigenADestino$, Siguiente($itComputadoras$).$ip$), $c.ip$, Vacío())\\  					\ComplejidadDer{|Siguiente($itComputadoras$).$ip$| + |c.ip|}
+			\State Definir(Obtener($r.deOrigenADestino$, Siguiente($itComputadoras$).$hostname$), $c.hostname$, Vacío())\\  					\ComplejidadDer{|Siguiente($itComputadoras$).$hostname$| + |c.hostname|}
 			\State Avanzar($itComputadoras$) \ComplejidadDer{1}
 		\EndWhile
 		
-		\State var $dicNuevaCompu$:dicString($compu.ip, \alpha$) $\gets$ Vacio() \ComplejidadDer{1}
+		\State var $dicNuevaCompu$:dicString($compu.hostname, \alpha$) $\gets$ Vacio() \ComplejidadDer{1}
 		
 		\While {HayAnterior?($itComputadoras$)} \ComplejidadDer{1}
-			\State Definir($dicNuevaCompu$, Anterior($itComputadoras$).$ip$, Vacío())\\  											\ComplejidadDer{Anterior($itComputadoras$).$ip$}
+			\State Definir($dicNuevaCompu$, Anterior($itComputadoras$).$hostname$, Vacío())\\  											\ComplejidadDer{Anterior($itComputadoras$).$hostname$}
 			\State Retroceder($itComputadoras$) \ComplejidadDer{1}
 		\EndWhile		
 		
-		\State Definir($r.deOrigenADestino$, $c.ip$, $dicNuevaCompu$) \ComplejidadDer{c.ip}
+		\State Definir($r.deOrigenADestino$, $c.hostname$, $dicNuevaCompu$) \ComplejidadDer{c.hostname}
 		
 		\State Agregar($r.computadoras$, $c$) \ComplejidadDer{1}
 	}
-	{$\Complejidad{|c.ip| + 2 * (\#(r.computadoras) * (I + |c.ip|))}, donde I es la ip más larga de las computadoras$}
+	{$\Complejidad{|c.hostname| + 2 * (\#(r.computadoras) * (I + |c.hostname|))}$, donde I es el hostname más largo de las computadoras.}
 	{$\Complejidad{|I| + 2 * (\#(r.computadoras) * (2 * I))} = \newline
 	\Complejidad{2 * (\#(r.computadoras) * I)} = \newline
 	\Complejidad{\#(r.computadoras) * I}$}
@@ -245,34 +243,34 @@
 	{
 		%Armo la primera componente de e_red
 		
-		\State var $tupSig1$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c_1.ip$)  \ComplejidadDer{|c_1.ip|}
+		\State var $tupSig1$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c_1.hostname$)  \ComplejidadDer{|c_1.hostname|}
 		%Guardo la interfaz usada por c_1
-		\State Definir($tupSig1.directas$, $c_2.ip$, $i_1$) \ComplejidadDer{|c_2.ip|}
+		\State Definir($tupSig1.directas$, $c_2.hostname$, $i_1$) \ComplejidadDer{|c_2.hostname|}
 		%Agrego c_2 a las compusDirectas de c_1
-		\State Agregar($tupSig1.compusDirectas$, $c_2$) \ComplejidadDer{\#tupSig1.compusDirectas}
+		\State Agregar($tupSig1.compusDirectas$, $c_2$) \ComplejidadDer{\#(tupSig1.compusDirectas)}
 
-		\State var $tupSig2$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c_2.ip$) \ComplejidadDer{|c_2.ip|}
+		\State var $tupSig2$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c_2.hostname$) \ComplejidadDer{|c_2.hostname|}
 		%Guardo la interfaz usada por c_2		
-		\State Definir($tupSig2.directas$, $c_1.ip$, $i_2$) \ComplejidadDer{|c_1.ip|}
+		\State Definir($tupSig2.directas$, $c_1.hostname$, $i_2$) \ComplejidadDer{|c_1.hostname|}
 		%Agrego c_2 a las compusDirectas de c_1
-		\State Agregar($tupSig2.compusDirectas$, $c_1$) \ComplejidadDer{c_1.ip}
+		\State Agregar($tupSig2.compusDirectas$, $c_1$) \ComplejidadDer{|c_1.hostname|}
 		
 
 		%Armo la segunda componente de e_red
 				
 		%Guardo los caminos minimos de c_1 a c_2
-		%\State Definir(Obtener($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$, CalcularCaminosMinimos($r, c_1, c_2$)) \ComplejidadDer{1}
+		%\State Definir(Obtener($r.deOrigenADestino$, $c_1.hostname$), $c_2.hostname$, CalcularCaminosMinimos($r, c_1, c_2$)) \ComplejidadDer{1}
 		%Guardo los caminos minimos de c_2 a c_1
-		%\State Definir(Obtener($r.deOrigenADestino$, $c_2.ip$), $c_1.ip$, CalcularCaminosMinimos($r, c_2, c_1$)) \ComplejidadDer{1}
+		%\State Definir(Obtener($r.deOrigenADestino$, $c_2.hostname$), $c_1.hostname$, CalcularCaminosMinimos($r, c_2, c_1$)) \ComplejidadDer{1}
 		
 		
-		\State var $itOrigenes$:itConj $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
+		\State var $itOrigenes$:itconjLineal $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
 		\While {HaySiguiente?($itOrigenes$)} \ComplejidadDer{1}
-			\State var $dicCompu$:dicString($string, diccstring(string, conj(lista(compu)))$) $\gets$ Obtener($r.deOrigenADestino$, Siguiente($itOrigenes$).$ip$)\\ \ComplejidadDer{Siguiente(itOrigenes).ip}
-			\State var $itDestinos$:itConj($\alpha$) $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
+			\State var $dicCompu$:dicString($string, diccstring(string, conjLineal(listaEnlazada(compu)))$) $\gets$ \\ Obtener($r.deOrigenADestino$, Siguiente($itOrigenes$).$hostname$)\\ \ComplejidadDer{|Siguiente(itOrigenes).hostname|}
+			\State var $itDestinos$:itconjLineal($\alpha$) $\gets$ CrearIt($r.computadoras$) \ComplejidadDer{1}
 			\While {HaySiguiente?($itDestinos$)} \ComplejidadDer{1}
 				\If {Siguiente($itOrigenes$) $<>$ Siguiente($itDestinos$))} \ComplejidadDer{1}
-					\State Definir($dicCompu$, Siguiente($itDestinos$).$ip$), CalcularCaminosMinimos($r$, Siguiente($itOrigenes$), Siguiente($itDestinos$)))\\ \ComplejidadDer{Siguiente(itDestinos).ip + COMPLCAMINOSMINIMOS} 
+					\State Definir($dicCompu$, Siguiente($itDestinos$).$hostname$), \\ CalcularCaminosMinimos($r$, Siguiente($itOrigenes$), Siguiente($itDestinos$)))\\ \ComplejidadDer{|Siguiente(itDestinos).hostname| + (n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z} 
 				\EndIf
 				\State Avanzar($itDestinos$) \ComplejidadDer{1}
 			\EndWhile
@@ -280,62 +278,61 @@
 		\EndWhile		
 				
 	}
-	{$\Complejidad{TERMINAR}$}
-	{$\Complejidad{} + \Complejidad{} = \newline
-	  2 * \Complejidad{1}$}
+	{$\Complejidad{|I| + n * (|I| + n * (|I| + n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z))}$}
+	{$\Complejidad{|I| + n * |I| + n^2 * (|I| + n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z)} = \newline 		\Complejidad{(|I| + n^4 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z)}$}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iVecinos}{\In{r}{red}, \In{c}{compu}}{conj(compu)}
+	\begin{Algoritmo}{iVecinos}{\In{r}{red}, \In{c}{compu}}{conjLineal(compu)}
 	{
-		\State $res$ $\gets$ Obtener($r.directasEInterfaces$, $c.ip$)$.compusDirectas$ \ComplejidadDer{|c.ip|}
+		\State $res$ $\gets$ Obtener($r.directasEInterfaces$, $c.hostname$)$.compusDirectas$ \ComplejidadDer{|c.hostname|}
 	}
-	{$\Complejidad{|I|}, donde I es la ip más larga de las computadoras$}
+	{$\Complejidad{|I|}$, donde I es el hostname más largo de las computadoras.}
 	{}
 	\end{Algoritmo}
 	
 	\begin{Algoritmo}{iUsaInterfaz}{\In{r}{red}, \In{c}{compu}, \In{i}{interfaz}}{bool}
 	{
-		\State var $tupVecinos$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c.ip$) \ComplejidadDer{|c.ip|}
-		\State var $itcompusDirectas$:itConj(compu) $\gets$ CrearIt($tupVecinos.compusDirectas$) \ComplejidadDer{1}
+		\State var $tupVecinos$:tupla $\gets$ Obtener($r.directasEInterfaces$, $c.hostname$) \ComplejidadDer{|c.hostname|}
+		\State var $itcompusDirectas$:itconjLineal(compu) $\gets$ CrearIt($tupVecinos.compusDirectas$) \ComplejidadDer{1}
 		\State $res$:bool $\gets$ $false$ \ComplejidadDer{1}
 		\While{HaySiguiente($itcompusDirectas$) AND $¬res$} \ComplejidadDer{1}
-		\If {Obtener($tupVecinos.directas$, Siguiente($itcompusDirectas$)$.ip$) $==$ $i$} \ComplejidadDer{Siguiente(itcompusDirectas).ip}
+		\If {Obtener($tupVecinos.directas$, Siguiente($itcompusDirectas$)$.hostname$) $==$ $i$} \\  \ComplejidadDer{Siguiente(itcompusDirectas).hostname}
 			\State $res$ $\gets$ $true$  \ComplejidadDer{1}
 		\EndIf
 		\State Avanzar($it$) \ComplejidadDer{1}
 		\EndWhile
 	}
-	{$\Complejidad{\#(tupVecinos.compusDirectas) * |I|}, donde I es la ip más larga de las computadoras$}
+	{$\Complejidad{\#(tupVecinos.compusDirectas) * |I|}$, donde I es el hostname más largo de las computadoras.}
 	{}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{itConj($\alpha$)}
+	\begin{Algoritmo}{iCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{itconjLineal($\alpha$)}
 	{
-		\State $res$ $\gets$ CrearIt(Obtener(Obtener($r.deOrigenADestino$, $c_1.ip$), $c_2.ip$))\\ \ComplejidadDer{|c_1.ip| + |c_2.ip|}
+		\State $res$ $\gets$ CrearIt(Obtener(Obtener($r.deOrigenADestino$, $c_1.hostname$), $c_2.hostname$))\\ \ComplejidadDer{|c_1.hostname| + |c_2.hostname|}
 	}
-	{$\Complejidad{|c_1.ip| + |c_2.ip|}$}
-	{$\Complejidad{|I| + |I|} = \Complejidad{|I|}, donde I es la ip mas larga de las computadoras$}
+	{$\Complejidad{|c_1.hostname| + |c_2.hostname|}$}
+	{$\Complejidad{|I| + |I|} = \Complejidad{|I|}$, donde I es el hostname más largo de las computadoras.}
 	\end{Algoritmo}
 
 	\begin{Algoritmo}{iHayCamino}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{bool}
 	{
-		\State var $conjCaminosMinimos$ $\gets$ CaminosMinimos($r$, $c_1$, $c_2$) \ComplejidadDer{|I|}
-		\State $res$ $\gets$ EsVacio?($conjCaminosMinimos$) \ComplejidadDer{1}
+		\State var $conjLinealCaminosMinimos$ $\gets$ CaminosMinimos($r$, $c_1$, $c_2$) \ComplejidadDer{|I|}
+		\State $res$ $\gets$ EsVacio?($conjLinealCaminosMinimos$) \ComplejidadDer{1}
 	}
-	{$\Complejidad{|I|}, donde I es la ip mas larga de las computadoras$}
+	{$\Complejidad{|I|}$, donde I es el hostname más largo de las computadoras.}
 	{}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iCalcularCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conj(lista)}
+	\begin{Algoritmo}{iCalcularCaminosMinimos}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}}{conjLineal(listaEnlazada(compu))}
 	{
 		\State $res$ $\gets$ Vacio() \ComplejidadDer{1}
-		\State var $conjCaminosImportantes$:conj(lista) $=$ Vacio() \ComplejidadDer{1}
-		\State var $pacial$:lista $\gets$ Vacia() \ComplejidadDer{1}
+		\State var $conjLinealCaminosImportantes$:conjLineal(listaEnlazada) $=$ Vacio() \ComplejidadDer{1}
+		\State var $pacial$:listaEnlazada $\gets$ Vacia() \ComplejidadDer{1}
 		\State AgregarAtras($parcial$, $c_1$) \ComplejidadDer{1}
-		\State $conjCaminosImportantes$ $\gets$ \NombreFuncion{CaminosImportantes}($r$, $c_1$, $c_2$, $parcial$) \ComplejidadDer{COMPCAMINOSIMPORTANTES}
+		\State $conjLinealCaminosImportantes$ $\gets$ \NombreFuncion{CaminosImportantes}($r$, $c_1$, $c_2$, $parcial$) \\ \ComplejidadDer{(n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z}
 		
 		%Ahora que tengo los caminos calculo los mínimos
-		\State var $itCaminosImportantes$:itConj $\gets$ CrearIt($conjCaminosImportantes$) \ComplejidadDer{1}
+		\State var $itCaminosImportantes$:itconjLineal $\gets$ CrearIt($conjLinealCaminosImportantes$) \ComplejidadDer{1}
 		\While {HaySiguiente?($itCaminosImportantes$)} \ComplejidadDer{1}
 			\If {EsVacio?($res$) $\vee$ Cardinal(DameUno($res$)) $=$ Cardinal(Siguiente($itCaminosImportantes$))} \ComplejidadDer{1}
 				\State Agregar($res$, Siguiente($itCaminosImportantes$)) \ComplejidadDer{\#(res)}
@@ -347,33 +344,37 @@
 			\EndIf
 		\EndWhile	
 	}
-	{$\Complejidad{COMPCAMINOSIMPORTANTES + \#(conjCaminosImportantes) * \#(res)}$}
+	{$\Complejidad{(n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z + \#(conjLinealCaminosImportantes) * \#(res)} = \newline
+	\Complejidad{(n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z} \newline$
+	Donde n es la cantidad total de computadoras de la red y z es el costo de comparar dos computadoras.}
 	{}
 	\end{Algoritmo}
 	
-	\begin{Algoritmo}{iCaminosImportantes}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}, \In{pacial}{lista(compu)}}{conj(lista)}
+	\begin{Algoritmo}{iCaminosImportantes}{\In{r}{red}, \In{c_1}{compu}, \In{c_2}{compu}, \In{pacial}{listaEnlazada(compu)}}{conjLineal(listaEnlazada)}
 	{
 		\State $res$ $\gets$ Vacio() \ComplejidadDer{1}
 		
-		%complejidad abajo \sum_{$c \in Vecinos(r, c_1$}^{} {equal(c_i, c_j)}
-		\If {Pertenece?(Vecinos($r$, $c_1$), $c_2$)} \ComplejidadDer{1}
+		\If {Pertenece?(Vecinos($r$, $c_1$), $c_2$)} \ComplejidadDer{\sum_{k \in Vecinos(r, c_1)}^{}equal(c_2, k) = n*z}
 			\State AgregarAtras($pacial$, $c_2$) \ComplejidadDer{1}		
-			%complejidad abajo \sum_{$c \in res$}^{} {equal(c_i, c_j)}
-			\State Agregar($res$, $parcial$) \ComplejidadDer{1}
+			\State Agregar($res$, $parcial$) \ComplejidadDer{\sum_{k \in res}^{}equal(parcial, k) = \sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!} * z}
 		\Else
-			\State var $itVecinos$:itConj $\gets$ CrearIt(Vecinos($r$, $c_1$)) \ComplejidadDer{1}
+			\State var $itVecinos$:itconjLineal $\gets$ CrearIt(Vecinos($r$, $c_1$)) \ComplejidadDer{1}
 			\While{HaySiguiente?($itVecinos$)} \ComplejidadDer{1}
-			%complejidad abajo \sum_{$c \in parcial$}^{} {equal(c_i, c_j)}
-				\If {$¬$Pertenece?($parcial$, Siguiente($itVecinos$))} \ComplejidadDer{1}
-					\State var $auxParcial$:lista $\gets$ copy(parcial) \ComplejidadDer{long(parcial)}
+				\If {$¬$Pertenece?($parcial$, Siguiente($itVecinos$))} \ComplejidadDer{\sum_{k \in parcial}^{}equal(Siguiente(itVecinos), k) = n*z}
+					\State var $auxParcial$:listaEnlazada $\gets$ copy(parcial)\\ \ComplejidadDer{long(parcial) * copy(compu) = n*z}
 					\State AgregarAtras($auxParcial$, Siguiente($itVecinos$)) \ComplejidadDer{1}
-					\State Union($res$, CaminosImportantes($r$, Siguiente($itVecinos$), $c_2$, $auxParcial$)) \ComplejidadDer{long(CaminosImportantes($r$, Siguiente($itVecinos$), $c_2$, $auxParcial$))}
+					\State Union($res$, CaminosImportantes($r$, Siguiente($itVecinos$), $c_2$, $auxParcial$))\\
+					\ComplejidadDer{(\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2 * z}
 				\EndIf	
 				\State Avanzar($itVecinos$) \ComplejidadDer{1}
 			\EndWhile			
 		\EndIf
 	}
-	{$\Complejidad{1}$}{}
+	{$\Complejidad{n * (n * z + (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2 * z)} = \newline 
+	\Complejidad{n * (n + (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z} = \newline 
+	\Complejidad{(n^2 + n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2) * z} \newline$ 
+	Donde n es la cantidad total de computadoras de la red y z es el costo de comparar dos computadoras. $\newline$
+	La cantidad máxima de caminos que se pueden generar es $\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!}$. La complejidad total de la función será el costo de generar el camino más largo por la cantidad de caminos posibles de generar. Armar el camino mas largo (el que pasa por todas las computadoras para llegar a destino) cuesta $n * (\sum_{i = 2}^{n}\frac{(n-2)!}{(n-i)!})^2)$ por el costo de comparar computadoras (dado que se utiliza la función Unión). }{}
 	\end{Algoritmo}
 	
 \end{Algoritmos}
